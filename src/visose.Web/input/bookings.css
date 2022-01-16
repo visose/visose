@@ -1,0 +1,15 @@
+div {
+    height: 1450px;
+    overflow: hidden;
+}
+
+@media (max-width:1040px) {
+    div {
+        height:1630px;
+    }
+}
+
+iframe {
+    width:100%;
+    border:none;      
+}

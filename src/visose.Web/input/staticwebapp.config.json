@@ -1,0 +1,14 @@
+{
+    "routes": [
+        {
+            "route": "/paypal",
+            "redirect": "https://www.paypal.com/donate?hosted_button_id=GZ4W6SBU65EBQ",
+            "statusCode": 301
+        }
+    ],
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/404.html"
+        }
+    }
+}

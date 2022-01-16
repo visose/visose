@@ -1,0 +1,16 @@
+h1 {
+    font-family: system-ui;
+    text-align: center;
+    line-height: 100vh;
+    animation: fade 5s;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

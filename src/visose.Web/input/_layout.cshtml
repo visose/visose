@@ -1,0 +1,29 @@
+﻿@using Statiq.Common
+@using Statiq.Razor
+@using Statiq.Web
+@inherits StatiqRazorPage<IDocument>
+@{
+    string page = Document.GetString(WebKeys.Title);
+    string title = string.IsNullOrEmpty(page) ?
+            "visose" : "visose - " + page;
+
+    var hasStyle = Outputs
+        .Any(d => d.Source.FileName == $"{Document.Source.FileNameWithoutExtension}.css");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>@title</title>
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
+    <link rel='stylesheet' href='style.css'>
+    @if (hasStyle)
+    {
+    <link rel='stylesheet' href='@(page).css'>
+    }
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
