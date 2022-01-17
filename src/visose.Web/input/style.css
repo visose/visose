@@ -1,14 +1,16 @@
 * {
     margin: 0;
     padding: 0;
-    height: 100%;
+}
 
+:root {
     --bg: #fff;
     --color: #000;
+    height: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
-    * {
+    :root {
         --bg: #000;
         --color: #fff;
     }
@@ -17,4 +19,7 @@
 body {
     background-color: var(--bg);
     color: var(--color);
+    display: flex;
+    justify-content: center;
+    min-height: 100%;
 }

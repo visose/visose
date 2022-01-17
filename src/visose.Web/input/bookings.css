@@ -1,15 +1,17 @@
 div {
+    width: 100%;
     height: 1450px;
     overflow: hidden;
 }
 
 @media (max-width:1040px) {
     div {
-        height:1630px;
+        height: 1630px;
     }
 }
 
 iframe {
-    width:100%;
-    border:none;      
+    width: 100%;
+    height: 100%;
+    border: none;
 }

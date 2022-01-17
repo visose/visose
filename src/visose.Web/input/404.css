@@ -1,8 +1,8 @@
-h1 {
+p {
     font-family: system-ui;
-    text-align: center;
-    line-height: 100vh;
-    animation: fade 5s;
+    letter-spacing: 0.5rem;
+    align-self: center;
+    animation: fade 1s;
 }
 
 @keyframes fade {
