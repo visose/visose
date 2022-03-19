@@ -1,12 +1,12 @@
 div {
     width: 100%;
-    height: 1450px;
+    height: 1290px;
     overflow: hidden;
 }
 
 @media (max-width:1040px) {
     div {
-        height: 1630px;
+        height: 1500px;
     }
 }
 

@@ -1,9 +1,15 @@
+@font-face {
+    font-family: "fredoka";
+    src: url("fredoka.ttf");
+}
+
 * {
     margin: 0;
     padding: 0;
 }
 
 :root {
+    font-family: "fredoka", sans-serif;
     --bg: #fff;
     --color: #000;
     height: 100%;
@@ -16,10 +22,44 @@
     }
 }
 
+body, header {
+    display: flex;
+    justify-content: center;
+}
+
 body {
     background-color: var(--bg);
     color: var(--color);
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
     min-height: 100%;
 }
+
+header {
+    margin: 2rem;
+}
+
+@media (max-width:500px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+a {
+    margin: 1rem;
+    width:max-content;
+    color: var(--color);
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+    a:before {
+        margin-right:0.5rem;
+        opacity: 0;
+        transition: all 0.4s;
+        content: "> ";
+    }
+
+    a:hover:before {
+        opacity: 1;
+    }

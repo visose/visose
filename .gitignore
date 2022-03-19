@@ -19,7 +19,3 @@ artifacts/
 *.user
 *.userosscache
 *.sln.docstates
-
-## Statiq
-cache/
-output/

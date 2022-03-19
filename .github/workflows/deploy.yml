@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy
 
 on:
   push:
@@ -6,19 +6,15 @@ on:
       - master
 
 jobs:
-  deploy:    
+  deploy:
     runs-on: ubuntu-latest
     name: Deploy Job
     steps:
-      - uses: actions/checkout@v2      
-      - uses: actions/setup-dotnet@v1
-        with:
-            dotnet-version: '6.0.x'
-            include-prerelease: true
+      - uses: actions/checkout@v2
       - run: dotnet run --project src/visose.Web/visose.Web.csproj
       - uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_SITE }}          
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_SITE }}
           action: "upload"
           app_location: "/artifacts/output"
           skip_app_build: true

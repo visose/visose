@@ -4,14 +4,13 @@
 @inherits StatiqRazorPage<IDocument>
 @{
     string page = Document.GetString(WebKeys.Title);
-    string title = string.IsNullOrEmpty(page) ?
-            "visose" : "visose - " + page;
+    string title = string.IsNullOrEmpty(page) ? "visose" : "visose | " + page;
 
     var hasStyle = Outputs
-        .Any(d => d.Source.FileName == $"{Document.Source.FileNameWithoutExtension}.css");
+        .Any(d => d.Source.FileName.Equals($"{Document.Source.FileNameWithoutExtension}.css"));
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
