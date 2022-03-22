@@ -2,17 +2,17 @@
 using Statiq.Web;
 using Statiq.Common;
 
-var statiq = Bootstrapper
+await Bootstrapper
   .Factory
-  .CreateWeb(args);
+  .CreateWeb(args)
+  .ConfigureFileSystem(f =>
+  {
+      var currentDir = Directory.GetCurrentDirectory();
+      var artifacts = Path.GetFullPath("../../artifacts/", currentDir);
+      var input = Path.GetFullPath("input", currentDir);
 
-var currentDir = Directory.GetCurrentDirectory();
-var artifacts = Path.GetFullPath("../../artifacts/", currentDir);
-var input = Path.GetFullPath("input", currentDir);
-
-var files = statiq.FileSystem;
-files.RootPath = artifacts;
-files.InputPaths.Clear();
-files.InputPaths.Add(new NormalizedPath(input));
-
-await statiq.RunAsync();
+      f.RootPath = artifacts;
+      f.InputPaths.Clear();
+      f.InputPaths.Add(input);
+  })
+  .RunAsync();

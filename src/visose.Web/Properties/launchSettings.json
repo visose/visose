@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "visose.Web": {
+      "commandName": "Project"
+    },
+    "Start": {
+      "commandName": "Executable",
+      "executablePath": "pwsh",
+      "commandLineArgs": "-command \"wt.exe -w 1 nt PowerShell dotnet run --project ./src/visose.Web/visose.Web.csproj -- preview | wt.exe -w 1 nt PowerShell swa start http://localhost:5080 --api-location ./src/visose.Api\"",
+      "workingDirectory": "../../"
+    }
+  }
+}

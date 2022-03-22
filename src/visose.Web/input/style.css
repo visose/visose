@@ -22,44 +22,17 @@
     }
 }
 
-body, header {
+body {
     display: flex;
     justify-content: center;
-}
-
-body {
+    align-items: center;
     background-color: var(--bg);
     color: var(--color);
-    flex-direction: column;
     min-height: 100%;
 }
 
-header {
-    margin: 2rem;
-}
-
 @media (max-width:500px) {
-    header {
+    body {
         flex-direction: column;
-        align-items: center;
     }
 }
-
-a {
-    margin: 1rem;
-    width:max-content;
-    color: var(--color);
-    font-size: 1.2rem;
-    text-decoration: none;
-}
-
-    a:before {
-        margin-right:0.5rem;
-        opacity: 0;
-        transition: all 0.4s;
-        content: "> ";
-    }
-
-    a:hover:before {
-        opacity: 1;
-    }

@@ -1,9 +1,9 @@
 .DS_Store
-nupkg/
-secrets*
 
 # Build results
 artifacts/
+wwwroot/
+bin/
 
 # Visual Studio Code
 .vscode
@@ -19,3 +19,6 @@ artifacts/
 *.user
 *.userosscache
 *.sln.docstates
+
+# Azure Functions localsettings file
+local.settings.json

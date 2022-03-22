@@ -1,0 +1,18 @@
+﻿a {
+    margin: 1rem;
+    width: max-content;
+    color: var(--color);
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+    a:before {
+        margin-right: 0.3rem;
+        opacity: 0;
+        transition: opacity 0.4s;
+        content: "> ";
+    }
+
+    a:hover:before, a:focus:before {
+        opacity: 1;
+    }
