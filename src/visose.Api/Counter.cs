@@ -20,13 +20,11 @@ class CountEntity : ITableEntity
 
 record Body(string page);
 
-[StorageAccount("AzureStorage")]
 public static class Counter
 {
     [FunctionName("count")]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-        [Table("visose")] TableClient table,
         ILogger log)
     {
         var body = await JsonSerializer.DeserializeAsync<Body>(req.Body);
@@ -34,6 +32,9 @@ public static class Counter
 
         if (page is null)
             return new BadRequestResult();
+
+        var connectionString = Environment.GetEnvironmentVariable("AzureStorage");
+        var table = new TableClient(connectionString, "visose");
 
         int retries = 10;
 
