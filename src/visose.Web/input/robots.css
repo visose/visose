@@ -1,0 +1,151 @@
+﻿img {
+    margin: 2rem 0 0 0;
+}
+
+h1 {
+    font-weight: lighter;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+h2 {
+    margin: 4rem 0 3rem 0;
+    font-weight: lighter;
+    font-size: 2rem;
+    text-align: center;
+}
+
+h3 {
+    margin: 3rem 0;
+    font-weight: lighter;
+    font-size: 1.2rem;
+    text-align: center;
+    max-width: 400px;
+}
+
+section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cards {
+    margin-bottom: 1rem;
+}
+
+    .cards > article {
+        padding: 1rem;
+        width: 250px;
+        border-radius: 1rem;
+        background-color: var(--bg-light);
+    }
+
+        .cards > article > h1 {
+            padding: 0.6rem 0.8rem;
+            margin: 0;
+            border-radius: 1.2rem;
+            font-weight: lighter;
+            font-size: 0.9rem;
+            text-align: center;
+            background-color: var(--bg);
+            filter: invert(1) opacity(0.6);
+        }
+
+        .cards > article > h2 {
+            margin: 2rem 0 0 0;
+            font-weight: lighter;
+            font-size: 2rem;
+        }
+
+        .cards > article > ul {
+            margin: 1.5rem 0 2.5rem 0;
+            list-style: none;
+        }
+
+        .cards > article li:before {
+            content: "✓";
+            margin-right: 1rem;
+        }
+
+    .cards a, .cards button {
+        margin-top: auto;
+        padding: 0.4rem;
+        align-self: stretch;
+        text-align: center;
+        font-size: 1.2rem;
+        color: var(--color);
+        text-decoration: none;
+        border-radius: 0.5rem;
+        background-color: var(--bg);
+        filter: invert(1);
+        border: 0;
+        cursor: pointer;
+    }
+
+    .cards > article > a:active, .cards > article > a:focus, button:focus {
+        outline: 0;
+        box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+    }
+
+small {
+    text-align: center;
+}
+
+.faq {
+    max-width: 1500px;
+}
+
+    .faq > article {
+        max-width: 600px;
+        align-items: flex-start;
+    }
+
+        .faq > article > h1 {
+            margin-bottom: 0.7rem;
+            font-weight: lighter;
+            font-size: 1.4rem;
+            text-align: left;
+        }
+
+            .faq > article > h1:before {
+                content: "‣";
+                margin-right: 0.5rem;
+            }
+
+        .faq > article > p {
+            text-align: left;
+        }
+
+.subPrice {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+select {
+    margin: 0 0.4rem;
+    padding: 0.3rem 0.2rem;
+    max-width: 100%;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color);
+    border: 1px solid var(--color);
+    border-radius: 0.5rem;
+    background-color: var(--bg);
+}
+
+    select:focus {
+        box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+        outline: none;
+    }
+
+    select option {
+        color: var(--color);
+    }

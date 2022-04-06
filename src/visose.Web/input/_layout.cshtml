@@ -4,10 +4,13 @@
 @inherits StatiqRazorPage<IDocument>
 @{
     string page = Document.GetString(WebKeys.Title);
-    string title = page.Equals("index") ? "visose" : "visose | " + page;
+    string title = page.Equals("index") ? "visose" : "visose / " + page;
 
-    var hasStyle = Outputs
-        .Any(d => d.Source.FileName.Equals($"{Document.Source.FileNameWithoutExtension}.css"));
+    bool HasFile(string extension)
+    {
+        return Outputs
+        .Any(d => d.Source.FileName.Equals($"{Document.Source.FileNameWithoutExtension}.{extension}"));
+    }
 }
 <!DOCTYPE html>
 <html lang='en'>
@@ -16,13 +19,30 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>@title</title>
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
-    <link rel='stylesheet' href='style.css'>
-    @if (hasStyle)
+    <link rel='stylesheet' href='style.css' type='text/css'>
+    @if (HasFile("css"))
     {
-    <link rel='stylesheet' href='@(page).css'>
+        <link rel='stylesheet' href='@(page).css' type='text/css'>
     }
+    @if (HasFile("js"))
+    {
+        <script type='text/javascript' src='@(page).js' defer></script>
+    }
+    <script>
+        const docStyle = document.documentElement.style;
+        docStyle.visibility = "hidden";
+        window.addEventListener('DOMContentLoaded', e => {
+            docStyle.visibility = "visible";
+        });
+    </script>
 </head>
 <body>
-    @RenderBody()
+    <header></header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        <span>visose ltd</span>•<span>71-75 Shelton Street</span>•<span>Covent Garden</span>•<span>WC2H 9JQ</span>•<span>London</span>
+    </footer>
 </body>
 </html>

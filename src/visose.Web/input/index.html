@@ -1,17 +1,7 @@
 ﻿Title: index
 ---
-
-<a href="mailto:info@visose.com">mail</a>
-<a href="/book">book</a>
-<a href="/github">github</a>
-<a href="/paypal">donate</a>
-
-<script>
-    (async () => {
-        const response = await fetch("/api/count", {
-            method: "post",
-            body: JSON.stringify({ page: "index" }),
-        });
-        console.log("Increment counter: ", response.statusText);
-    })();
-</script>
+<nav>
+    <a href="/contact">contact</a>
+    <a href="/github">github</a>
+    <a href="/paypal">donate</a>
+</nav>

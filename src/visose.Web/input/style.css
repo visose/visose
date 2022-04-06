@@ -11,6 +11,7 @@
 :root {
     font-family: "fredoka", sans-serif;
     --bg: #fff;
+    --bg-light: #eee;
     --color: #000;
     height: 100%;
 }
@@ -18,21 +19,82 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --bg: #000;
+        --bg-light: #222;
         --color: #fff;
     }
 }
 
-body {
+body, nav, main, footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg);
-    color: var(--color);
-    min-height: 100%;
 }
 
-@media (max-width:500px) {
-    body {
+body {
+    padding: 1rem 2rem;
+    min-height: calc(100% - 2rem);
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--bg);
+    color: var(--color);
+}
+
+main {
+    flex-direction: column;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+p:last-of-type {
+    margin-bottom: 0;
+}
+
+a {
+    color: var(--color);
+}
+
+nav {
+}
+
+@media (max-width:650px) {
+    nav {
         flex-direction: column;
     }
 }
+
+nav > a {
+    margin: 1rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    width: max-content;
+}
+
+    nav > a:before {
+        margin-right: 0.3rem;
+        opacity: 0;
+        transition: opacity 0.4s;
+        content: "> ";
+    }
+
+    nav > a:hover:before, a:focus:before {
+        opacity: 1;
+    }
+
+footer {
+    flex-wrap: wrap;
+    margin: 4rem 0 0 0;
+}
+
+    footer > span {
+        font-size: 0.8rem;
+        margin: 0 0.5rem;
+        width: max-content;
+    }
