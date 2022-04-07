@@ -40,7 +40,7 @@ public static class Checkout
         if (!req.Form.TryGetValue("robots", out var value)
             || value.Count != 1
             || !int.TryParse(value[0], out var robotCount)
-            || robotCount < 0
+            || robotCount < 1
             || robotCount > 6)
             return new BadRequestResult();
 
