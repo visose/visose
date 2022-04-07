@@ -1,14 +1,13 @@
 ﻿'use strict';
+
 (async () => {
     const selectElement = document.getElementById('robots');
     const priceElement = document.getElementById('price');
     const sElement = document.getElementById('s');
 
-    const init = 950;
-    const decay = -0.2;
-    const round = 50;
-
     const calcPrice = count => {
+        const { init, decay, round } = robotsPricing;
+       
         const r = Math.exp(decay);
         const sum = init * (Math.pow(r, count) - 1) / (r - 1);
         return Math.floor(sum / round) * round;
@@ -32,5 +31,4 @@
     updateText();
     selectElement.onchange = updateText;
     window.addEventListener("pagehide", () => selectElement.selectedIndex = 0, false);
-    
 })();

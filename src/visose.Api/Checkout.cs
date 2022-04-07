@@ -5,23 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Stripe;
 using Stripe.Checkout;
+using visose.Shared;
 
 namespace visose.Api;
 
 public static class Checkout
 {
-    static int CalcPrice(int count)
-    {
-        const int init = 950;
-        const double decay = -0.2;
-        const int round = 50;
-
-        double r = Math.Exp(decay);
-        double sum = init * (Math.Pow(r, count) - 1) / (r - 1);
-        var gbp = Math.Floor(sum / round) * round;
-        return (int)(gbp * 100);
-    }
-
     [FunctionName("checkout")]
     public static IActionResult Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
@@ -47,8 +36,7 @@ public static class Checkout
         string s = robotCount == 1 ? "" : "s";
 
         // set payment
-        int price = CalcPrice(robotCount);
-
+        int price = new RobotsPricing().CalcPrice(robotCount);
 
         var options = new SessionCreateOptions
         {

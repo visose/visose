@@ -1,8 +1,23 @@
 ﻿Title: robots
 ---
+@using System.Text.Json
 @{
-    var maxRobots = 6;
+    var pricing = new visose.Shared.RobotsPricing();
+    int maxRobots = pricing.MaxRobots;
+
+    var options = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true,
+    };
+
+    var json = JsonSerializer.Serialize(pricing, options);
 }
+
+<script type="text/javascript">
+const robotsPricing = @Html.Raw(json)
+</script>
+
 <img src="iconRobot.svg" alt="Robots logo" />
 <h1>Adopt open source with confidence</h1>
 <h3>Partner with the creators of <a href="https://github.com/visose/Robots">Robots</a> to ensure you have the best support for your organization.</h3>
@@ -118,4 +133,4 @@
         </p>
     </article>
 </section>
-    <h4><a href="mailto:info@visose.com?subject=Interested in Robots commercial support">Get in touch</a></h4>
+<h4><a href="mailto:info@visose.com?subject=Interested in Robots commercial support">Get in touch</a></h4>

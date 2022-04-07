@@ -4,11 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "visose.Web", "src\visose.Web\visose.Web.csproj", "{AB9F0395-6207-428D-A995-5270B2308D46}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5D1BC285-EE01-406A-AD61-76FDF816E193} = {5D1BC285-EE01-406A-AD61-76FDF816E193}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "visose.Api", "src\visose.Api\visose.Api.csproj", "{752AC41B-BDF8-49EF-BFE9-FAF6293A7E3D}"
 	ProjectSection(ProjectDependencies) = postProject
-		{AB9F0395-6207-428D-A995-5270B2308D46} = {AB9F0395-6207-428D-A995-5270B2308D46}
+		{5D1BC285-EE01-406A-AD61-76FDF816E193} = {5D1BC285-EE01-406A-AD61-76FDF816E193}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "visose.Shared", "src\visose.Shared\visose.Shared.csproj", "{5D1BC285-EE01-406A-AD61-76FDF816E193}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +29,10 @@ Global
 		{752AC41B-BDF8-49EF-BFE9-FAF6293A7E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{752AC41B-BDF8-49EF-BFE9-FAF6293A7E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{752AC41B-BDF8-49EF-BFE9-FAF6293A7E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D1BC285-EE01-406A-AD61-76FDF816E193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D1BC285-EE01-406A-AD61-76FDF816E193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D1BC285-EE01-406A-AD61-76FDF816E193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D1BC285-EE01-406A-AD61-76FDF816E193}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

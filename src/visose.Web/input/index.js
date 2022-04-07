@@ -1,4 +1,5 @@
 ﻿'use strict';
+
 (async () => {
     const response = await fetch("/api/count", {
         method: "post",
