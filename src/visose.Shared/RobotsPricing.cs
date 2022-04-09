@@ -2,6 +2,8 @@
 
 public class RobotsPricing
 {
+    public static RobotsPricing Default { get; } = new RobotsPricing();
+
     public int Init { get; set; } = 950;
     public double Decay { get; set; } = -0.2;
     public int Round { get; set; } = 50;

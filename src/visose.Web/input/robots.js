@@ -17,7 +17,7 @@
         const count = selectElement.selectedIndex + 1;
         const price = calcPrice(count);
 
-        var formatter = new Intl.NumberFormat('en-UK', {
+        var formatter = new Intl.NumberFormat('en-GB', {
             style: 'currency',
             currency: 'GBP',
             minimumFractionDigits: 0
@@ -30,5 +30,5 @@
 
     updateText();
     selectElement.onchange = updateText;
-    window.addEventListener("pagehide", () => selectElement.selectedIndex = 0, false);
+    window.addEventListener('pagehide', () => selectElement.selectedIndex = 0, false);
 })();

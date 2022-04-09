@@ -36,7 +36,7 @@ public static class Checkout
         string s = robotCount == 1 ? "" : "s";
 
         // set payment
-        int price = new RobotsPricing().CalcPrice(robotCount);
+        int price = RobotsPricing.Default.CalcPrice(robotCount);
 
         var options = new SessionCreateOptions
         {

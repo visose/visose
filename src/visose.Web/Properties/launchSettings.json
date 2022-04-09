@@ -6,7 +6,7 @@
     "Start": {
       "commandName": "Executable",
       "executablePath": "pwsh",
-      "commandLineArgs": "-command \"wt.exe -w 1 nt PowerShell dotnet run --project ./src/visose.Web/visose.Web.csproj -- preview | swa start http://localhost:5080 --api-location ./src/visose.Api\"",
+      "commandLineArgs": "-command \"$curDir = Get-Location; wt.exe -w 0 nt -d $curDir dotnet run --project ./src/visose.Web/visose.Web.csproj -- preview ; swa start http://localhost:5080 --api-location ./src/visose.Api\"",
       "workingDirectory": "../../"
     }
   }

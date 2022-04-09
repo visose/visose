@@ -1,8 +1,10 @@
 ﻿using Statiq.App;
 using Statiq.Web;
 using Statiq.Common;
+using Statiq.Core;
+using Statiq.Minification;
 
-await Bootstrapper
+var app = Bootstrapper
   .Factory
   .CreateWeb(args)
   .ConfigureFileSystem(f =>
@@ -14,5 +16,25 @@ await Bootstrapper
       f.RootPath = artifacts;
       f.InputPaths.Clear();
       f.InputPaths.Add(input);
-  })
-  .RunAsync();
+  });
+
+if (Environment.GetEnvironmentVariable("CI") == "true")
+{
+    app.ModifyPipeline("Assets", p => p.WithProcessModules
+        (
+            AddMinifier(".css", new MinifyCss()),
+            AddMinifier(".js", new MinifyJs())
+        ))
+        .ModifyPipeline("Content", p => p.WithPostProcessModules
+        (
+            AddMinifier(".html", new MinifyHtml())
+        ));
+
+    IModule AddMinifier(string extension, IModule minifier) =>
+        new ExecuteIf(Config.FromDocument(doc => doc.Destination.Extension == extension))
+        {
+            minifier
+        };
+}
+
+await app.RunAsync();
