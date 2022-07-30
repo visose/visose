@@ -47,6 +47,7 @@ public static class Checkout
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         UnitAmount = price,
+                        TaxBehavior = "exclusive",
                         Currency = "gbp",
                         Recurring = new SessionLineItemPriceDataRecurringOptions
                         {
@@ -71,7 +72,7 @@ public static class Checkout
             BillingAddressCollection = "required",
             SuccessUrl = domain + "/success.html",
             CancelUrl = domain + "/cancel.html",
-            //AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true },
+            AutomaticTax = new SessionAutomaticTaxOptions { Enabled = true }
         };
 
         var service = new SessionService();

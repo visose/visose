@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-(async () => {
+(() => {
     const selectElement = document.getElementById('robots');
     const priceElement = document.getElementById('price');
     const sElement = document.getElementById('s');
@@ -17,7 +17,7 @@
         const count = selectElement.selectedIndex + 1;
         const price = calcPrice(count);
 
-        var formatter = new Intl.NumberFormat('en-GB', {
+        const formatter = new Intl.NumberFormat('en-GB', {
             style: 'currency',
             currency: 'GBP',
             minimumFractionDigits: 0
