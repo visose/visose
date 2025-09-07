@@ -1,0 +1,86 @@
+---
+import Base from "../../layouts/Base.astro";
+import Faq from "./_Faq.astro";
+import Card from "./_Card.astro";
+import { robotPrices } from "./_pricing.ts";
+---
+
+<Base title="robots">
+  <img class="mt-8" src="/iconRobot.svg" alt="Robots logo" />
+  <h1 class="font-light text-3xl text-center">Adopt open source with confidence</h1>
+  <h3 class="mt-4 mb-16 font-light text-center max-w-[400px]">
+    Partner with the creators of <a href="https://github.com/visose/Robots">Robots</a> to ensure you have the best support for your organization.
+  </h3>
+  <section class="cards mb-4 flex gap-16 justify-center flex-wrap">
+    <Card title="Community" price="Free" button="Get Started" action="https://github.com/visose/Robots/discussions" items={["Community support"]}>
+      <Fragment slot="h3">for everyone</Fragment>
+    </Card>
+
+    <Card
+      title="Commercial"
+      price={robotPrices[0]}
+      button="Purchase Support"
+      action=""
+      items={["Customer support", "Direct chat", "Online calls", "Custom robot library", "Priority bug fixes", "Become a sponsor"]}
+    >
+      <Fragment slot="h3"
+        >for
+        <select form="form-commercial" id="robots" name="robots" class="mx-2 p-0.5 font-bold border rounded-lg bg-bg hover:shad-blue">
+          {robotPrices.map((_, i) => <option value={robotPrices[i]}>{i + 1}</option>)}
+        </select>
+        robot<span id="s"></span><sup>&nbsp;*</sup></Fragment
+      >
+    </Card>
+  </section>
+
+  <small>* Corresponds to the number of robot controllers in your organization.</small>
+  <small
+    >For more than {robotPrices.length} robots contact <a
+      href="mailto:info@visose.com?subject=Interested in Robots commercial support for a large org">info@visose.com</a
+    > for a quote.</small
+  >
+
+  <h2 class="mt-16 mb-12 font-light text-3xl text-center">Frequently Asked Questions</h2>
+  <section class="faq flex flex-wrap justify-center gap-16 max-w-[1500px]"><Faq /></section>
+  <a class="bottom" href="/contact">contact us</a>
+</Base>
+
+<script>
+  const select = document.getElementById("robots") as HTMLSelectElement;
+  const form = document.getElementById("form-commercial") as HTMLFormElement;
+  if (!select || !form) throw new Error("Missing element.");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const baseUrl = import.meta.env.PUBLIC_API_URL;
+
+    const res = await fetch(`${baseUrl}/checkout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ robots: select.selectedIndex + 1 }),
+    });
+
+    if (res.ok) {
+      var { url } = await res.json();
+      window.location.href = url;
+    } else {
+      console.error("Checkout failed", await res.text());
+    }
+  });
+
+  select.onchange = updatePrice;
+  window.addEventListener("pagehide", () => {
+    select.selectedIndex = 0;
+  });
+
+  function updatePrice() {
+    const priceEl = document.querySelector("#commercial h2") as HTMLElement;
+    const pluralEl = document.getElementById("s");
+
+    if (!priceEl || !pluralEl) throw new Error("Missing element.");
+
+    priceEl.innerText = select.value;
+    pluralEl.innerText = select.selectedIndex === 0 ? "" : "s";
+  }
+</script>

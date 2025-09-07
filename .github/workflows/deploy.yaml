@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_SITE }}
+          action: upload
+          app_location: web
+          api_location: api
+          app_build_command: |
+            corepack enable
+            pnpm install --frozen-lockfile || npm i -g pnpm && pnpm install --frozen-lockfile
+            pnpm build
+          output_location: dist

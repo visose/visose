@@ -1,0 +1,13 @@
+---
+import Base from "../../layouts/Base.astro";
+import Crumbs from "../../components/Crumbs.astro";
+
+const links = [
+  { href: "mailto:info@visose.com", label: "mail" },
+  { href: "/contact/meet", label: "meet" },
+];
+---
+
+<Base title="contact">
+  <Crumbs links={links} />
+</Base>

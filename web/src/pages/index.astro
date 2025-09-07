@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import Crumbs from "../components/Crumbs.astro";
+
+const links = [
+  { href: "/contact", label: "contact" },
+  { href: "/services", label: "services" },
+  { href: "/github", label: "github" },
+  { href: "/paypal", label: "donate" },
+];
+---
+
+<Base title="home">
+  <Crumbs links={links} />
+</Base>

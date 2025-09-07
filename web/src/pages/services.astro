@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="services">
+  <section class="flex gap-20 flex-col md:flex-row">
+    <article>
+      <h2>Software development</h2>
+      <ul>
+        <li>3D applications</li>
+        <li>CAD (Computer-aided design)</li>
+        <li>CAM (Computer-aided manufacturing)</li>
+        <li>Industrial robots</li>
+      </ul>
+    </article>
+    <article>
+      <h2>Software support</h2>
+      <ul>
+        <li><a href="/robots">Robots</a> commercial support</li>
+      </ul>
+    </article>
+  </section>
+
+  <a class="mt-20 mb-20" href="/contact">contact us</a>
+</Base>
+
+<style is:global>
+  @reference "../styles/global.css";
+
+  @layer components {
+    h2 {
+      @apply font-semibold mb-2;
+    }
+
+    ul {
+      @apply list-disc list-inside whitespace-nowrap leading-7;
+    }
+  }
+</style>

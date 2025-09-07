@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="meet">
+  <div class="w-full h-[1220px] overflow-hidden max-[1022px]:h-[1470px] mb-2">
+    <iframe
+      src="https://outlook.office.com/book/book@visose.com/?ismsaljsauthenabled"
+      scrolling="no"
+      width="100%"
+      height="100%"
+      class="w-full h-full overflow-hidden border-0"></iframe>
+  </div>
+</Base>
+
+<style is:global>
+  @reference "../../styles/global.css";
+
+  body {
+    @apply pt-0 px-0 items-stretch;
+  }
+</style>
