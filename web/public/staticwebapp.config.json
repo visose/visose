@@ -1,0 +1,22 @@
+{
+  "routes": [
+    {
+      "route": "/paypal",
+      "redirect": "https://www.paypal.com/donate?hosted_button_id=GZ4W6SBU65EBQ",
+      "statusCode": 301
+    },
+    {
+      "route": "/github",
+      "redirect": "https://github.com/visose",
+      "statusCode": 301
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404"
+    }
+  },
+  "platform": {
+    "apiRuntime": "dotnet-isolated:9.0"
+  }
+}
