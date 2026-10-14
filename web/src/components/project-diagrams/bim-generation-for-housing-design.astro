@@ -1,0 +1,105 @@
+---
+import ProjectDiagram from "../ProjectDiagram.astro";
+import ArchitectureNode from "../ArchitectureNode.astro";
+import {
+  diagramNodes,
+  type ProjectDiagram as Diagram,
+} from "../../lib/diagrams";
+interface Props {
+  diagram: Diagram;
+}
+const { diagram } = Astro.props;
+const nodes = diagramNodes(diagram, [
+  "input",
+  "catalog",
+  "automation",
+  "revit",
+  "grasshopper",
+  "rhino",
+  "generation",
+  "core",
+]);
+---
+
+<ProjectDiagram title={diagram.title} caption={diagram.caption}>
+  <div class="shared-architecture">
+    <ArchitectureNode node={nodes.input!} class="input" external />
+    <ArchitectureNode node={nodes.catalog!} class="catalog" />
+    <div class="host-group">
+      {["automation", "revit", "grasshopper"].map((name) => (
+        <ArchitectureNode node={nodes[name]!} />
+      ))}
+    </div>
+    <div class="rhino-branch">
+      <ArchitectureNode node={nodes.rhino!} />
+    </div>
+    <ArchitectureNode node={nodes.generation!} class="generation" />
+    <ArchitectureNode node={nodes.core!} class="core" emphasis />
+  </div>
+</ProjectDiagram>
+<style>
+  .host-group > :global(.architecture-node)::after,
+  .shared-architecture > :global(.input)::after,
+  .shared-architecture > :global(.catalog)::before,
+  .shared-architecture > :global(.catalog)::after,
+  .shared-architecture > :global(.generation)::after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: var(--connection-gap);
+    background: var(--connector);
+    left: 50%;
+    top: 100%;
+  }
+  .shared-architecture {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--connection-gap) var(--node-gap);
+  }
+  .shared-architecture > :global(.input) {
+    grid-column: 1;
+  }
+  .shared-architecture > :global(.catalog) {
+    grid-column: 2 / 4;
+  }
+  .shared-architecture > :global(.catalog)::before {
+    left: calc((100% - var(--node-gap)) / 4);
+  }
+  .shared-architecture > :global(.catalog)::after {
+    left: calc(75% + var(--node-gap) / 4);
+  }
+  .host-group {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--node-gap);
+  }
+  .rhino-branch {
+    grid-column: 4;
+    grid-row: 2 / 4;
+    display: flex;
+    flex-direction: column;
+  }
+  .rhino-branch::after {
+    content: "";
+    align-self: center;
+    width: 1px;
+    flex: 1;
+    background: var(--connector);
+    margin-bottom: calc(-1 * var(--connection-gap));
+  }
+  .shared-architecture > :global(.generation) {
+    grid-column: 1 / 4;
+  }
+  .shared-architecture > :global(.generation ul) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+  }
+  .shared-architecture > :global(.generation li) {
+    margin: 0;
+  }
+  .shared-architecture > :global(.core) {
+    grid-column: 1 / -1;
+  }
+</style>

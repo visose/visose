@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Website",
+      "configurations": ["Website dev server", "Local form simulator"],
+      "preLaunchTask": "Build local form simulator",
+      "stopAll": true,
+      "presentation": { "order": 1 }
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Website dev server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/web/node_modules/astro/bin/astro.mjs",
+      "args": ["dev"],
+      "cwd": "${workspaceFolder}/web",
+      "console": "internalConsole",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "pattern": "Local\\s+(http://127\\.0\\.0\\.1:[0-9]+/?)",
+        "uriFormat": "%s",
+        "action": "openIntegratedBrowser"
+      },
+      "presentation": { "hidden": true }
+    },
+    {
+      "name": "Local form simulator",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/artifacts/bin/Visose.Api/debug/Visose.Api.dll",
+      "args": ["--review"],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "presentation": { "hidden": true }
+    }
+  ]
+}

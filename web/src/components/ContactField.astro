@@ -1,0 +1,69 @@
+---
+import type { ContactField } from "../lib/contact";
+interface Props {
+  field: ContactField;
+}
+const { field } = Astro.props;
+const controlClass =
+  "w-full rounded-none border border-control bg-white px-3.5 py-3 text-body caret-focus transition-colors duration-200 placeholder:text-placeholder placeholder:opacity-100 hover:border-ink aria-[invalid=true]:border-error";
+const attributes = {
+  id: field.name,
+  name: field.name,
+  required: field.required,
+  "aria-describedby": field.hint
+    ? `${field.name}-hint ${field.name}-error`
+    : `${field.name}-error`,
+};
+---
+
+<div
+  class:list={[
+    "flex min-w-0 flex-col gap-2",
+    { "col-span-full": field.type === "textarea" },
+  ]}
+>
+  <label class="text-caption" for={field.name}>
+    {field.label}
+  </label>
+  {field.hint && (
+    <span class="text-caption text-muted" id={`${field.name}-hint`}>
+      {field.hint}
+    </span>
+  )}
+  {field.type === "textarea" ? (
+    <textarea
+      class:list={[controlClass, "min-h-40 resize-y"]}
+      {...attributes}
+      maxlength={field.maxLength}
+      placeholder={field.placeholder}
+      rows="6"
+    />
+  ) : field.type === "select" ? (
+    <select
+      class:list={[
+        controlClass,
+        "min-h-12 pr-7 text-ink has-[option[value='']:checked]:text-placeholder",
+      ]}
+      {...attributes}
+    >
+      <option class="text-placeholder" value="">
+        {field.placeholder}
+      </option>
+      {field.options?.map((option) => (
+        <option class="text-ink" value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <input
+      class:list={[controlClass, "min-h-12"]}
+      {...attributes}
+      type={field.type}
+      maxlength={field.maxLength}
+      placeholder={field.placeholder}
+      autocomplete={field.autocomplete ?? "off"}
+    />
+  )}
+  <span class="text-caption text-error" id={`${field.name}-error`} hidden />
+</div>

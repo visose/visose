@@ -1,0 +1,37 @@
+---
+import ProjectDiagram from "../ProjectDiagram.astro";
+import ArchitectureNode from "../ArchitectureNode.astro";
+import {
+  diagramNodes,
+  type ProjectDiagram as Diagram,
+} from "../../lib/diagrams";
+interface Props {
+  diagram: Diagram;
+}
+const { diagram } = Astro.props;
+const nodes = diagramNodes(diagram, [
+  "tools",
+  "modeling",
+  "procedural",
+  "document",
+  "kernel",
+  "display",
+  "site",
+]);
+---
+
+<ProjectDiagram title={diagram.title} caption={diagram.caption}>
+  <div class="diagram-stack">
+    <div class="node-row above-core">
+      {["tools", "modeling", "procedural"].map((name) => (
+        <ArchitectureNode node={nodes[name]!} />
+      ))}
+    </div>
+    <ArchitectureNode node={nodes.document!} emphasis />
+    <div class="node-row below-core">
+      {["kernel", "display", "site"].map((name) => (
+        <ArchitectureNode node={nodes[name]!} />
+      ))}
+    </div>
+  </div>
+</ProjectDiagram>

@@ -1,7 +1,17 @@
 ---
-import Base from "../layouts/Base.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
 ---
 
-<Base title="404">
-  <p class="tracking-[0.5rem]">404</p>
-</Base>
+<BaseLayout
+  title="Page not found - visose"
+  description="This page could not be found. Return to visose or find a service or project."
+>
+  <PageOpening heading="Page not found">
+    <p>The page may have moved, or the address may be incorrect.</p>
+    <p>
+      <a href="/">Go to the homepage</a>, browse{" "}
+      <a href="/projects">projects</a> or <a href="/contact">contact visose</a>.
+    </p>
+  </PageOpening>
+</BaseLayout>

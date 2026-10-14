@@ -1,0 +1,144 @@
+---
+import { Menu, X } from "@lucide/astro";
+import { createHash } from "node:crypto";
+
+export const initializeMenu =
+  'document.getElementById("primary-navigation").hidden = matchMedia("(width < 37.5rem)").matches;';
+
+export const initializeMenuHash =
+  `sha256-${createHash("sha256").update(initializeMenu).digest("base64")}` as const;
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const links = [
+  ["/projects", "Projects"],
+  ["/services", "Services"],
+  ["/about", "About"],
+  ["/contact", "Contact"],
+];
+---
+
+<header class="site-header relative z-5 shrink-0">
+  <div class="wrap grid grid-cols-[1fr_auto] grid-rows-[80px_auto] items-center sm:flex sm:min-h-26 sm:justify-between sm:gap-8">
+    <a class="inline-flex shrink-0 py-2.5" href="/" aria-label="visose home">
+      <img
+        class="block h-auto w-27 sm:w-30"
+        src="/brand/visose.svg"
+        alt="visose"
+        width="128"
+        height="36"
+      />
+    </a>
+    <button
+      class="menu-toggle group inline-flex size-11 items-center justify-end border-0 bg-transparent py-2.5 pr-0 pl-3 sm:hidden"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+      aria-label="Menu"
+      hidden
+    >
+      <Menu
+        class="group-aria-expanded:hidden"
+        size={25}
+        stroke-width={1.3}
+        aria-hidden="true"
+      />
+      <X
+        class="hidden group-aria-expanded:block"
+        size={25}
+        stroke-width={1.3}
+        aria-hidden="true"
+      />
+    </button>
+    <nav
+      class="col-span-full min-h-0 w-full sm:w-auto sm:overflow-visible sm:transition-none"
+      id="primary-navigation"
+      aria-label="Main navigation"
+    >
+      <div class="grid grid-cols-1 items-center border-t border-line pt-1 pb-3 sm:flex sm:gap-6 sm:border-t-0 sm:py-0 xl:gap-9">
+        {links.map(([href, label]) => (
+          <a
+            class="nav-link flex min-h-12 items-center py-3 text-lg text-ink no-underline sm:min-h-0 sm:text-caption"
+            href={href}
+            aria-current={
+              current === href || current.startsWith(`${href}/`)
+                ? "page"
+                : undefined
+            }
+          >
+            <span class="relative">{label}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- Initialize before the first paint so mobile navigation never flashes open. -->
+<script is:inline set:html={initializeMenu} />
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle")!;
+  const navigation = document.querySelector<HTMLElement>(
+    "#primary-navigation",
+  )!;
+  const mobile = window.matchMedia("(width < 37.5rem)");
+  function setOpen(open: boolean) {
+    const expanded = mobile.matches && open;
+    if (expanded) navigation.classList.add("disclosure-panel");
+    toggle.setAttribute("aria-expanded", String(expanded));
+    navigation.hidden = mobile.matches && !expanded;
+    navigation.inert = navigation.hidden;
+  }
+  function close() {
+    setOpen(false);
+  }
+  toggle.hidden = false;
+  close();
+  toggle.addEventListener("click", () => {
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
+  });
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      toggle.getAttribute("aria-expanded") === "true"
+    ) {
+      close();
+      toggle.focus();
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (
+      event.target instanceof Node &&
+      !navigation.contains(event.target) &&
+      !toggle.contains(event.target)
+    )
+      close();
+  });
+  mobile.addEventListener("change", () => {
+    navigation.classList.remove("disclosure-panel");
+    close();
+  });
+</script>
+<style>
+  @layer components {
+    .nav-link span::after {
+      content: "";
+      position: absolute;
+      inset: auto 100% -5px 0;
+      height: 1px;
+      background: currentColor;
+      transition: right 200ms var(--ease-out);
+    }
+    .nav-link:hover span::after,
+    .nav-link:focus-visible span::after,
+    .nav-link[aria-current] span::after {
+      right: 0;
+    }
+  }
+  @media (width < 37.5rem) {
+    .site-header:has(.disclosure-panel) {
+      transition: background-color 0s 240ms;
+    }
+    .site-header:has(nav:not([hidden])) {
+      background: var(--color-paper);
+      transition-delay: 0s;
+    }
+  }
+</style>

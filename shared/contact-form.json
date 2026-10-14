@@ -1,0 +1,81 @@
+{
+  "maxBodyBytes": 65536,
+  "form": [
+    {
+      "name": "name",
+      "label": "Name",
+      "type": "text",
+      "required": true,
+      "maxLength": 120,
+      "error": "Enter your name.",
+      "autocomplete": "name"
+    },
+    {
+      "name": "organisation",
+      "label": "Organization (optional)",
+      "type": "text",
+      "required": false,
+      "maxLength": 160,
+      "autocomplete": "organization"
+    },
+    {
+      "name": "email",
+      "label": "Email address",
+      "type": "email",
+      "required": true,
+      "maxLength": 254,
+      "error": "Enter a valid email address.",
+      "autocomplete": "email"
+    },
+    {
+      "name": "area",
+      "label": "Type of work (optional)",
+      "type": "select",
+      "required": false,
+      "placeholder": "Select type of work",
+      "options": [
+        "Application development",
+        "CAD plugin or integration",
+        "Technical consulting",
+        "Maintenance or support",
+        "Robots support or development",
+        "Not sure"
+      ],
+      "error": "Select a listed option."
+    },
+    {
+      "name": "message",
+      "label": "Message",
+      "type": "textarea",
+      "required": true,
+      "maxLength": 5000,
+      "hint": "Briefly describe what you want to build or change and any software it needs to work with. Please omit credentials and confidential material.",
+      "error": "Enter a message."
+    },
+    {
+      "name": "timescale",
+      "label": "Timeline (optional)",
+      "type": "text",
+      "required": false,
+      "maxLength": 160,
+      "placeholder": "Preferred start date or deadline"
+    },
+    {
+      "name": "budget",
+      "label": "Budget (optional)",
+      "type": "text",
+      "required": false,
+      "maxLength": 120,
+      "placeholder": "Amount and currency"
+    }
+  ],
+  "optionalDetails": "Optional project details",
+  "submit": "Send inquiry",
+  "success": "Your inquiry has been sent.",
+  "error": "We couldn't confirm your inquiry was sent. Please try again or email info@visose.com.",
+  "sending": "Sending…",
+  "pending": "Sending your inquiry…",
+  "invalidFields": "Check the highlighted fields and try again.",
+  "invalid": "Check this field.",
+  "tooLong": "Use no more than {maxLength} characters."
+}

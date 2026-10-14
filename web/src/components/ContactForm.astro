@@ -1,0 +1,224 @@
+---
+import definition from "../../../shared/contact-form.json";
+import { readContactForm } from "../lib/contact";
+import ContactField from "./ContactField.astro";
+import { Plus } from "@lucide/astro";
+const contactForm = readContactForm(definition);
+---
+
+<form
+  class="grid max-w-220 grid-cols-1 gap-x-7 gap-y-6.5 sm:grid-cols-2"
+  id="contact-form"
+  novalidate
+  method="dialog"
+>
+  {contactForm.form
+    .filter((field) => field.required)
+    .map((field) => (
+      <ContactField field={field} />
+    ))}
+  <details
+    class="group col-span-full border-y border-line"
+    id="optional-details"
+  >
+    <summary class="flex min-h-12 w-fit cursor-pointer list-none items-center gap-2 py-3.5 text-base underline-offset-5 hover:underline">
+      {contactForm.optionalDetails}
+      <Plus
+        class="flex-none group-open:rotate-45"
+        size={18}
+        aria-hidden="true"
+      />
+    </summary>
+    <div class="grid grid-cols-1 gap-x-7 gap-y-6.5 pt-3 pb-7 sm:grid-cols-2">
+      {contactForm.form
+        .filter((field) => !field.required)
+        .map((field) => (
+          <ContactField field={field} />
+        ))}
+    </div>
+  </details>
+  <button
+    class="col-span-full min-h-13 justify-self-start border border-graphite bg-graphite px-6 py-3.5 text-base text-white transition-colors duration-200 hover:bg-ink active:bg-focus disabled:cursor-wait disabled:opacity-72 forced-colors:border-[ButtonText]"
+    type="submit"
+    id="send-enquiry"
+    disabled
+  >
+    {contactForm.submit}
+  </button>
+  <div
+    class="col-span-full border border-line-strong bg-silver px-5 py-4.5 text-body data-[state=error]:border-error data-[state=error]:text-error"
+    id="form-status"
+    tabindex="-1"
+    role="status"
+    aria-live="polite"
+    hidden
+  />
+</form>
+<noscript>
+  <p>
+    To use this form, enable JavaScript. You can also email{" "}
+    <a href="mailto:info@visose.com">info@visose.com</a>.
+  </p>
+</noscript>
+<script>
+  import { isRelease } from "../lib/build";
+  import { isRecord } from "../lib/validation";
+  import messages from "../../../shared/contact-form.json";
+  declare global {
+    interface Window {
+      visoseReview: {
+        setOutcome(outcome: "success" | "error"): void;
+      };
+    }
+  }
+
+  const form = document.querySelector<HTMLFormElement>("#contact-form")!;
+  const button = document.querySelector<HTMLButtonElement>("#send-enquiry")!;
+  const status = document.querySelector<HTMLElement>("#form-status")!;
+  const optional =
+    document.querySelector<HTMLDetailsElement>("#optional-details")!;
+  const fields = Array.from(
+    form.querySelectorAll<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >("input,select,textarea"),
+  );
+  let outcome: "success" | "error" = "success";
+  let pending = false;
+
+  if (!isRelease)
+    window.visoseReview = {
+      setOutcome(value) {
+        if (value !== "success" && value !== "error")
+          throw new TypeError("Use success or error.");
+        outcome = value;
+      },
+    };
+  button.disabled = false;
+  const query = new URLSearchParams(location.search);
+  for (const field of fields) {
+    if (!(field instanceof HTMLSelectElement)) continue;
+    const value = query.get(field.name);
+    if (
+      !value ||
+      !Array.from(field.options).some((option) => option.value === value)
+    )
+      continue;
+    field.value = value;
+    if (optional.contains(field)) optional.open = true;
+  }
+
+  function readResponse(value: unknown) {
+    if (
+      !isRecord(value) ||
+      value.simulated !== !isRelease ||
+      typeof value.ok !== "boolean" ||
+      !isRecord(value.fieldErrors) ||
+      Object.values(value.fieldErrors).some(
+        (message) => typeof message !== "string",
+      )
+    )
+      throw new Error("Invalid contact response.");
+    return {
+      ok: value.ok,
+      fieldErrors: value.fieldErrors as Record<string, string>,
+    };
+  }
+
+  function error(
+    field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+    message = "",
+  ) {
+    const target = document.getElementById(`${field.name}-error`)!;
+    target.textContent = message;
+    target.hidden = !message;
+    if (message) {
+      field.setAttribute("aria-invalid", "true");
+      if (optional.contains(field)) optional.open = true;
+    } else field.removeAttribute("aria-invalid");
+  }
+
+  function show(message: string, state: string) {
+    status.textContent = message;
+    status.dataset.state = state;
+    status.hidden = false;
+  }
+
+  fields.forEach((field) =>
+    field.addEventListener("input", () => error(field)),
+  );
+
+  async function submit() {
+    if (pending) return;
+    let firstInvalid: HTMLElement | undefined;
+    for (const field of fields) {
+      const invalid =
+        (field.required && !field.value.trim()) || !field.validity.valid;
+      error(
+        field,
+        invalid
+          ? field.validity.tooLong && "maxLength" in field
+            ? messages.tooLong.replace("{maxLength}", String(field.maxLength))
+            : (messages.form.find((rule) => rule.name === field.name)?.error ??
+              messages.invalid)
+          : "",
+      );
+      if (invalid && !firstInvalid) firstInvalid = field;
+    }
+    if (firstInvalid) {
+      show(messages.invalidFields, "error");
+      firstInvalid.focus();
+      return;
+    }
+
+    pending = true;
+    button.disabled = true;
+    button.textContent = messages.sending;
+    form.setAttribute("aria-busy", "true");
+    show(messages.pending, "pending");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(!isRelease && { "X-Review-Outcome": outcome }),
+        },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        signal: AbortSignal.timeout(12000),
+        credentials: "omit",
+        redirect: "error",
+      });
+      const result = readResponse(await response.json());
+      if (response.ok && result.ok) {
+        if (!isRelease)
+          window.alert(
+            "This is a local simulation. No inquiry was sent or saved. The page will show the intended success message.",
+          );
+        show(messages.success, "success");
+        document.dispatchEvent(new Event("contact:accepted"));
+      } else {
+        show(messages.error, "error");
+        let invalid: HTMLElement | undefined;
+        for (const field of fields) {
+          const message = result.fieldErrors[field.name];
+          if (message) {
+            error(field, message);
+            invalid ??= field;
+          }
+        }
+        invalid?.focus();
+      }
+    } catch {
+      show(messages.error, "error");
+    } finally {
+      pending = false;
+      button.disabled = false;
+      button.textContent = messages.submit;
+      form.removeAttribute("aria-busy");
+    }
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    void submit();
+  });
+</script>

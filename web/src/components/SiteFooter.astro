@@ -1,0 +1,57 @@
+---
+import analyticsCopy from "../content/analytics.json";
+interface Props {
+  home?: boolean;
+}
+const { home = false } = Astro.props;
+const linkClass =
+  "inline-flex min-h-11 items-center py-2.5 no-underline hover:underline xl:min-h-0 xl:py-0";
+---
+
+<footer
+  class:list={[
+    "on-dark shrink-0 py-7 text-[#e8eaeb] sm:py-11",
+    home ? "bg-transparent" : "bg-graphite",
+  ]}
+>
+  <div class="wrap grid grid-cols-1 items-center gap-5 text-sm sm:grid-cols-2 xl:flex xl:flex-wrap xl:gap-x-9 xl:gap-y-5.5">
+    <a class:list={[linkClass, "mr-auto"]} href="/" aria-label="visose home">
+      <img
+        class="h-auto w-27.5 invert forced-colors:filter-none"
+        src="/brand/visose.svg"
+        alt="visose"
+        width="128"
+        height="36"
+      />
+    </a>
+    <a class={linkClass} href="mailto:info@visose.com">
+      info@visose.com
+    </a>
+    <nav
+      class="col-span-full grid grid-cols-[max-content_1fr] gap-x-8 xl:flex xl:gap-x-6.5"
+      aria-label="Footer"
+    >
+      <a class={linkClass} href="https://github.com/visose">
+        GitHub
+      </a>
+      <a class={linkClass} href="https://www.linkedin.com/company/visose/">
+        LinkedIn
+      </a>
+      <a
+        class:list={[linkClass, "col-span-full"]}
+        href="/about#company-information"
+      >
+        Company information
+      </a>
+      <a class={linkClass} href="/privacy">
+        Privacy
+      </a>
+      <a class={linkClass} id="analytics-settings" href="/privacy#analytics">
+        {analyticsCopy.settings}
+      </a>
+    </nav>
+    <small class="col-span-full text-xs text-[#c1c6ca]">
+      © {new Date().getFullYear()} VISOSE LTD
+    </small>
+  </div>
+</footer>

@@ -1,9 +1,0 @@
-.DS_Store
-
-dist/
-node_modules/
-pnpm-debug.log*
-
-.astro/
-
-.env.local

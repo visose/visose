@@ -1,0 +1,75 @@
+---
+import ProjectDiagram from "../ProjectDiagram.astro";
+import ArchitectureNode from "../ArchitectureNode.astro";
+import {
+  diagramNodes,
+  type ProjectDiagram as Diagram,
+} from "../../lib/diagrams";
+interface Props {
+  diagram: Diagram;
+}
+const { diagram } = Astro.props;
+const nodes = diagramNodes(diagram, [
+  "photos",
+  "classification",
+  "recognition",
+  "sequence",
+  "records",
+  "review",
+  "export",
+]);
+---
+
+<ProjectDiagram title={diagram.title} caption={diagram.caption}>
+  <div class="inventory-architecture diagram-stack">
+    <ArchitectureNode node={nodes.photos!} class="photos" />
+    <div class="node-row above-core below-core">
+      {["classification", "recognition", "sequence"].map((name) => (
+        <ArchitectureNode node={nodes[name]!} />
+      ))}
+    </div>
+    <ArchitectureNode node={nodes.records!} emphasis />
+    <div class="review-row">
+      <ArchitectureNode node={nodes.review!} class="review" />
+      <ArchitectureNode node={nodes.export!} class="export" />
+    </div>
+  </div>
+</ProjectDiagram>
+<style>
+  .review-row > :global(.review)::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: var(--connection-gap);
+    background: var(--connector);
+    left: 50%;
+    bottom: 100%;
+  }
+  .inventory-architecture > :global(.photos ul) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+  }
+  .inventory-architecture > :global(.photos li) {
+    margin: 0;
+  }
+  .review-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--node-gap);
+  }
+  .review-row > :global(.review ul) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .review-row > :global(.export)::before {
+    content: "";
+    position: absolute;
+    height: 1px;
+    width: var(--node-gap);
+    right: 100%;
+    top: 50%;
+    background: var(--connector);
+  }
+</style>

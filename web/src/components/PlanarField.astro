@@ -1,0 +1,177 @@
+---
+interface Props {
+  variant?: "hero" | "header" | "fragment";
+}
+const { variant = "hero" } = Astro.props;
+---
+
+<div
+  class:list={["planar-field forced-colors:hidden", variant]}
+  aria-hidden="true"
+>
+  <svg
+    class="desktop-planes"
+    viewBox="0 0 1440 760"
+    preserveAspectRatio="none"
+    focusable="false"
+  >
+    {variant !== "fragment" && (
+      <>
+        <defs>
+          <linearGradient
+            id={`plane-ground-${variant}`}
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+            <stop offset="0" stop-color="#dadde0" />
+            <stop offset=".54" stop-color="#f5f5f3" />
+            <stop offset="1" stop-color="#e1e4e5" />
+          </linearGradient>
+        </defs>
+        <rect
+          width="1440"
+          height="760"
+          fill={`url(#plane-ground-${variant})`}
+        />
+      </>
+    )}
+    <polygon
+      class="plane-cap"
+      points={
+        variant === "fragment"
+          ? "1010,-90 1530,80 1530,-90"
+          : "555,-80 1700,284.05 1700,-80"
+      }
+      fill="#fff"
+      fill-opacity=".84"
+    />
+    <polygon
+      class="plane-face"
+      points={
+        variant === "fragment"
+          ? "1010,-90 1530,80 1530,680 1270,580"
+          : "555,-80 1700,284.05 1640,632.02 826,452"
+      }
+      fill="#8a929b"
+      fill-opacity=".09"
+    />
+    <polygon
+      class="plane-base"
+      points={
+        variant === "fragment"
+          ? "-90,700 1530,120 1530,840 -90,840"
+          : "-90,744 1660,267.61 1660,900 -90,900"
+      }
+      fill="#b4bbc0"
+      fill-opacity=".22"
+    />
+    <polygon
+      class="plane-fold"
+      points={
+        variant === "fragment"
+          ? "-90,700 335,548 260,840 -90,840"
+          : "-90,744 826,452 980,760"
+      }
+      fill="#fff"
+      fill-opacity=".53"
+    />
+    <path
+      class="plane-seam"
+      d={variant === "fragment" ? "M-90 700 1530 120" : "M-90 744 1660 267.61"}
+      stroke="#fff"
+      stroke-opacity=".9"
+      stroke-width="2"
+    />
+  </svg>
+  <svg
+    class="mobile-planes"
+    viewBox="0 0 390 600"
+    preserveAspectRatio="none"
+    focusable="false"
+  >
+    {variant !== "fragment" && <rect width="390" height="600" fill="#e9ebec" />}
+    <polygon
+      class="plane-cap"
+      points="232,-30 430,42 430,442 318,406"
+      fill="#fff"
+      fill-opacity=".84"
+    />
+    <polygon
+      class="plane-base"
+      points="-40,566 430,386 430,650 -40,650"
+      fill="#b4bbc0"
+      fill-opacity=".22"
+    />
+    <path
+      class="plane-seam"
+      d="M-40 566 430 386"
+      stroke="#fff"
+      stroke-opacity=".9"
+      stroke-width="1"
+    />
+  </svg>
+</div>
+<style>
+  .planar-field {
+    position: absolute;
+    inset: -104px 0 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--color-silver);
+    contain: paint;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .mobile-planes {
+    display: none;
+  }
+  .header svg {
+    opacity: 0.68;
+  }
+  .fragment {
+    inset: auto 0 0;
+    height: 700px;
+    background: var(--color-graphite);
+    z-index: -1;
+  }
+  .fragment .plane-cap {
+    fill: #3a4148;
+    fill-opacity: 0.72;
+  }
+  .fragment .plane-face {
+    fill: #657480;
+    fill-opacity: 0.2;
+  }
+  .fragment .plane-base {
+    fill: #8b98a5;
+    fill-opacity: 0.12;
+  }
+  .fragment .plane-fold {
+    fill: #9caab6;
+    fill-opacity: 0.1;
+  }
+  .fragment .plane-seam {
+    stroke: #9caab6;
+    stroke-opacity: 0.12;
+  }
+  @media (width < 37.5rem) {
+    .hero,
+    .header {
+      inset-block-start: -80px;
+    }
+    .desktop-planes {
+      display: none;
+    }
+    .mobile-planes {
+      display: block;
+    }
+    .fragment {
+      height: 860px;
+    }
+  }
+</style>

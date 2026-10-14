@@ -1,0 +1,275 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageOpening from "../../components/PageOpening.astro";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import { ArrowUp, ArrowUpRight, Plus } from "@lucide/astro";
+import { createHash } from "node:crypto";
+import { groupLinkLists, projectGroups as groups, page } from "../../lib/pages";
+
+const diagrams = import.meta.glob<AstroComponentFactory>(
+  "../../components/project-diagrams/*.astro",
+  { eager: true, import: "default" },
+);
+const projects = page("projects");
+const opening = projects.opening;
+const initializeIndex =
+  'document.getElementById("project-index-panel").hidden = location.hash !== "#project-index";';
+Astro.csp?.insertScriptHash(
+  `sha256-${createHash("sha256").update(initializeIndex).digest("base64")}`,
+);
+---
+
+<BaseLayout title={projects.title} description={projects.description}>
+  <PageOpening heading={opening.heading}>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+  <div class="projects-page bg-paper pb-6 sm:pb-12" id="project-index">
+    <div class="sticky top-0 z-6 border-b border-line bg-paper">
+      <div class="wrap flex items-center justify-between gap-5 py-1.5 lg:gap-6">
+        <nav
+          class="hidden items-center gap-5 sm:flex lg:gap-8"
+          aria-label="Project categories"
+        >
+          {groups.map((group) => (
+            <a
+              class="flex min-h-12 items-center py-2.5 text-caption leading-[1.35] no-underline hover:underline lg:text-base"
+              href={`#${group.id}`}
+            >
+              {group.heading}
+            </a>
+          ))}
+        </nav>
+        <button
+          class="index-toggle group invisible inline-flex min-h-12 w-auto flex-none cursor-pointer items-center justify-start gap-2 border-0 bg-transparent py-2.5 pr-0 pl-0 text-caption text-ink underline-offset-5 hover:underline sm:border-l sm:border-line sm:pl-5 lg:pl-6 lg:text-base"
+          type="button"
+          aria-expanded="true"
+          aria-controls="project-index-panel"
+        >
+          Project index{" "}
+          <Plus
+            class="flex-none transition-transform duration-220 group-aria-expanded:rotate-45"
+            size={16}
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav id="project-index-panel" aria-label="Project index">
+        <div class="grid grid-cols-1 gap-6 border-b border-line py-5 sm:grid-cols-3 sm:py-7 lg:gap-10">
+          {groups.map((group) => (
+            <div>
+              <h2 class="mb-2 border-b border-line-strong pb-2">
+                <a
+                  class="flex min-h-11 items-center py-2.5 text-base leading-[1.45] font-semibold no-underline hover:underline"
+                  href={`#${group.id}`}
+                >
+                  {group.heading}
+                </a>
+              </h2>
+              <ul class="m-0 list-none p-0">
+                {group.projects.map((entry) => (
+                  <li>
+                    <a
+                      class="flex min-h-11 items-center py-2.5 text-caption leading-[1.45] no-underline hover:underline"
+                      href={`#${entry.id}`}
+                    >
+                      {entry.heading}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </nav>
+      <script is:inline set:html={initializeIndex} />
+      {groups.map((group) => (
+        <section class="mt-8 sm:mt-7" aria-labelledby={group.id}>
+          <header class="bg-silver px-5 py-5.5 sm:px-8 sm:py-6.5">
+            <h2
+              class="scroll-mt-(--project-offset) text-[25px] focus:outline-none sm:text-3xl"
+              id={group.id}
+              tabindex="-1"
+            >
+              {group.heading}
+            </h2>
+          </header>
+          {group.projects.map((entry) => {
+            const Diagram =
+              diagrams[`../../components/project-diagrams/${entry.id}.astro`];
+            if (Boolean(entry.diagram) !== Boolean(Diagram))
+              throw new Error(
+                `${entry.id}: diagram content and component must both exist`,
+              );
+            const wideDetails = !!entry.diagram || entry.details.length > 1;
+            return (
+              <article
+                id={entry.id}
+                class="project-case scroll-mt-(--project-offset) py-7 focus:outline-none sm:py-9 lg:grid lg:grid-cols-[36%_1fr] lg:gap-x-[8%]"
+                tabindex="-1"
+              >
+                <header class="mb-3.5 sm:mb-5 lg:mb-0">
+                  <h3 class="max-w-162.5 text-[26px] font-medium text-pretty sm:text-[28px] sm:font-normal lg:max-w-105">
+                    {entry.heading}
+                  </h3>
+                  <p class="mt-1.5 text-sm leading-[1.5] text-muted sm:mt-2 lg:mt-3 lg:max-w-[38ch]">
+                    {entry.format}
+                  </p>
+                </header>
+                <div class="min-w-0">
+                  <div
+                    class="prose max-w-[70ch] text-base sm:text-body lg:max-w-[66ch]"
+                    set:html={entry.html}
+                  />
+                </div>
+                {(entry.details.length > 0 || entry.diagram) && (
+                  <details
+                    class:list={[
+                      "project-details group mt-2 min-w-0",
+                      wideDetails ? "col-span-full" : "lg:col-start-2",
+                    ]}
+                  >
+                    <summary
+                      class:list={[
+                        "flex min-h-12 w-fit cursor-pointer list-none items-center gap-2 py-3.5 text-base text-ink underline-offset-5 hover:underline",
+                        { "lg:ml-[44%]": wideDetails },
+                      ]}
+                    >
+                      <span>
+                        Details<span class="sr-only">: {entry.heading}</span>
+                      </span>
+                      <Plus
+                        class="flex-none group-open:rotate-45"
+                        size={18}
+                        aria-hidden="true"
+                      />
+                    </summary>
+                    <div
+                      class:list={[
+                        "grid grid-cols-1 gap-6.5 pt-4 pb-1",
+                        {
+                          "sm:grid-cols-2 sm:gap-x-[6%] sm:gap-y-8":
+                            wideDetails,
+                        },
+                      ]}
+                    >
+                      {entry.diagram && Diagram && (
+                        <div class="col-span-full mb-2 min-w-0">
+                          <Diagram diagram={entry.diagram} />
+                        </div>
+                      )}
+                      {entry.details.map((section) => (
+                        <section
+                          id={section.id}
+                          class="scroll-mt-(--project-offset)"
+                        >
+                          <h4 class="mb-4 text-[21px] leading-[1.3] sm:text-[22px]">
+                            {section.heading}
+                          </h4>
+                          <div
+                            class="prose max-w-[66ch] text-body"
+                            set:html={section.html}
+                          />
+                        </section>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </article>
+            );
+          })}
+          <div class="flex flex-wrap justify-between gap-x-7 gap-y-2 border-t border-line py-4">
+            <a
+              class="inline-flex min-h-11 items-center gap-3 text-base"
+              href="#project-index"
+            >
+              Project index <ArrowUp size={16} aria-hidden="true" />
+            </a>
+            <a
+              class="inline-flex min-h-11 items-center gap-3 text-base"
+              href="/contact"
+            >
+              Discuss a project <ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  @layer components {
+    .projects-page {
+      --project-offset: 80px;
+      overflow-anchor: none;
+    }
+    .project-case + .project-case {
+      border-top: 1px solid var(--color-line);
+    }
+    .project-case .prose :global(.prose-action a) {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    @media (width >= 37.5rem) {
+      .projects-page {
+        --project-offset: 104px;
+      }
+    }
+    @media (width >= 56.25rem) {
+      .projects-page {
+        --project-offset: 88px;
+      }
+    }
+  }
+</style>
+<script>
+  const projects = document.querySelector<HTMLElement>(".projects-page")!;
+  const index = document.querySelector<HTMLElement>("#project-index-panel")!;
+  const toggle = document.querySelector<HTMLButtonElement>(".index-toggle")!;
+  function setIndexOpen(open: boolean, animate = true) {
+    if (!open && index.contains(document.activeElement))
+      toggle.focus({ preventScroll: true });
+    index.hidden = !open;
+    index.inert = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    if (!animate)
+      index.getAnimations().forEach((animation) => animation.finish());
+  }
+  toggle.classList.remove("invisible");
+  setIndexOpen(location.hash === "#project-index", false);
+  index.classList.add("disclosure-panel");
+  toggle.addEventListener("click", () => {
+    setIndexOpen(index.hidden === true);
+    if (!index.hidden) projects.scrollIntoView({ block: "start" });
+  });
+  function jumpToProject(behavior: ScrollBehavior = "auto") {
+    const target = document.getElementById(location.hash.slice(1));
+    if (!target || !projects.contains(target)) return;
+    const openingIndex = target === projects;
+    (openingIndex ? toggle : target).focus({ preventScroll: true });
+    setIndexOpen(openingIndex, false);
+    requestAnimationFrame(() =>
+      target.scrollIntoView({ block: "start", behavior }),
+    );
+  }
+  window.addEventListener("hashchange", () => jumpToProject());
+  projects.addEventListener("click", (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
+      return;
+    const link =
+      event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+        : null;
+    if (!link) return;
+    const target = document.getElementById(link.hash.slice(1));
+    if (!target || !projects.contains(target)) return;
+    event.preventDefault();
+    if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+    jumpToProject();
+  });
+  if (location.hash) jumpToProject("instant");
+</script>

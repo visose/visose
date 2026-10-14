@@ -1,0 +1,12 @@
+{
+  "heading": "Website analytics",
+  "description": "We use optional analytics cookies to understand how this website is used.",
+  "privacy": "Privacy details",
+  "accept": "Accept analytics",
+  "reject": "Reject",
+  "close": "Close analytics notice",
+  "settings": "Analytics settings",
+  "allowed": "You have allowed analytics.",
+  "denied": "You have rejected analytics.",
+  "storageError": "Your browser could not save your choice. Analytics remains off."
+}

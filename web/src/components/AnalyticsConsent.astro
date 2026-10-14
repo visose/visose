@@ -1,0 +1,291 @@
+---
+import copy from "../content/analytics.json";
+import { X } from "@lucide/astro";
+const choiceClass =
+  "min-h-11 border border-graphite bg-paper px-4 py-2.5 text-sm hover:bg-silver active:bg-line forced-colors:border-[ButtonText]";
+---
+
+<section
+  id="analytics-consent"
+  class="fixed inset-x-0 bottom-0 z-30 max-h-[80svh] overflow-y-auto border-t border-line-strong bg-paper px-[6%] py-5 text-ink sm:inset-x-auto sm:right-[6%] sm:bottom-6 sm:w-112 sm:border sm:px-6"
+  aria-labelledby="analytics-heading"
+  aria-describedby="analytics-description"
+  tabindex="-1"
+  hidden
+>
+  <div class="flex items-center justify-between gap-4">
+    <h2 id="analytics-heading" class="text-lg font-medium">
+      {copy.heading}
+    </h2>
+    <button
+      type="button"
+      id="analytics-close"
+      class="-my-2 -mr-2 flex size-11 shrink-0 items-center justify-center border-0 bg-transparent p-0 hover:bg-silver"
+      aria-label={copy.close}
+    >
+      <X size={18} aria-hidden="true" />
+    </button>
+  </div>
+  <p id="analytics-description" class="mt-2 text-sm">
+    {copy.description} <a href="/privacy#analytics">{copy.privacy}</a>
+  </p>
+  <p id="analytics-status" class="mt-2 text-sm" role="status" hidden />
+  <div class="mt-4 grid grid-cols-2 gap-3">
+    <button type="button" id="analytics-accept" class={choiceClass}>
+      {copy.accept}
+    </button>
+    <button type="button" id="analytics-reject" class={choiceClass}>
+      {copy.reject}
+    </button>
+  </div>
+</section>
+
+<script>
+  import { isRelease } from "../lib/build";
+  import { isRecord } from "../lib/validation";
+  import copy from "../content/analytics.json";
+
+  const measurementId = "G-0P4KTCKRFM";
+  const disableKey = `ga-disable-${measurementId}` as const;
+  const storageKey = "visose.analytics";
+  const lifetime = 180 * 24 * 60 * 60 * 1000;
+  const production = isRelease && location.origin === "https://visose.com";
+  const google = window as typeof window & {
+    dataLayer?: IArguments[];
+    [disableKey]: boolean;
+  };
+  const notice = document.querySelector<HTMLElement>("#analytics-consent")!;
+  const status = document.querySelector<HTMLElement>("#analytics-status")!;
+  const settings = document.querySelector<HTMLAnchorElement>(
+    "#analytics-settings",
+  )!;
+  const denied = {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  };
+  let returnFocus: HTMLElement | undefined;
+  let loading: Promise<boolean> | undefined;
+  let configured = false;
+  let pageViewSent = false;
+  let generation = 0;
+  let expiryTimer: number;
+  let storageFailed = false;
+
+  function readChoice() {
+    if (storageFailed) return undefined;
+    try {
+      const value: unknown = JSON.parse(
+        localStorage.getItem(storageKey) ?? "null",
+      );
+      if (
+        isRecord(value) &&
+        typeof value.accepted === "boolean" &&
+        typeof value.expires === "number" &&
+        value.expires > Date.now() &&
+        value.expires <= Date.now() + lifetime
+      )
+        return { accepted: value.accepted, expires: value.expires };
+    } catch {
+      // Unavailable or invalid storage never grants consent.
+    }
+    return undefined;
+  }
+
+  const tag: (...args: unknown[]) => void = function () {
+    (google.dataLayer ??= []).push(arguments);
+  };
+
+  function canTrack() {
+    return production && readChoice()?.accepted === true && !google[disableKey];
+  }
+
+  function clearCookies() {
+    for (const cookie of document.cookie.split(";")) {
+      const name = cookie.split("=", 1)[0]!.trim();
+      if (!/^_ga(?:_|$)/.test(name)) continue;
+      for (const domain of [
+        "",
+        `; Domain=${location.hostname}`,
+        "; Domain=.visose.com",
+      ])
+        document.cookie = `${name}=; Max-Age=0; Path=/${domain}; SameSite=Lax`;
+    }
+  }
+
+  function pageData() {
+    return {
+      page_location: location.origin + location.pathname,
+      page_referrer: document.referrer
+        ? new URL(document.referrer).origin + "/"
+        : "",
+      page_title: document.title,
+      content_group:
+        location.pathname === "/projects/robots" ? "Robots" : "Consultancy",
+    };
+  }
+
+  function loadTag() {
+    if (loading) return loading;
+    // Basic consent mode: no Google code or requests before opt-in.
+    tag("consent", "default", denied);
+    tag("set", {
+      ...pageData(),
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      send_page_view: false,
+    });
+    loading = new Promise<boolean>((resolve) => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.referrerPolicy = "origin";
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      script.onload = () => resolve(true);
+      script.onerror = () => {
+        script.remove();
+        loading = undefined;
+        resolve(false);
+      };
+      document.head.append(script);
+    });
+    return loading;
+  }
+
+  async function track(event: "page_view" | "generate_lead") {
+    if (!canTrack()) return;
+    const currentGeneration = generation;
+    if (!(await loadTag()) || currentGeneration !== generation || !canTrack())
+      return;
+    if (!configured) {
+      tag("consent", "update", { ...denied, analytics_storage: "granted" });
+      tag("js", new Date());
+      tag("config", measurementId, {
+        ...pageData(),
+        send_page_view: false,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        cookie_expires: lifetime / 1000,
+        cookie_update: false,
+        cookie_domain: "none",
+        cookie_flags: "SameSite=Lax;Secure",
+      });
+      configured = true;
+    }
+    if (event === "page_view") {
+      if (pageViewSent) return;
+      pageViewSent = true;
+    }
+    tag("event", event, { ...pageData(), send_to: measurementId });
+  }
+
+  function syncChoice() {
+    const choice = readChoice();
+    const wasDisabled = google[disableKey];
+    google[disableKey] = !production || choice?.accepted !== true;
+    clearTimeout(expiryTimer);
+    if (choice)
+      expiryTimer = window.setTimeout(
+        syncChoice,
+        Math.min(choice.expires - Date.now(), 2147483647),
+      );
+    notice.hidden = choice !== undefined;
+    if (google[disableKey]) {
+      generation++;
+      if (configured && !wasDisabled) tag("consent", "update", denied);
+      clearCookies();
+    } else {
+      if (configured && wasDisabled)
+        tag("consent", "update", { ...denied, analytics_storage: "granted" });
+      void track("page_view");
+    }
+  }
+
+  function choose(accepted: boolean) {
+    try {
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({ accepted, expires: Date.now() + lifetime }),
+      );
+      storageFailed = false;
+    } catch {
+      storageFailed = true;
+      google[disableKey] = true;
+      generation++;
+      if (configured) tag("consent", "update", denied);
+      clearCookies();
+      try {
+        // A failed write must not leave a previous opt-in available on reload.
+        localStorage.removeItem(storageKey);
+      } catch {
+        // Storage may be entirely unavailable; collection remains disabled.
+      }
+      status.textContent = copy.storageError;
+      status.hidden = false;
+      return;
+    }
+    closeNotice();
+    syncChoice();
+  }
+
+  function closeNotice() {
+    const hadFocus = notice.contains(document.activeElement);
+    notice.hidden = true;
+    if (hadFocus)
+      (returnFocus ?? document.querySelector<HTMLElement>("#main"))?.focus({
+        preventScroll: true,
+      });
+    returnFocus = undefined;
+  }
+
+  settings.addEventListener("click", (event) => {
+    event.preventDefault();
+    returnFocus = settings;
+    const choice = readChoice();
+    status.textContent = choice?.accepted ? copy.allowed : copy.denied;
+    status.hidden = choice === undefined;
+    notice.hidden = false;
+    notice.focus({ preventScroll: true });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || notice.hidden) return;
+    event.preventDefault();
+    closeNotice();
+  });
+  document.addEventListener("focusin", (event) => {
+    const target = event.target;
+    if (
+      notice.hidden ||
+      !(target instanceof HTMLElement) ||
+      notice.contains(target) ||
+      !target.matches(":focus-visible")
+    )
+      return;
+    const focus = target.getBoundingClientRect();
+    const overlay = notice.getBoundingClientRect();
+    // Include targets below the viewport before native focus scrolling finishes.
+    if (
+      focus.bottom > overlay.top &&
+      focus.left < overlay.right &&
+      focus.right > overlay.left
+    )
+      closeNotice();
+  });
+  document
+    .querySelector("#analytics-close")!
+    .addEventListener("click", closeNotice);
+  document
+    .querySelector("#analytics-accept")!
+    .addEventListener("click", () => choose(true));
+  document
+    .querySelector("#analytics-reject")!
+    .addEventListener("click", () => choose(false));
+  document.addEventListener("contact:accepted", () => {
+    void track("generate_lead");
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key === storageKey || event.key === null) syncChoice();
+  });
+  window.addEventListener("pageshow", syncChoice);
+  syncChoice();
+</script>

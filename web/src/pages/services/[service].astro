@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageOpening from "../../components/PageOpening.astro";
+import ActionLink from "../../components/ActionLink.astro";
+import { groupLinkLists, page } from "../../lib/pages";
+import { expectedPages } from "../../lib/website";
+
+export function getStaticPaths() {
+  return expectedPages
+    .filter(([, route]) => route.startsWith("/services/"))
+    .map(([key]) => ({ params: { service: key }, props: { key } }));
+}
+
+const service = page(Astro.props.key);
+const action = service.opening.action;
+if (!action) throw new Error(`${service.key}: missing project action`);
+---
+
+<BaseLayout title={service.title} description={service.description}>
+  <PageOpening heading={service.opening.heading}>
+    <Fragment set:html={service.opening.html} />
+    <div class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4 text-base sm:text-lg">
+      <ActionLink href={action.href}>{action.label}</ActionLink>
+      <a href="#selected-work">See relevant work</a>
+    </div>
+  </PageOpening>
+  <div class="wrap pt-10 pb-12 sm:pt-12 sm:pb-16">
+    {service.sections.map((entry) => (
+      <section
+        class="mt-10 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
+        id={entry.id}
+      >
+        <h2 class="mb-5 text-[29px] md:mb-0 md:text-[32px]">{entry.heading}</h2>
+        <div
+          class="prose max-w-[67ch] text-base md:text-lg"
+          set:html={groupLinkLists(entry.html)}
+        />
+      </section>
+    ))}
+  </div>
+</BaseLayout>

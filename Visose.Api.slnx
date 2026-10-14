@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="api/Visose.Api.csproj" />
+  <Project Path="tests/api/Visose.Api.Tests.csproj" />
+</Solution>

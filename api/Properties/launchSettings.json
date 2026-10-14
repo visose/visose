@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "FunctionHttp": {
-      "commandName": "Project",
-      "commandLineArgs": "",
-      "launchBrowser": false
-    }
-  }
-}

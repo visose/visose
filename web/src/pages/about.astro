@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
+import { groupLinkLists, page } from "../lib/pages";
+const about = page("about");
+const opening = about.opening;
+const company = page("company").opening;
+---
+
+<BaseLayout title={about.title} description={about.description}>
+  <PageOpening heading={opening.heading}>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+  <div class="wrap pt-10 pb-12 md:grid md:grid-cols-[1.4fr_1fr] md:gap-[6%] md:pt-12 md:pb-16 lg:gap-[8%]">
+    <div>
+      {about.sections.map((section) => (
+        <section
+          class="mt-10 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0"
+          id={section.id}
+        >
+          <h2 class="mb-6 text-[29px] md:text-[32px]">{section.heading}</h2>
+          <div
+            class="prose max-w-[66ch] text-base md:text-lg"
+            set:html={groupLinkLists(section.html)}
+          />
+        </section>
+      ))}
+    </div>
+    <section
+      id="company-information"
+      class="company-details mt-10 scroll-mt-7 border-t border-line pt-9 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-7 lg:pl-12"
+    >
+      <h2 class="mb-6 text-[25px]">{company.heading}</h2>
+      <div class="prose max-w-[55ch] text-base" set:html={company.html} />
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  @layer components {
+    .company-details :global(strong) {
+      display: block;
+      margin-bottom: 6px;
+    }
+  }
+</style>

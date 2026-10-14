@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
+import { groupLinkLists, page } from "../lib/pages";
+const content = page("privacy");
+const opening = content.opening;
+---
+
+<BaseLayout title={content.title} description={content.description}>
+  <PageOpening compact heading={opening.heading}>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+  <div class="pt-8 pb-13.5">
+    {content.sections.map((section) => (
+      <section
+        class="wrap max-w-195 scroll-mt-7 border-t border-line py-7 first:border-t-0"
+        id={section.id}
+      >
+        <h2 class="mb-4.5 text-[26px]">{section.heading}</h2>
+        <div
+          class="prose max-w-[70ch] text-base sm:text-body"
+          set:html={section.html}
+        />
+      </section>
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,30 @@
+{
+  "name": "visose",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.6.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --dir web dev",
+    "preview": "pnpm --dir web exec astro preview",
+    "api": "dotnet build api && dotnet artifacts/bin/Visose.Api/debug/Visose.Api.dll --review",
+    "check": "tsc --project tsconfig.json && pnpm --dir web check",
+    "test": "node --test tests/web/*.test.ts && dotnet test Visose.Api.slnx --configuration Release --results-directory artifacts/tests/Visose.Api",
+    "test:browser": "node --test tests/web/smoke.ts",
+    "test:analytics": "node --test tests/web/analytics.ts",
+    "build": "pnpm check && node scripts/validate-publication.ts --source && pnpm --dir web build && node scripts/validate-publication.ts --dist",
+    "build:release": "pnpm check && node scripts/validate-publication.ts --source && pnpm --dir web exec astro build --config astro.release.config.ts && node scripts/validate-publication.ts --dist --release && dotnet publish api --configuration Release --output artifacts/release/Visose.Api",
+    "verify": "pnpm test && dotnet format whitespace Visose.Api.slnx --verify-no-changes --no-restore && pnpm build"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.1",
+    "@types/node": "24.13.2",
+    "playwright": "1.58.2",
+    "prettier": "3.8.4",
+    "prettier-plugin-astro": "1.1.1",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "typescript": "6.0.3"
+  }
+}

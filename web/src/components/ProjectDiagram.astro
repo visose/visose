@@ -1,0 +1,90 @@
+---
+interface Props {
+  title: string;
+  caption: string;
+}
+const { title, caption } = Astro.props;
+---
+
+<figure class="project-diagram m-0">
+  <p class="scroll-hint mb-2 text-sm text-muted">
+    Scroll horizontally to explore the diagram.
+  </p>
+  <div
+    class="diagram-scroll overflow-x-auto overscroll-x-contain focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus"
+    role="region"
+    aria-label={title}
+    tabindex="0"
+  >
+    <div class="architecture">
+      <p class="architecture-title">{title}</p>
+      <slot />
+    </div>
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>
+<style>
+  .project-diagram {
+    container-type: inline-size;
+  }
+  .scroll-hint {
+    display: none;
+  }
+  @container (width < 760px) {
+    .scroll-hint {
+      display: block;
+    }
+  }
+  .architecture {
+    min-width: 760px;
+    --connector: #778590;
+    --connection-gap: 16px;
+    --node-gap: 20px;
+    padding: 16px;
+    background: var(--color-silver);
+  }
+  .architecture-title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .architecture :global(.diagram-stack) {
+    display: grid;
+    gap: var(--connection-gap);
+  }
+  .architecture :global(.node-row) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--node-gap);
+  }
+  .architecture :global(.above-core > .architecture-node::after),
+  .architecture :global(.below-core > .architecture-node::before) {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: var(--connection-gap);
+    background: var(--connector);
+    left: 50%;
+  }
+  .architecture :global(.above-core > .architecture-node::after) {
+    top: 100%;
+  }
+  .architecture :global(.below-core > .architecture-node::before) {
+    bottom: 100%;
+  }
+  .architecture :global(.emphasis ul) {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px 20px;
+  }
+  .architecture :global(.emphasis li) {
+    margin: 0;
+  }
+  figcaption {
+    margin-top: 10px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 100ch;
+  }
+</style>
