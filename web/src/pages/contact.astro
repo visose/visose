@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { groupLinkLists, page, section } from "../lib/pages";
+const content = page("contact");
+const opening = content.opening;
+const privacyNote = section(content, "privacy-note");
+---
+
+<BaseLayout title={content.title} description={content.description}>
+  <PageOpening heading={opening.heading}>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+  <div class="wrap pt-8 pb-12 sm:pt-10 sm:pb-16">
+    <div class="max-w-220">
+      <ContactForm />
+      <div
+        class="prose mt-7 max-w-190 text-caption"
+        set:html={privacyNote.html}
+      />
+    </div>
+  </div>
+</BaseLayout>

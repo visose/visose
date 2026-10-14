@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
+import { page } from "../lib/pages";
+const content = page("company");
+const opening = content.opening;
+---
+
+<BaseLayout title={content.title} description={content.description}>
+  <PageOpening heading={opening.heading} />
+  <section class="wrap pt-9 pb-12 sm:pt-13 sm:pb-18">
+    <div
+      class="prose company-copy max-w-205 text-base sm:text-lg"
+      set:html={opening.html}
+    />
+  </section>
+</BaseLayout>
+<style>
+  @layer components {
+    .company-copy :global(p:not(:first-child)) {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      column-gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--color-line);
+      font-size: 16px;
+    }
+    .company-copy :global(strong) {
+      font-weight: 500;
+    }
+    .company-copy {
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (width < 37.5rem) {
+      .company-copy :global(p:not(:first-child)) {
+        display: block;
+      }
+      .company-copy :global(p:not(:first-child) strong) {
+        display: block;
+        margin-bottom: 6px;
+      }
+    }
+  }
+</style>

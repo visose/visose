@@ -1,0 +1,41 @@
+---
+import type { DiagramNode } from "../lib/diagrams";
+interface Props {
+  node: DiagramNode;
+  class?: string;
+  emphasis?: boolean;
+  external?: boolean;
+}
+const {
+  node,
+  class: className,
+  emphasis = false,
+  external = false,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    "architecture-node relative min-w-0 border px-3 py-2.5",
+    className,
+    emphasis
+      ? "emphasis border-graphite bg-graphite text-paper"
+      : external
+        ? "border-line-strong border-dashed bg-transparent"
+        : "border-line-strong bg-paper",
+  ]}
+>
+  <p class="mb-1.5 text-sm font-semibold leading-[1.35] text-pretty">
+    {node.label}
+  </p>
+  <ul
+    class:list={[
+      "m-0 list-none p-0 text-[13px] leading-[1.45]",
+      emphasis ? "text-[#e3e7ea]" : "text-muted",
+    ]}
+  >
+    {node.items.map((item) => (
+      <li class="mt-0.5 first:mt-0">{item}</li>
+    ))}
+  </ul>
+</div>

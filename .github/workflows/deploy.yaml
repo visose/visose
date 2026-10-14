@@ -1,23 +1,37 @@
 name: Deploy
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency: visose-production
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build:release
       - uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_SITE }}
           action: upload
-          app_location: web
-          api_location: api
-          app_build_command: |
-            corepack enable
-            pnpm install --frozen-lockfile || npm i -g pnpm && pnpm install --frozen-lockfile
-            pnpm build
-          output_location: dist
+          app_location: artifacts/release/Visose.Web
+          api_location: artifacts/release/Visose.Api
+          output_location: ""
+          skip_app_build: true
+          skip_api_build: true

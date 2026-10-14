@@ -1,0 +1,29 @@
+---
+import PlanarField from "./PlanarField.astro";
+interface Props {
+  heading: string;
+  compact?: boolean;
+}
+const { heading, compact = false } = Astro.props;
+---
+
+<section class="relative py-8 sm:pt-10 sm:pb-10.5">
+  <PlanarField variant="header" />
+  <div class:list={["wrap relative", { "max-w-195": compact }]}>
+    <h1 class="mb-5.5 max-w-250 sm:mb-5">
+      <slot name="heading">{heading}</slot>
+    </h1>
+    {Astro.slots.has("default") && (
+      <div
+        class:list={[
+          "prose text-muted",
+          compact
+            ? "max-w-195 text-base sm:text-body"
+            : "max-w-202.5 text-lg sm:text-xl",
+        ]}
+      >
+        <slot />
+      </div>
+    )}
+  </div>
+</section>

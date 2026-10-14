@@ -1,39 +1,70 @@
 ---
-import Base from "../layouts/Base.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageOpening from "../components/PageOpening.astro";
+import { groupLinkLists, page, section } from "../lib/pages";
+const services = page("services");
+const opening = services.opening;
+const development = section(services, "software-development");
+const consulting = section(services, "technical-assessment");
+const maintenance = section(services, "maintenance-and-support");
+const working = section(services, "project-requirements");
+const terms = [working, section(services, "fees-and-scope")];
 ---
 
-<Base title="services">
-  <section class="flex gap-20 flex-col md:flex-row">
-    <article>
-      <h2>Software development</h2>
-      <ul>
-        <li>3D applications</li>
-        <li>CAD (Computer-aided design)</li>
-        <li>CAM (Computer-aided manufacturing)</li>
-        <li>Industrial robots</li>
-      </ul>
-    </article>
-    <article>
-      <h2>Software support</h2>
-      <ul>
-        <li><a href="/robots">Robots</a> commercial support</li>
-      </ul>
-    </article>
-  </section>
-
-  <a class="mt-20 mb-20" href="/contact">contact us</a>
-</Base>
-
-<style is:global>
-  @reference "../styles/global.css";
-
+<BaseLayout title={services.title} description={services.description}>
+  <PageOpening heading={opening.heading}>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+  <div class="wrap pt-10 pb-12 md:grid md:grid-cols-[1.28fr_1fr] md:gap-[6%] md:pt-12 md:pb-16 xl:gap-[8%]">
+    <a
+      class="mb-7 inline-flex min-h-11 items-center text-base md:hidden"
+      href={`#${working.id}`}
+    >
+      {working.heading}
+    </a>
+    <div class="service-main">
+      {[development, consulting, maintenance].map((entry) => (
+        <section
+          class="mt-12 border-t border-line pt-10 first:mt-0 first:border-t-0 first:pt-0"
+          id={entry.id}
+        >
+          <h2 class="mb-6 text-3xl xl:text-[34px]">{entry.heading}</h2>
+          <div
+            class="prose max-w-[65ch] text-base md:text-body xl:text-lg"
+            set:html={entry.html}
+          />
+        </section>
+      ))}
+    </div>
+    <div class="mt-9 border-t border-line pt-9 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-8 xl:pl-12">
+      {terms.map((entry) => (
+        <section
+          class="mt-9 scroll-mt-7 border-t border-line pt-8 first:mt-0 first:border-t-0 first:pt-0 focus:outline-none"
+          id={entry.id}
+          tabindex="-1"
+        >
+          <h2 class="mb-5 text-[25px]">{entry.heading}</h2>
+          <div class="prose max-w-[62ch] text-base" set:html={entry.html} />
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<style>
   @layer components {
-    h2 {
-      @apply font-semibold mb-2;
+    #fees-and-scope .prose :global(p:last-child) {
+      color: var(--color-muted);
+      font-size: 14px;
     }
-
-    ul {
-      @apply list-disc list-inside whitespace-nowrap leading-7;
+    .service-main .prose :global(ul) {
+      font-size: 16px;
+    }
+    .service-main .prose :global(li a) {
+      display: inline-block;
+      padding-block: 6px;
+    }
+    .service-main .prose :global(li + li) {
+      margin-top: 0;
     }
   }
 </style>

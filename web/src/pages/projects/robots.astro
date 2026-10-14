@@ -1,0 +1,394 @@
+---
+import { ChevronDown, X } from "@lucide/astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageOpening from "../../components/PageOpening.astro";
+import { groupLinkLists, page, section } from "../../lib/pages";
+
+const robots = page("robots");
+const opening = robots.opening;
+const product = section(robots, "programming-and-simulation");
+const architecture = section(robots, "software-architecture");
+const resources = section(robots, "downloads-and-documentation");
+const teaching = section(robots, "teaching-and-research");
+const institutions = section(robots, "academic-institutions");
+const support = section(robots, "support-and-development");
+const commercial = section(robots, "commercial-support");
+const community = section(robots, "community-support");
+const references = section(robots, "references");
+const groups = robots.sections.filter((entry) =>
+  entry.id.startsWith("reference-"),
+);
+const count = (html: string) => (html.match(/<li>/g) ?? []).length;
+const referenceCount = groups.reduce(
+  (sum, group) => sum + count(group.html),
+  0,
+);
+const research = section(robots, "reference-research");
+const theses = section(robots, "reference-theses");
+const videos = section(robots, "reference-videos");
+---
+
+<BaseLayout title={robots.title} description={robots.description}>
+  <PageOpening heading={opening.heading}>
+    <span slot="heading" class="inline-flex items-center gap-4">
+      <img
+        src="/brand/robots.svg"
+        alt=""
+        width="56"
+        height="56"
+        class="size-11 shrink-0 sm:size-14"
+      />
+      {opening.heading}
+    </span>
+    <Fragment set:html={groupLinkLists(opening.html)} />
+  </PageOpening>
+
+  <section
+    class="on-dark scroll-mt-7 bg-graphite pt-10 pb-4.5 text-paper md:pt-16 md:pb-7"
+    id={teaching.id}
+    aria-labelledby="adoption-title"
+  >
+    <div class="wrap">
+      <div class="md:grid md:grid-cols-2 md:gap-[5%] min-[59.375rem]:gap-[8%]">
+        <h2
+          class="mb-7 max-w-[22ch] text-[34px] md:mb-6 md:max-w-[18ch] md:text-[clamp(32px,3.5vw,46px)]"
+          id="adoption-title"
+        >
+          {teaching.heading}
+        </h2>
+        <div>
+          <div
+            class="prose max-w-[68ch] text-base md:text-body"
+            set:html={teaching.html}
+          />
+          <ul class="research-links m-0 mt-6 grid grid-cols-[max-content_1fr_1fr] gap-x-3 list-none p-0 text-caption sm:mt-7.5 sm:flex sm:flex-wrap sm:gap-x-6 md:gap-x-7 md:gap-y-4.5">
+            {[research, theses, videos].map((entry) => (
+              <li>
+                <a
+                  class="inline-flex min-h-11 flex-col items-start gap-0.5 sm:flex-row sm:items-center sm:gap-1.5"
+                  href={`#${entry.id}`}
+                >
+                  <strong class="text-xl tabular-nums">
+                    {count(entry.html)}
+                  </strong>{" "}
+                  {entry.heading.toLowerCase()}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <details
+        class="institutions group mt-9 scroll-mt-7 border-t border-[#697078]"
+        id={institutions.id}
+      >
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-body focus-visible:outline-paper">
+          <span>{institutions.heading}</span>
+          <ChevronDown
+            class="shrink-0 group-open:rotate-180"
+            size={20}
+            aria-hidden="true"
+          />
+        </summary>
+        <div
+          class="prose max-w-none pb-6 text-caption"
+          set:html={institutions.html}
+        />
+      </details>
+    </div>
+  </section>
+
+  <section
+    class="wrap scroll-mt-7 py-10 md:grid md:grid-cols-2 md:gap-[5%] md:pt-16 md:pb-18 min-[59.375rem]:gap-[8%]"
+    id={product.id}
+    aria-labelledby="programming-title"
+  >
+    <div>
+      <h2 class="mb-6 text-[29px] md:text-[34px]" id="programming-title">
+        {product.heading}
+      </h2>
+      <div
+        class="prose max-w-[68ch] text-base md:text-body"
+        set:html={product.html}
+      />
+    </div>
+    <div
+      class="mt-8 border-t border-line pt-7.5 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-7 min-[59.375rem]:pl-10"
+      id={architecture.id}
+    >
+      <h3 class="mb-5 text-[23px] md:text-2xl">{architecture.heading}</h3>
+      <div class="prose max-w-[68ch] text-base" set:html={architecture.html} />
+    </div>
+  </section>
+
+  <section
+    class="robot-resources wrap scroll-mt-7 pb-10 md:grid md:grid-cols-2 md:gap-[5%] md:pb-16 min-[59.375rem]:gap-[8%]"
+    id={resources.id}
+    aria-labelledby="resources-title"
+  >
+    <h2 class="mb-6 text-[29px] md:text-[34px]" id="resources-title">
+      {resources.heading}
+    </h2>
+    <div
+      class="prose max-w-[68ch] text-base md:text-body"
+      set:html={resources.html}
+    />
+  </section>
+
+  <section
+    class="wrap scroll-mt-7 border-t border-line py-10 md:grid md:grid-cols-[1.15fr_1fr] md:gap-[5%] md:pt-14 md:pb-16 min-[59.375rem]:gap-[10%]"
+    id={support.id}
+    aria-labelledby="support-title"
+  >
+    <div>
+      <h2
+        class="mb-6 max-w-[20ch] text-[29px] md:text-[34px]"
+        id="support-title"
+      >
+        {support.heading}
+      </h2>
+      <div
+        class="prose max-w-[68ch] text-base md:text-body"
+        set:html={support.html}
+      />
+    </div>
+    <div class="mt-8 border-t border-line pt-7.5 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-7 min-[59.375rem]:pl-10">
+      {[commercial, community].map((entry) => (
+        <section class="mt-9 scroll-mt-7 first:mt-0" id={entry.id}>
+          <h3 class="mb-5 text-[23px] md:text-2xl">{entry.heading}</h3>
+          <div class="prose max-w-[68ch] text-base" set:html={entry.html} />
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <section
+    class="min-h-svh scroll-mt-7 bg-silver pt-10 pb-12 md:pt-14 md:pb-18"
+    id={references.id}
+    aria-labelledby="references-title"
+  >
+    <div class="wrap">
+      <div class="mb-8 md:grid md:grid-cols-[1fr_1.4fr] md:gap-[8%]">
+        <h2 class="mb-6 text-[29px] md:text-[34px]" id="references-title">
+          {references.heading}
+        </h2>
+        <div class="prose max-w-[68ch] text-base" set:html={references.html} />
+      </div>
+      <div class="reference-search invisible max-w-180">
+        <label class="mb-2 block text-caption" for="reference-query">
+          Search references
+        </label>
+        <div class="relative">
+          <input
+            class="min-h-12 w-full min-w-0 rounded-none border border-control bg-paper py-3 pr-12 pl-4 text-base caret-ink transition-colors duration-200 placeholder:text-placeholder placeholder:opacity-100"
+            type="search"
+            id="reference-query"
+            placeholder="Title, author or keyword"
+            autocomplete="off"
+            aria-controls="reference-groups"
+          />
+          <button
+            class="absolute inset-y-0 right-0 flex w-12 items-center justify-center border-0 bg-transparent p-0 text-muted hover:text-ink"
+            type="button"
+            id="clear-search"
+            aria-label="Clear search"
+            hidden
+          >
+            <X size={18} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+      <p
+        class="reference-status mt-4 mb-6 text-sm text-muted"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {referenceCount} references
+      </p>
+      <div id="reference-groups">
+        {groups.map((group) => (
+          <details
+            class="reference-group group scroll-mt-7 border-t border-line-strong last:border-b"
+            id={group.id}
+          >
+            <summary class="flex cursor-pointer list-none items-center gap-5 py-5">
+              <h3 class="m-0 flex-1 text-xl md:text-[22px]">{group.heading}</h3>
+              <span class="reference-count text-caption text-muted tabular-nums">
+                {count(group.html)}
+              </span>
+              <ChevronDown
+                class="shrink-0 group-open:rotate-180"
+                size={20}
+                aria-hidden="true"
+              />
+            </summary>
+            <div class="reference-list" set:html={group.html} />
+          </details>
+        ))}
+      </div>
+      <p class="reference-empty pt-2.5 pb-5 text-base" hidden>
+        No references match your search. Try another term or clear the search.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const search = document.querySelector<HTMLInputElement>("#reference-query")!;
+  const clear = document.querySelector<HTMLButtonElement>("#clear-search")!;
+  const status = document.querySelector<HTMLElement>(".reference-status")!;
+  const empty = document.querySelector<HTMLElement>(".reference-empty")!;
+  const normalize = (text: string) =>
+    text
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLocaleLowerCase();
+  const groups = [
+    ...document.querySelectorAll<HTMLDetailsElement>(".reference-group"),
+  ].map((element) => ({
+    element,
+    count: element.querySelector<HTMLElement>(".reference-count")!,
+    entries: [...element.querySelectorAll<HTMLLIElement>("li")].map((item) => ({
+      item,
+      text: normalize(item.textContent ?? ""),
+    })),
+  }));
+  function filter() {
+    const words = normalize(search.value).trim().split(/\s+/).filter(Boolean);
+    let total = 0;
+    for (const group of groups) {
+      let matches = 0;
+      for (const entry of group.entries) {
+        entry.item.hidden = !words.every((word) => entry.text.includes(word));
+        if (!entry.item.hidden) matches++;
+      }
+      group.element.hidden = matches === 0;
+      group.element.open = words.length > 0 && matches > 0;
+      group.count.textContent = String(matches);
+      total += matches;
+    }
+    status.textContent = `${total} ${total === 1 ? "reference" : "references"}${words.length ? " found" : ""}`;
+    clear.hidden = words.length === 0;
+    empty.hidden = total !== 0;
+  }
+  function revealReference(hash = location.hash) {
+    const group = groups.find(({ element }) => `#${element.id}` === hash);
+    if (group) {
+      if (search.value) {
+        search.value = "";
+        filter();
+      }
+      group.element.open = true;
+    }
+  }
+  search.addEventListener("input", filter);
+  clear.addEventListener("click", () => {
+    search.value = "";
+    filter();
+    search.focus();
+  });
+  window.addEventListener("hashchange", () => revealReference());
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    ".research-links a",
+  ))
+    link.addEventListener("click", () => revealReference(link.hash));
+  document
+    .querySelector<HTMLElement>(".reference-search")!
+    .classList.remove("invisible");
+  revealReference();
+</script>
+
+<style>
+  @layer components {
+    #reference-query::-webkit-search-cancel-button {
+      appearance: none;
+    }
+    .reference-group::details-content {
+      transition: none;
+    }
+    .robot-resources :global(ul) {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .robot-resources :global(li) {
+      margin: 0;
+      padding-block: 10px;
+      border-top: 1px solid var(--color-line);
+    }
+    .robot-resources :global(li:first-child) {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .institutions :global(ul) {
+      columns: 1;
+      gap: 36px;
+      list-style: none;
+      padding: 0;
+      margin-top: 28px;
+      max-width: none;
+    }
+    .institutions :global(li) {
+      break-inside: avoid;
+      padding: 0 0 15px;
+      margin: 0;
+      line-height: 1.45;
+    }
+    .institutions :global(em) {
+      display: block;
+      font-style: normal;
+      font-size: 13px;
+      color: #ced3d7;
+      margin-top: 3px;
+    }
+    #community-support :global(p:last-child) {
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+    .reference-list :global(ul) {
+      list-style: none;
+      margin: 0 0 24px;
+      padding: 0;
+    }
+    .reference-list :global(li) {
+      padding-block: 15px;
+      border-top: 1px solid var(--color-line);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .reference-list :global(a) {
+      text-decoration-color: var(--color-line-strong);
+      overflow-wrap: anywhere;
+    }
+    .reference-list :global(a:hover) {
+      text-decoration-color: currentColor;
+    }
+    .reference-list :global(em) {
+      display: block;
+      margin-top: 6px;
+      font-size: 14px;
+      font-style: normal;
+      color: var(--color-muted);
+    }
+    @media (width >= 43.75rem) {
+      .institutions :global(ul) {
+        columns: 2;
+      }
+      .reference-list :global(li) {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 28px;
+      }
+      .reference-list :global(em) {
+        display: inline;
+        margin-top: 0;
+      }
+    }
+    @media (width >= 59.375rem) {
+      .institutions :global(ul) {
+        columns: 3;
+      }
+    }
+  }
+</style>
