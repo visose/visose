@@ -9,6 +9,11 @@ export interface Section {
 export interface Project extends Section {
   format: string;
   diagram?: ProjectDiagram;
+  caseStudy?: {
+    route: string;
+    description: string;
+    action: { label: string; href: string };
+  };
   details: Section[];
 }
 
@@ -27,6 +32,7 @@ export interface Page {
     heading: string;
     html: string;
     action?: { label: string; href: string };
+    secondaryAction?: { label: string; href: string };
   };
   sections: Section[];
 }
@@ -34,6 +40,17 @@ export interface Page {
 export interface Website {
   pages: Page[];
   projectGroups: ProjectGroup[];
+}
+
+export function websiteRoutes(website: Website) {
+  return [
+    ...website.pages.map((page) => page.route),
+    ...website.projectGroups.flatMap((group) =>
+      group.projects.flatMap((project) =>
+        project.caseStudy ? [project.caseStudy.route] : [],
+      ),
+    ),
+  ];
 }
 
 export const expectedPages = [

@@ -30,6 +30,9 @@ const terms = [working, section(services, "fees-and-scope")];
         >
           <h2 class="mb-6 text-3xl xl:text-[34px]">{entry.heading}</h2>
           <div
+            id={
+              entry.id === development.id ? "continuing-development" : undefined
+            }
             class="prose max-w-[65ch] text-base md:text-body xl:text-lg"
             set:html={entry.html}
           />

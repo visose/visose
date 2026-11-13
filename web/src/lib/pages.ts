@@ -1,5 +1,5 @@
 import { compileWebsite } from "./content.ts";
-import type { Page } from "./website.ts";
+import { websiteRoutes, type Page } from "./website.ts";
 
 // Raw glob imports give Markdown edits the same live reload as Astro templates.
 const documents = import.meta.glob<string>("../content/**/*.md", {
@@ -17,6 +17,7 @@ const content = compileWebsite(
 );
 const pages = content.pages;
 export const projectGroups = content.projectGroups;
+export const routes = websiteRoutes(content);
 
 // Presentation only: prose remains ordinary Markdown.
 export function groupLinkLists(html: string) {

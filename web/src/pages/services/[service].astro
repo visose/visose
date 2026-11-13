@@ -18,6 +18,9 @@ if (!action) throw new Error(`${service.key}: missing project action`);
 
 <BaseLayout title={service.title} description={service.description}>
   <PageOpening heading={service.opening.heading}>
+    {service.key === "cad-and-3d-application-development" && (
+      <span id="application-development" aria-hidden="true" />
+    )}
     <Fragment set:html={service.opening.html} />
     <div class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4 text-base sm:text-lg">
       <ActionLink href={action.href}>{action.label}</ActionLink>
@@ -31,10 +34,17 @@ if (!action) throw new Error(`${service.key}: missing project action`);
         id={entry.id}
       >
         <h2 class="mb-5 text-[29px] md:mb-0 md:text-[32px]">{entry.heading}</h2>
-        <div
-          class="prose max-w-[67ch] text-base md:text-lg"
-          set:html={groupLinkLists(entry.html)}
-        />
+        <div>
+          <div
+            class="prose max-w-[67ch] text-base md:text-lg"
+            set:html={groupLinkLists(entry.html)}
+          />
+          {entry.id.startsWith("discuss-") && (
+            <p class="mt-6">
+              <ActionLink href={action.href}>{action.label}</ActionLink>
+            </p>
+          )}
+        </div>
       </section>
     ))}
   </div>

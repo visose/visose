@@ -1,6 +1,10 @@
 ---
 title: Architectural CAD software
 format: Desktop CAD application
+caseStudy:
+  description: A standalone architectural CAD application with solid modeling, procedural building tools, an interactive 3D workspace and site data.
+  inquiryLabel: Discuss an application
+  area: Application development
 diagram:
   title: Application architecture
   nodes:

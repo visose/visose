@@ -3,13 +3,13 @@ title: Medical brace design
 format: Rhino plugin
 ---
 
-Developed a Rhino plugin for designing medical braces from body scans.
+Developed a Rhino plugin for designing medical braces from body scans, delivered through a software development partner.
 
 Specialists can prepare body scans, take measurements, fit and adjust brace templates, and export the finished geometry for manufacturing.
 
 ## Scan preparation and fitting {#scan-preparation-and-fitting}
 
-The C# plugin was delivered through a software development partner and uses RhinoCommon to align and trim scan meshes.
+The C# plugin uses RhinoCommon to align and trim scan meshes.
 
 Specialists select measurement points in the 3D view and inspect the linked measurements. These guide the initial template fit; dedicated tools let specialists refine the contours and shape afterward.
 

@@ -7,6 +7,7 @@ import { exactKeys, isContentLink, plainText } from "./validation.ts";
 import { isProjectDiagram } from "./diagrams.ts";
 import {
   expectedPages,
+  websiteRoutes,
   type Page,
   type ProjectGroup,
   type Section,
@@ -119,6 +120,7 @@ export function compileWebsite(sources: Record<string, string>): Website {
         "heading",
         ...(key === "projects" ? ["groups"] : []),
         ...("action" in meta ? ["action"] : []),
+        ...("secondaryAction" in meta ? ["secondaryAction"] : []),
       ]) ||
       !plainText(meta.title) ||
       !plainText(meta.description) ||
@@ -129,16 +131,18 @@ export function compileWebsite(sources: Record<string, string>): Website {
       heading: meta.heading,
       html: intro,
     };
-    if ("action" in meta) {
+    for (const actionKey of ["action", "secondaryAction"] as const) {
+      if (!(actionKey in meta)) continue;
+      const action = meta[actionKey];
       if (
-        !exactKeys(meta.action, ["label", "href"]) ||
-        !plainText(meta.action.label) ||
-        !isContentLink(meta.action.href)
+        !exactKeys(action, ["label", "href"]) ||
+        !plainText(action.label) ||
+        !isContentLink(action.href)
       )
         throw new Error(`pages/${key}.md: invalid action`);
-      opening.action = {
-        label: meta.action.label,
-        href: meta.action.href,
+      opening[actionKey] = {
+        label: action.label,
+        href: action.href,
       };
     }
     if (key === "projects") {
@@ -176,6 +180,7 @@ export function compileWebsite(sources: Record<string, string>): Website {
               "title",
               "format",
               ...("diagram" in project.meta ? ["diagram"] : []),
+              ...("caseStudy" in project.meta ? ["caseStudy"] : []),
             ]) ||
             !plainText(project.meta.title) ||
             !plainText(project.meta.format)
@@ -184,6 +189,15 @@ export function compileWebsite(sources: Record<string, string>): Website {
           const diagram = project.meta.diagram;
           if (diagram !== undefined && !isProjectDiagram(diagram))
             throw new Error(`${id}.md: invalid project diagram`);
+          const caseStudy = project.meta.caseStudy;
+          if (
+            caseStudy !== undefined &&
+            (!exactKeys(caseStudy, ["description", "inquiryLabel", "area"]) ||
+              !plainText(caseStudy.description) ||
+              !plainText(caseStudy.inquiryLabel) ||
+              !plainText(caseStudy.area))
+          )
+            throw new Error(`${id}.md: invalid case study metadata`);
           const details: Section[] = project.sections.map((section) => {
             if (section.level !== 2)
               throw new Error(`${id}.md: project details use level 2 headings`);
@@ -201,6 +215,18 @@ export function compileWebsite(sources: Record<string, string>): Website {
             html: project.intro,
             format: project.meta.format,
             ...(diagram ? { diagram } : {}),
+            ...(caseStudy
+              ? {
+                  caseStudy: {
+                    route: `/projects/${id}`,
+                    description: caseStudy.description as string,
+                    action: {
+                      label: caseStudy.inquiryLabel as string,
+                      href: `/contact?area=${encodeURIComponent(caseStudy.area as string)}`,
+                    },
+                  },
+                }
+              : {}),
             details,
           });
         }
@@ -222,7 +248,11 @@ export function compileWebsite(sources: Record<string, string>): Website {
   const unused = Object.keys(sources).filter((path) => !used.has(path));
   if (unused.length)
     throw new Error(`Unreferenced content: ${unused.join(", ")}`);
-  return { pages, projectGroups };
+  const website = { pages, projectGroups };
+  const routes = websiteRoutes(website);
+  if (new Set(routes).size !== routes.length)
+    throw new Error("Website routes must be unique");
+  return website;
 }
 
 /** Node tooling uses the same compiler as Astro, reading only the checkout. */

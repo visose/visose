@@ -23,10 +23,10 @@ Robot and tool libraries describe the equipment. Manufacturer-specific postproce
 
 ## Downloads and documentation {#downloads-and-documentation}
 
-- [GitHub](https://github.com/visose/Robots): source code, releases and installation instructions.
-- [Documentation](https://github.com/visose/Robots/wiki): guides and examples.
-- [Food4Rhino](https://www.food4rhino.com/en/app/robots): Rhino and Grasshopper plugin.
-- [NuGet](https://www.nuget.org/packages/Robots/): .NET library.
+- [Install the Rhino and Grasshopper plugin](https://www.food4rhino.com/en/app/robots): downloads on Food4Rhino.
+- [Use the .NET library](https://www.nuget.org/packages/Robots/): NuGet package.
+- [Read guides and examples](https://github.com/visose/Robots/wiki): documentation.
+- [Source code and releases](https://github.com/visose/Robots): GitHub repository and installation instructions.
 
 ## Used at more than 70 universities and design schools {#teaching-and-research}
 
@@ -113,7 +113,7 @@ Published work ranges from timber construction and concrete printing to sheet-me
 - Weißensee Academy of Art Berlin _Germany_
 - Xi’an Jiaotong-Liverpool University _China_
 
-## Custom development {#support-and-development}
+## Support and development {#support-and-development}
 
 We develop Grasshopper tools and applications using the Robots .NET library, adapting robot programming, simulation and controller output to your manufacturing process or equipment.
 
@@ -124,6 +124,10 @@ Commissioned work includes [robotic 3D printing](/projects#software-for-robotic-
 ### Commercial support {#commercial-support}
 
 Commercial support includes help with setup, robot and tool libraries, onboarding, troubleshooting and compatibility updates.
+
+We agree the supported equipment and software versions, scope, fees and response arrangements for each support engagement.
+
+[Discuss Robots support](/contact?area=Robots%20support%20or%20development)
 
 ## Community support {#community-support}
 

@@ -15,8 +15,10 @@ import {
   validateRenderedText,
 } from "../../scripts/validate-publication.ts";
 import { repoRoot, webBuildPath, webReleasePath } from "../../scripts/paths.ts";
-import { expectedPages } from "../../web/src/lib/website.ts";
-import { compileWebsite } from "../../web/src/lib/content.ts";
+import { websiteRoutes } from "../../web/src/lib/website.ts";
+import { compileWebsite, loadWebsite } from "../../web/src/lib/content.ts";
+
+const website = loadWebsite(repoRoot);
 
 test("Markdown compilation rejects unsafe content and conflicting section IDs", async () => {
   const root = join(repoRoot, "web/src/content");
@@ -41,6 +43,17 @@ test("Markdown compilation rejects unsafe content and conflicting section IDs", 
       /unsupported|unsafe|unique/,
     );
   }
+  assert.throws(
+    () =>
+      compileWebsite({
+        ...sources,
+        "projects/robots.md": sources["projects/robots.md"]!.replace(
+          "format:",
+          "caseStudy:\n  description: Example project\n  inquiryLabel: Discuss a project\n  area: Application development\nformat:",
+        ),
+      }),
+    /routes must be unique/,
+  );
 });
 
 test("publication guard rejects private content and unapproved assets", () => {
@@ -72,7 +85,7 @@ test("output guard rejects review releases, broken links and unlinked private fi
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Content-Security-Policy" content="form-action 'none'">
     </head><body><h1>Example</h1></body></html>`;
-  for (const [, route] of [...expectedPages, ["not-found", "/404"]]) {
+  for (const route of [...websiteRoutes(website), "/404"]) {
     const folder = route === "/404" ? dist : join(dist, route);
     await mkdir(folder, { recursive: true });
     await writeFile(
@@ -80,7 +93,7 @@ test("output guard rejects review releases, broken links and unlinked private fi
       html,
     );
   }
-  await validateDist({ root });
+  await validateDist({ root, website });
   const brand = join(dist, "brand");
   await mkdir(brand);
   const inspectedImage = await readFile(
@@ -88,12 +101,12 @@ test("output guard rejects review releases, broken links and unlinked private fi
   );
   const imagePath = join(brand, "visose-share.png");
   await writeFile(imagePath, inspectedImage);
-  await validateDist({ root });
+  await validateDist({ root, website });
   const changedImage = Buffer.from(inspectedImage);
   changedImage[changedImage.length - 1] ^= 1;
   await writeFile(imagePath, changedImage);
   await assert.rejects(
-    validateDist({ root }),
+    validateDist({ root, website }),
     /binary asset differs from its inspected SHA-256/,
   );
   await writeFile(imagePath, inspectedImage);
@@ -102,14 +115,14 @@ test("output guard rejects review releases, broken links and unlinked private fi
   await writeFile(join(release, "index.html"), html);
   await writeFile(join(release, "robots.txt"), "User-agent: *\nDisallow: /\n");
   await assert.rejects(
-    validateDist({ root, release: true }),
+    validateDist({ root, website, release: true }),
     /local review content cannot be released/,
   );
   await writeFile(
     join(dist, "index.html"),
     html.replace("</body>", '<a href="/projects#missing">Project</a></body>'),
   );
-  await assert.rejects(validateDist({ root }), /missing anchor/);
+  await assert.rejects(validateDist({ root, website }), /missing anchor/);
   await writeFile(join(dist, "unused.json"), '{"notes":"Private Case Notes"}');
-  await assert.rejects(validateDist({ root }), /private note/);
+  await assert.rejects(validateDist({ root, website }), /private note/);
 });

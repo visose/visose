@@ -1,0 +1,85 @@
+---
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import type { Project } from "../../lib/website";
+import { projectGroups } from "../../lib/pages";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageOpening from "../../components/PageOpening.astro";
+import ActionLink from "../../components/ActionLink.astro";
+
+export function getStaticPaths() {
+  return projectGroups.flatMap((group) =>
+    group.projects
+      .filter((project) => project.caseStudy)
+      .map((project) => ({
+        params: { project: project.id },
+        props: { project },
+      })),
+  );
+}
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const study = project.caseStudy;
+if (!study) throw new Error(`${project.id}: missing case study metadata`);
+const diagrams = import.meta.glob<AstroComponentFactory>(
+  "../../components/project-diagrams/*.astro",
+  { eager: true, import: "default" },
+);
+const Diagram =
+  diagrams[`../../components/project-diagrams/${project.id}.astro`];
+if (Boolean(project.diagram) !== Boolean(Diagram))
+  throw new Error(
+    `${project.id}: diagram content and component must both exist`,
+  );
+---
+
+<BaseLayout
+  title={`${project.heading} - visose`}
+  description={study.description}
+>
+  <PageOpening heading={project.heading}>
+    <p class="mb-5 text-base text-muted">{project.format}</p>
+    <div class="prose" set:html={project.html} />
+    <div class="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 text-base sm:text-lg">
+      <ActionLink href={study.action.href}>{study.action.label}</ActionLink>
+      <a
+        class="inline-flex min-h-11 items-center"
+        href={`/projects#${project.id}`}
+      >
+        All projects
+      </a>
+    </div>
+  </PageOpening>
+  <div class="wrap pt-10 pb-12 sm:pt-12 sm:pb-16">
+    {project.details.map((section) => (
+      <section
+        id={section.id}
+        class="mt-10 scroll-mt-7 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
+      >
+        <h2 class="mb-5 text-[29px] md:mb-0 md:text-[32px]">
+          {section.heading}
+        </h2>
+        <div
+          class="prose max-w-[67ch] text-base md:text-lg"
+          set:html={section.html}
+        />
+      </section>
+    ))}
+    {project.diagram && Diagram && (
+      <div class="mt-10 border-t border-line pt-9">
+        <Diagram diagram={project.diagram} />
+      </div>
+    )}
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-x-7 gap-y-4 border-t border-line pt-8 text-base sm:text-lg">
+      <ActionLink href={study.action.href}>{study.action.label}</ActionLink>
+      <a
+        class="inline-flex min-h-11 items-center"
+        href={`/projects#${project.id}`}
+      >
+        All projects
+      </a>
+    </div>
+  </div>
+</BaseLayout>

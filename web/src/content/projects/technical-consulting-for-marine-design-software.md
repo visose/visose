@@ -1,15 +1,21 @@
 ---
-title: Marine design software
+title: Shared tools for marine design
 format: Technical consulting · Shared libraries
+caseStudy:
+  description: Shared drawing libraries, coordinated releases and a licensing portal for a marine-engineering software suite, with continuing technical and cloud support.
+  inquiryLabel: Discuss technical consulting
+  area: Technical consulting
 ---
 
 Provided architecture and development support for a marine-engineering software suite built by several teams. Built shared drawing libraries, an automated release pipeline and a licensing portal for the suite.
 
 The suite's Rhino and Grasshopper tools support the design of coastal structures and quay walls, producing 3D models, drawings and quantity calculations.
 
+Ongoing work includes technical advice on performance and compatibility, plus hosting and maintenance of the suite's cloud infrastructure.
+
 ## Architecture and integration {#architecture-and-development-practices}
 
-Architecture and code reviews addressed package boundaries, shared data structures, geometry workflows and framework choices, with ongoing advice on performance and compatibility.
+Architecture and code reviews addressed package boundaries, shared data structures, geometry workflows and framework choices.
 
 Repository templates, C#/.NET guidelines and Git management established a consistent development structure across teams. Shared interfaces gave the engineering tools a common way to supply geometry, materials and drawing data.
 

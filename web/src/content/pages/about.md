@@ -4,9 +4,15 @@ description: Software development for design, architecture, engineering, constru
 heading: About visose
 ---
 
-visose develops custom software for design, architecture, engineering, construction and manufacturing.
-
 You work directly with the developer responsible for your software, from requirements through implementation.
+
+## Background {#founder}
+
+visose is led by Vicente Soler, a software developer with 15 years of freelance and consulting experience and a background in architecture.
+
+He has also led CAD software development as CTO at H3 Space and taught computational design and robotics at UCL's Bartlett School of Architecture, where he directed the Architectural Computation MSc/MRes program.
+
+[Vicente Soler on LinkedIn](https://www.linkedin.com/in/visose/)
 
 ## Technical expertise {#technical-expertise}
 
@@ -18,14 +24,7 @@ Robotics development covers kinematics, toolpath generation, simulation and proc
 
 - [Projects](/projects)
 - [Services](/services)
-
-## Background {#founder}
-
-visose is led by Vicente Soler, a software developer with 15 years of freelance and consulting experience and a background in architecture.
-
-He has also led CAD software development as CTO at H3 Space and taught computational design and robotics at UCL's Bartlett School of Architecture, where he directed the Architectural Computation MSc/MRes program.
-
-[Vicente Soler on LinkedIn](https://www.linkedin.com/in/visose/)
+- [Discuss a project](/contact)
 
 ## Open-source software {#open-source-software}
 

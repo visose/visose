@@ -8,7 +8,7 @@ Software development, technical consulting and support for design, engineering a
 
 ## Software development {#software-development}
 
-We develop web and desktop applications, CAD plugins and integrations. Work can cover a new product, additional capabilities for existing software or improvements to an established codebase.
+We develop web and desktop applications, CAD plugins and integrations, from new products to further development of existing tools. Work can be arranged as a defined project or reserved development time.
 
 - [CAD and 3D application development](/services/cad-and-3d-application-development)
 - [CAD plugin development](/services/cad-plugin-development)
@@ -16,34 +16,32 @@ We develop web and desktop applications, CAD plugins and integrations. Work can 
 
 ## Technical consulting {#technical-assessment}
 
-We review software architecture and code, assess technical feasibility and plan integrations.
+We review architecture and code, assess feasibility and plan integrations. An assessment sets out the recommended approach, risks and next steps, with a prototype where useful.
 
-For projects involving several teams, we help define shared interfaces and development practices. An assessment can include a working prototype where needed.
-
-- [Marine design software](/projects#technical-consulting-for-marine-design-software)
+[Discuss a technical assessment](/contact?area=Technical%20consulting)
 
 ## Maintenance and support {#maintenance-and-support}
 
-Troubleshooting, compatibility updates and software releases, with ongoing support for agreed applications and versions.
+Compatibility updates, troubleshooting, regression testing and planned releases for agreed applications and versions. Support scope, budget and response arrangements are agreed separately.
 
-We also provide [commercial support for Robots](/projects/robots#commercial-support).
+Our [marine design work](/projects/technical-consulting-for-marine-design-software) includes continuing technical support. We also offer [commercial support for Robots](/projects/robots#commercial-support).
+
+[Discuss maintenance and support](/contact?area=Maintenance%20or%20support)
 
 ## Working together {#project-requirements}
 
-We start by discussing who will use the software, what it needs to do and any existing systems or constraints. You do not need a complete specification.
+You do not need a complete specification to start.
 
-If several software suppliers are involved, we agree responsibilities with you and coordinate integration.
-
-1. **Scope:** we define the requirements, technical approach and deliverables with you. Where needed, we investigate feasibility before planning development.
-2. **Development:** we implement and test the software, then review working versions with you at agreed stages.
-3. **Delivery:** we verify the software against the agreed requirements and hand over the source code, build and deployment instructions, and maintenance notes. Your team or another developer can continue the work.
+1. **Scope:** agree requirements, the technical approach and deliverables. Resolve significant uncertainties through an agreed paid investigation.
+2. **Development:** implement and test the software, reviewing working versions with you.
+3. **Delivery:** verify the agreed requirements and hand over the source code, build and deployment instructions, and maintenance notes.
 
 [Discuss a project](/contact)
 
-## Fees and scope {#fees-and-scope}
+## Scope, fees and ownership {#fees-and-scope}
 
 **You own the custom code developed for your project.** Pre-existing and third-party components retain their existing ownership and licenses.
 
-Each proposal sets out the scope, deliverables, fee and payment schedule.
+Each proposal sets out the scope, deliverables, fee, payment schedule, deployment and hosting responsibilities, and any ongoing service costs.
 
 Fees exclude VAT where applicable.

@@ -1,4 +1,4 @@
-import { expectedPages } from "../web/src/lib/website.ts";
+import { websiteRoutes, type Website } from "../web/src/lib/website.ts";
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { extname, join, relative, resolve } from "node:path";
@@ -215,6 +215,21 @@ export async function validateSource({ root = repoRoot } = {}) {
   const errors = validateRenderedText("Markdown content", content, {
     checkImages: false,
   });
+  const workTypes = form.form.find((field) => field.name === "area")?.options;
+  for (const project of website.projectGroups.flatMap(
+    (group) => group.projects,
+  )) {
+    if (
+      project.caseStudy &&
+      !workTypes?.includes(
+        new URL(
+          project.caseStudy.action.href,
+          "https://visose.com",
+        ).searchParams.get("area") ?? "",
+      )
+    )
+      errors.push(`${project.id}: case study needs a listed inquiry work type`);
+  }
   if (!content.includes("info@visose.com"))
     errors.push("Missing current company contact mailbox");
   const sourceFiles = await listFiles(join(webRoot, "src"));
@@ -292,15 +307,19 @@ function checkReviewHtml(label: string, html: string) {
   return errors;
 }
 
-export async function validateDist({ root = repoRoot, release = false } = {}) {
+export async function validateDist({
+  root = repoRoot,
+  release = false,
+  website = loadWebsite(root),
+}: { root?: string; release?: boolean; website?: Website } = {}) {
   const dist = join(root, release ? webReleasePath : webBuildPath);
   if (!(await stat(dist).catch(() => undefined))?.isDirectory())
     throw new Error("Publication guard requires a completed build");
   const files = await listFiles(dist);
   const errors: string[] = [];
   const pageRoutes = new Map<string, string>([
-    ...expectedPages.map(
-      ([, route]) =>
+    ...websiteRoutes(website).map(
+      (route) =>
         [route === "/" ? "/index.html" : `${route}/index.html`, route] as const,
     ),
     ["/404.html", "/404"],

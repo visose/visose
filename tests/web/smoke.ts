@@ -4,7 +4,8 @@ import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { chromium } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
-import { expectedPages } from "../../web/src/lib/website.ts";
+import { expectedPages, websiteRoutes } from "../../web/src/lib/website.ts";
+import { loadWebsite } from "../../web/src/lib/content.ts";
 import { repoRoot } from "../../scripts/paths.ts";
 
 declare global {
@@ -26,6 +27,12 @@ assert(
   "Smoke checks require a loopback review site",
 );
 const output = resolve(repoRoot, "artifacts/playwright");
+const website = loadWebsite(repoRoot);
+const caseStudies = website.projectGroups.flatMap((group) =>
+  group.projects.flatMap((project) =>
+    project.caseStudy ? [project.caseStudy] : [],
+  ),
+);
 
 test(
   "site navigation and inert contact form work on desktop and mobile",
@@ -58,7 +65,7 @@ test(
     };
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 });
-      for (const [, route] of expectedPages) {
+      for (const route of websiteRoutes(website)) {
         // Check the first paint before deferred enhancement scripts run.
         const startupTarget = startupTargets[route];
         if (startupTarget)
@@ -123,7 +130,10 @@ test(
           ),
           `${route} overflows at ${width}px`,
         );
-        if (["/", "/contact", "/projects/robots"].includes(route)) {
+        if (
+          ["/", "/contact", "/projects/robots"].includes(route) ||
+          caseStudies.some((study) => study.route === route)
+        ) {
           const audit = await new AxeBuilder({ page }).analyze();
           assert.deepEqual(audit.violations, [], `Accessibility: ${route}`);
           await page.screenshot({
@@ -293,6 +303,51 @@ test(
       await page.locator("#area").inputValue(),
       "Robots support or development",
     );
+
+    for (const [, route] of expectedPages.filter(([, route]) =>
+      route.startsWith("/services/"),
+    )) {
+      await page.goto(origin + route);
+      const inquiry = page.locator('main a[href^="/contact?area="]').last();
+      const inquiryUrl = new URL((await inquiry.getAttribute("href"))!, origin);
+      await inquiry.click();
+      await page.waitForURL(inquiryUrl.href);
+      assert.equal(await optional.getAttribute("open"), "");
+      assert.equal(
+        await page.locator("#area").inputValue(),
+        inquiryUrl.searchParams.get("area"),
+      );
+    }
+
+    for (const study of caseStudies) {
+      await page.goto(origin + study.route);
+      const inquiry = page.locator('main a[href^="/contact?area="]').last();
+      const inquiryUrl = new URL((await inquiry.getAttribute("href"))!, origin);
+      await inquiry.click();
+      await page.waitForURL(inquiryUrl.href);
+      assert.equal(await optional.getAttribute("open"), "");
+      assert.equal(
+        await page.locator("#area").inputValue(),
+        inquiryUrl.searchParams.get("area"),
+      );
+    }
+
+    // Case-study inquiries use the ordinary form and preserve the selected work type.
+    const selectedWorkType = await page.locator("#area").inputValue();
+    await page.locator("#name").fill("Example Buyer");
+    await page.locator("#email").fill("buyer@example.com");
+    await page.locator("#message").fill(message);
+    await page.unroute("**/api/contact");
+    const caseSubmission = page.waitForResponse(
+      (response) => response.url() === origin + "/api/contact",
+    );
+    await button.click();
+    const caseResponse = await caseSubmission;
+    assert.equal(caseResponse.status(), 202);
+    assert.equal(caseResponse.request().postDataJSON().area, selectedWorkType);
+    assert.equal("project" in caseResponse.request().postDataJSON(), false);
+    assert.equal((await caseResponse.json()).simulated, true);
+    await page.locator('#form-status[data-state="success"]').waitFor();
 
     const fallback = await browser.newContext({
       javaScriptEnabled: false,

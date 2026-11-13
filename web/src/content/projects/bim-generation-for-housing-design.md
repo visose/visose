@@ -1,6 +1,10 @@
 ---
 title: Automated BIM for modular housing
 format: BIM generation service · CAD plugins
+caseStudy:
+  description: An automated service and CAD plugins that turn modular house configurations into editable Revit BIM models using shared building and component rules.
+  inquiryLabel: Discuss a CAD integration
+  area: CAD plugin or integration
 diagram:
   title: Shared generation architecture
   nodes:

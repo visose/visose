@@ -3,7 +3,7 @@ title: CAD integrations for design collaboration
 format: Rhino / Revit / SketchUp plugins
 ---
 
-Developed Rhino, Revit and SketchUp plugins for an architectural design-review platform.
+Extended an existing architectural design-review platform into Rhino, Revit and SketchUp by developing plugins that reuse the platform's interface.
 
 Designers can publish models directly from their CAD software, while other participants review them in the platform's 3D viewer.
 

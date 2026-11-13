@@ -3,8 +3,8 @@ title: Robotics software development and CAD integration - visose
 description: Industrial robot programming, simulation, toolpath generation and process control, with CAD, CAM, Rhino, Grasshopper and .NET integrations.
 heading: Robotics software development
 action:
-  label: Discuss a project
-  href: /contact
+  label: Discuss a robotics project
+  href: /contact?area=Robotics%20software%20development
 ---
 
 We develop software for industrial robot programming and fabrication, including CAD and CAM integrations and standalone applications.
@@ -24,12 +24,15 @@ Our [robotic 3D-printing work](/projects#software-for-robotic-furniture-producti
 
 [Six-axis robotic milling](/projects#cam-integration-for-six-axis-milling) connects CAD and CAM tools with robot simulation and controller-code generation for six-axis machining.
 
-## Robots integration {#robots-and-integrations}
+## Integration and delivery {#robots-and-integrations}
 
 We extend [Robots' programming and simulation tools](/projects/robots) and integrate its .NET library into custom applications.
+
+We develop the software remotely. Your team operates the equipment and validates programs on the robot cell.
 
 ## Discuss your project {#discuss-a-workflow}
 
 Tell us about the robot, equipment and process you want to control.
 
-Our [working process](/services#project-requirements) covers scope, reviews and delivery. For an existing Robots installation, see [commercial support](/projects/robots#commercial-support).
+- [How we work](/services#project-requirements)
+- [Robots commercial support](/projects/robots#commercial-support)

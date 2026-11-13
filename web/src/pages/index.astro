@@ -7,6 +7,7 @@ const home = page("home");
 const opening = home.opening;
 const application = section(home, "applications");
 const integrations = section(home, "plugins-and-integrations");
+const robotics = section(home, "robotics-software");
 const more = section(home, "cad-and-robotics");
 const starting = section(home, "working-with-visose");
 const action = opening.action;
@@ -24,53 +25,67 @@ const selectedWork = [
     <div class="wrap hero-content relative">
       <h1 id="home-title">{opening.heading}</h1>
       <div class="hero-description prose" set:html={opening.html} />
-      <p class="pt-8">
+      <div class="flex flex-wrap items-center gap-x-7 gap-y-4 pt-8 text-base sm:text-lg">
         <ActionLink href={action.href}>{action.label}</ActionLink>
-      </p>
+        {opening.secondaryAction && (
+          <a
+            class="inline-flex min-h-11 items-center"
+            href={opening.secondaryAction.href}
+          >
+            {opening.secondaryAction.label}
+          </a>
+        )}
+      </div>
     </div>
   </section>
-  <div class="bg-paper">
-    <div class="wrap capability-spread py-10.5 sm:grid sm:grid-cols-[1.08fr_1fr] sm:py-13.5 xl:py-18">
-      {[application, integrations].map((entry) => (
-        <section
-          class="home-capability first:pb-9 last:border-t last:border-line last:pt-9 sm:first:pr-8 sm:first:pb-0 sm:last:border-t-0 sm:last:border-l sm:last:pt-0 sm:last:pl-8 xl:first:pr-16 xl:last:pl-16"
-          aria-labelledby={entry.id}
-        >
-          <h2
-            class="mb-4 text-[29px] font-medium sm:mb-6.5 sm:font-normal xl:text-[34px]"
-            id={entry.id}
-          >
-            {entry.heading}
-          </h2>
-          <div
-            class="prose max-w-[61ch] text-base sm:text-body"
-            set:html={entry.html}
-          />
-        </section>
-      ))}
-    </div>
-  </div>
-  <section class="bg-silver py-9 sm:pt-10.5 sm:pb-13" aria-labelledby={more.id}>
+  <section class="bg-silver py-10.5 sm:py-13.5" aria-labelledby={more.id}>
     <div class="wrap">
-      <h2 class="mb-7.5 text-[28px] sm:text-3xl" id={more.id}>
+      <h2 class="mb-8 text-[29px] sm:text-[34px]" id={more.id}>
         {more.heading}
       </h2>
-      <div class="selected-work grid gap-7 xl:grid-cols-3 xl:gap-9">
+      <div class="grid gap-8 lg:grid-cols-3 lg:gap-8 xl:gap-9">
         {selectedWork.map((entry) => (
-          <section class="border-t border-line-strong pt-6 first:border-t-0 first:pt-0 xl:border-t-0 xl:border-l xl:pt-0 xl:pl-9 xl:first:border-l-0 xl:first:pl-0">
-            <h3 class="mb-3 text-[22px] font-medium xl:text-xl" id={entry.id}>
+          <section
+            class="border-t border-line-strong pt-7 first:border-t-0 first:pt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0 xl:pl-9"
+            aria-labelledby={entry.id}
+          >
+            <h3
+              class="mb-4 text-[25px] leading-[1.2] font-medium xl:text-[28px]"
+              id={entry.id}
+            >
               {entry.heading}
             </h3>
-            <div class="prose text-base" set:html={entry.html} />
+            <div class="prose text-base sm:text-body" set:html={entry.html} />
           </section>
         ))}
       </div>
       <div class="prose mt-7" set:html={more.html} />
     </div>
   </section>
-  <section class="on-dark relative py-10 text-paper sm:py-16">
+  <div class="bg-paper">
+    <div class="wrap capability-spread py-10.5 sm:py-13.5 lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-9">
+      {[application, integrations, robotics].map((entry) => (
+        <section
+          class="home-capability mt-9 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0 xl:pl-9"
+          aria-labelledby={entry.id}
+        >
+          <h2
+            class="mb-4 text-[25px] font-medium sm:font-normal xl:text-[28px]"
+            id={entry.id}
+          >
+            {entry.heading}
+          </h2>
+          <div class="prose max-w-[61ch] text-base" set:html={entry.html} />
+        </section>
+      ))}
+    </div>
+  </div>
+  <section
+    class="on-dark relative py-10 text-paper sm:py-16"
+    aria-labelledby={starting.id}
+  >
     <div class="wrap relative sm:grid sm:grid-cols-[1.08fr_1fr] sm:gap-10 xl:gap-16">
-      <h2 class="mb-5.5 text-[29px] sm:mb-0 sm:text-[34px]">
+      <h2 class="mb-5.5 text-[29px] sm:mb-0 sm:text-[34px]" id={starting.id}>
         {starting.heading}
       </h2>
       <div
@@ -82,7 +97,7 @@ const selectedWork = [
 </BaseLayout>
 <style>
   .hero-content {
-    padding-block: 104px 118px;
+    padding-block: 80px 88px;
   }
   .hero-content h1 {
     max-width: 1080px;
@@ -95,35 +110,6 @@ const selectedWork = [
     font-size: 21px;
     line-height: 1.5;
     color: var(--color-muted);
-  }
-  .home-capability .prose :global(p:nth-child(2)) {
-    margin-top: 32px;
-  }
-  .selected-work .prose :global(ul) {
-    display: grid;
-    gap: 16px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-width: none;
-  }
-  .selected-work .prose :global(li) {
-    margin: 0;
-    padding: 0;
-  }
-  .selected-work .prose :global(li a) {
-    display: block;
-    width: fit-content;
-    margin-bottom: 2px;
-    font-weight: 500;
-  }
-  .selected-work .prose :global(.prose-action) {
-    margin-top: 16px;
-  }
-  .selected-work .prose :global(.prose-action a) {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
   }
   @media (width >= 56.25rem) and (max-height: 820px) {
     .capability-spread {
@@ -151,9 +137,6 @@ const selectedWork = [
     }
   }
   @media (width < 37.5rem) {
-    .home-capability .prose :global(p:nth-child(2)) {
-      margin-top: 18px;
-    }
     .hero-content {
       padding-block: 64px 68px;
     }

@@ -7,6 +7,7 @@ const { title, caption } = Astro.props;
 ---
 
 <figure class="project-diagram m-0">
+  <figcaption>{caption}</figcaption>
   <p class="scroll-hint mb-2 text-sm text-muted">
     Scroll horizontally to explore the diagram.
   </p>
@@ -21,7 +22,6 @@ const { title, caption } = Astro.props;
       <slot />
     </div>
   </div>
-  <figcaption>{caption}</figcaption>
 </figure>
 <style>
   .project-diagram {
@@ -81,7 +81,7 @@ const { title, caption } = Astro.props;
     margin: 0;
   }
   figcaption {
-    margin-top: 10px;
+    margin-bottom: 14px;
     color: var(--color-muted);
     font-size: 13px;
     line-height: 1.5;

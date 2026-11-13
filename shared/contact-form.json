@@ -36,6 +36,7 @@
       "options": [
         "Application development",
         "CAD plugin or integration",
+        "Robotics software development",
         "Technical consulting",
         "Maintenance or support",
         "Robots support or development",
@@ -71,7 +72,7 @@
   ],
   "optionalDetails": "Optional project details",
   "submit": "Send inquiry",
-  "success": "Your inquiry has been sent.",
+  "success": "Your inquiry has been sent. We will reply by email.",
   "error": "We couldn't confirm your inquiry was sent. Please try again or email info@visose.com.",
   "sending": "Sending…",
   "pending": "Sending your inquiry…",

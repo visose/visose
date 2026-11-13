@@ -122,6 +122,18 @@ Astro.csp?.insertScriptHash(
                     class="prose max-w-[70ch] text-base sm:text-body lg:max-w-[66ch]"
                     set:html={entry.html}
                   />
+                  {entry.caseStudy && (
+                    <p class="mt-4">
+                      <a
+                        class="inline-flex min-h-11 items-center gap-2 text-base"
+                        href={entry.caseStudy.route}
+                      >
+                        Read case study
+                        <span class="sr-only">: {entry.heading}</span>
+                        <ArrowUpRight size={16} aria-hidden="true" />
+                      </a>
+                    </p>
+                  )}
                 </div>
                 {(entry.details.length > 0 || entry.diagram) && (
                   <details
