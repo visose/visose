@@ -1,0 +1,29 @@
+---
+import { ArrowLeft } from "@lucide/astro";
+import type { Section } from "../lib/website";
+interface Props {
+  back: { href: string; label: string };
+  sections: Pick<Section, "id" | "heading">[];
+}
+const { back, sections } = Astro.props;
+---
+
+<nav class="border-b border-line bg-paper" aria-label="Page navigation">
+  <div class="wrap flex flex-wrap items-center gap-x-6 py-2 text-caption">
+    <a
+      class="mr-3 inline-flex min-h-11 items-center gap-2 py-2"
+      href={back.href}
+    >
+      <ArrowLeft size={16} stroke-width={1.4} aria-hidden="true" />
+      {back.label}
+    </a>
+    {sections.map((section) => (
+      <a
+        class="inline-flex min-h-11 items-center py-2 no-underline hover:underline"
+        href={`#${section.id}`}
+      >
+        {section.heading}
+      </a>
+    ))}
+  </div>
+</nav>

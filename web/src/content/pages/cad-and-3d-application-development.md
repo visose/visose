@@ -7,7 +7,7 @@ action:
   href: /contact?area=Application%20development
 ---
 
-We build web and desktop applications for CAD, interactive 3D, engineering analysis and design automation.
+We build complete web and desktop applications for CAD, interactive 3D, engineering analysis and design automation. Our work includes new products, prototypes and further development of existing software.
 
 ## Selected work {#selected-work}
 
@@ -17,9 +17,11 @@ We build web and desktop applications for CAD, interactive 3D, engineering analy
 
 [BIM coordination software](/projects#collaborative-bim-review-application) brings models, drawings and project issues into a shared desktop and web workspace.
 
+[Port terminal design](/projects#port-terminal-planning-software) maintains relationships between berths, yards and equipment and produces quantity reports for comparing layouts.
+
 ## Software engineering {#technologies}
 
-We use C#/.NET and TypeScript, with expertise in computational geometry, computer graphics and software architecture.
+Our expertise covers computational geometry, computer graphics and software architecture. We use C#/.NET and TypeScript for web and desktop applications, backend services and cloud integrations, with automated testing and continuous integration.
 
 ## Discuss your project {#discuss-an-application}
 

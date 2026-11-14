@@ -12,6 +12,9 @@ const diagrams = import.meta.glob<AstroComponentFactory>(
 );
 const projects = page("projects");
 const opening = projects.opening;
+function wordCount(html: string) {
+  return html.replace(/<[^>]+>/g, " ").match(/\S+/g)?.length ?? 0;
+}
 const initializeIndex =
   'document.getElementById("project-index-panel").hidden = location.hash !== "#project-index";';
 Astro.csp?.insertScriptHash(
@@ -86,111 +89,118 @@ Astro.csp?.insertScriptHash(
       <script is:inline set:html={initializeIndex} />
       {groups.map((group) => (
         <section class="mt-8 sm:mt-7" aria-labelledby={group.id}>
-          <header class="bg-silver px-5 py-5.5 sm:px-8 sm:py-6.5">
+          <header class="bg-silver px-5 py-4 sm:px-7">
             <h2
-              class="scroll-mt-(--project-offset) text-[25px] focus:outline-none sm:text-3xl"
+              class="scroll-mt-(--project-offset) text-[24px] focus:outline-none sm:text-[27px]"
               id={group.id}
               tabindex="-1"
             >
               {group.heading}
             </h2>
           </header>
-          {group.projects.map((entry) => {
-            const Diagram =
-              diagrams[`../../components/project-diagrams/${entry.id}.astro`];
-            if (Boolean(entry.diagram) !== Boolean(Diagram))
-              throw new Error(
-                `${entry.id}: diagram content and component must both exist`,
+          <div>
+            {group.projects.map((entry) => {
+              const Diagram =
+                diagrams[`../../components/project-diagrams/${entry.id}.astro`];
+              if (Boolean(entry.diagram) !== Boolean(Diagram))
+                throw new Error(
+                  `${entry.id}: diagram content and component must both exist`,
+                );
+              const detailWords = entry.details.reduce(
+                (total, section) => total + wordCount(section.html),
+                0,
               );
-            const wideDetails = !!entry.diagram || entry.details.length > 1;
-            return (
-              <article
-                id={entry.id}
-                class="project-case scroll-mt-(--project-offset) py-7 focus:outline-none sm:py-9 lg:grid lg:grid-cols-[36%_1fr] lg:gap-x-[8%]"
-                tabindex="-1"
-              >
-                <header class="mb-3.5 sm:mb-5 lg:mb-0">
-                  <h3 class="max-w-162.5 text-[26px] font-medium text-pretty sm:text-[28px] sm:font-normal lg:max-w-105">
-                    {entry.heading}
-                  </h3>
-                  <p class="mt-1.5 text-sm leading-[1.5] text-muted sm:mt-2 lg:mt-3 lg:max-w-[38ch]">
-                    {entry.format}
-                  </p>
-                </header>
-                <div class="min-w-0">
-                  <div
-                    class="prose max-w-[70ch] text-base sm:text-body lg:max-w-[66ch]"
-                    set:html={entry.html}
-                  />
-                  {entry.caseStudy && (
-                    <p class="mt-4">
-                      <a
-                        class="inline-flex min-h-11 items-center gap-2 text-base"
-                        href={entry.caseStudy.route}
-                      >
-                        Read case study
-                        <span class="sr-only">: {entry.heading}</span>
-                        <ArrowUpRight size={16} aria-hidden="true" />
-                      </a>
+              const expandDetails =
+                !!entry.diagram || detailWords > wordCount(entry.html);
+              return (
+                <article
+                  id={entry.id}
+                  class="project-case scroll-mt-(--project-offset) py-7 focus:outline-none sm:py-8 lg:grid lg:grid-cols-[34%_1fr] lg:gap-x-[8%]"
+                  tabindex="-1"
+                >
+                  <header class="mb-4 lg:mb-0">
+                    <h3 class="text-[24px] leading-[1.25] font-medium text-pretty sm:text-[26px] sm:font-normal">
+                      {entry.heading}
+                    </h3>
+                    <p class="mt-2 text-sm leading-[1.5] text-muted">
+                      {entry.format}
                     </p>
-                  )}
-                </div>
-                {(entry.details.length > 0 || entry.diagram) && (
-                  <details
-                    class:list={[
-                      "project-details group mt-2 min-w-0",
-                      wideDetails ? "col-span-full" : "lg:col-start-2",
-                    ]}
-                  >
-                    <summary
-                      class:list={[
-                        "flex min-h-12 w-fit cursor-pointer list-none items-center gap-2 py-3.5 text-base text-ink underline-offset-5 hover:underline",
-                        { "lg:ml-[44%]": wideDetails },
-                      ]}
-                    >
-                      <span>
-                        Details<span class="sr-only">: {entry.heading}</span>
-                      </span>
-                      <Plus
-                        class="flex-none group-open:rotate-45"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                    </summary>
-                    <div
-                      class:list={[
-                        "grid grid-cols-1 gap-6.5 pt-4 pb-1",
-                        {
-                          "sm:grid-cols-2 sm:gap-x-[6%] sm:gap-y-8":
-                            wideDetails,
-                        },
-                      ]}
-                    >
-                      {entry.diagram && Diagram && (
-                        <div class="col-span-full mb-2 min-w-0">
-                          <Diagram diagram={entry.diagram} />
-                        </div>
-                      )}
-                      {entry.details.map((section) => (
-                        <section
-                          id={section.id}
-                          class="scroll-mt-(--project-offset)"
-                        >
-                          <h4 class="mb-4 text-[21px] leading-[1.3] sm:text-[22px]">
-                            {section.heading}
-                          </h4>
+                  </header>
+                  <div class="min-w-0">
+                    <div class="prose max-w-[65ch] text-base sm:text-body">
+                      <Fragment set:html={entry.html} />
+                      {!expandDetails &&
+                        entry.details.map((section) => (
                           <div
-                            class="prose max-w-[66ch] text-body"
+                            id={section.id}
+                            class="mt-5 scroll-mt-(--project-offset) focus:outline-none"
+                            tabindex="-1"
                             set:html={section.html}
                           />
-                        </section>
-                      ))}
+                        ))}
                     </div>
-                  </details>
-                )}
-              </article>
-            );
-          })}
+                    {entry.caseStudy && (
+                      <p class="mt-3">
+                        <a
+                          class="inline-flex min-h-11 items-center gap-2 text-base"
+                          href={entry.caseStudy.route}
+                        >
+                          Read case study
+                          <span class="sr-only">: {entry.heading}</span>
+                          <ArrowUpRight size={16} aria-hidden="true" />
+                        </a>
+                      </p>
+                    )}
+                  </div>
+                  {expandDetails && (
+                    <details class="project-details group col-span-full mt-2 min-w-0">
+                      <summary class="flex min-h-11 w-fit cursor-pointer list-none items-center gap-2 py-2 text-base underline-offset-5 hover:underline lg:ml-[42%]">
+                        <span>
+                          Details<span class="sr-only">: {entry.heading}</span>
+                        </span>
+                        <Plus
+                          class="transition-transform duration-220 group-open:rotate-45"
+                          size={16}
+                          aria-hidden="true"
+                        />
+                      </summary>
+                      <div class="project-content mt-3 min-w-0 border-t border-line bg-silver/40 px-5 py-6 sm:px-7 sm:py-7">
+                        {entry.diagram && Diagram && (
+                          <div class="min-w-0">
+                            <Diagram diagram={entry.diagram} />
+                          </div>
+                        )}
+                        {entry.details.length > 0 && (
+                          <div
+                            class:list={[
+                              "grid gap-7 lg:grid-cols-2 lg:gap-x-10 lg:gap-y-8",
+                              { "mt-8": !!entry.diagram },
+                            ]}
+                          >
+                            {entry.details.map((section) => (
+                              <section
+                                id={section.id}
+                                class="project-section scroll-mt-(--project-offset) focus:outline-none"
+                                tabindex="-1"
+                              >
+                                <h4 class="mb-3 text-[20px] leading-[1.3] sm:text-[21px]">
+                                  {section.heading}
+                                </h4>
+                                <div
+                                  class="prose max-w-[66ch] text-base"
+                                  set:html={section.html}
+                                />
+                              </section>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  )}
+                </article>
+              );
+            })}
+          </div>
           <div class="flex flex-wrap justify-between gap-x-7 gap-y-2 border-t border-line py-4">
             <a
               class="inline-flex min-h-11 items-center gap-3 text-base"
@@ -216,8 +226,17 @@ Astro.csp?.insertScriptHash(
       --project-offset: 80px;
       overflow-anchor: none;
     }
-    .project-case + .project-case {
+    .project-case {
+      min-width: 0;
       border-top: 1px solid var(--color-line);
+    }
+    .project-case:first-child {
+      border-top: 0;
+    }
+    @media (width >= 56.25rem) {
+      .project-section:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+      }
     }
     .project-case .prose :global(.prose-action a) {
       display: inline-flex;
@@ -261,8 +280,24 @@ Astro.csp?.insertScriptHash(
   function jumpToProject(behavior: ScrollBehavior = "auto") {
     const target = document.getElementById(location.hash.slice(1));
     if (!target || !projects.contains(target)) return;
+    const details =
+      target.closest("details") ??
+      (target.classList.contains("project-case")
+        ? target.querySelector("details")
+        : null);
+    if (details) {
+      details.open = true;
+      details
+        .getAnimations({ subtree: true })
+        .forEach((animation) => animation.finish());
+    }
     const openingIndex = target === projects;
-    (openingIndex ? toggle : target).focus({ preventScroll: true });
+    const focusTarget = openingIndex
+      ? toggle
+      : target.classList.contains("project-case") && details
+        ? details.querySelector<HTMLElement>("summary")!
+        : target;
+    focusTarget.focus({ preventScroll: true });
     setIndexOpen(openingIndex, false);
     requestAnimationFrame(() =>
       target.scrollIntoView({ block: "start", behavior }),

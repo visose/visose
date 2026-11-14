@@ -8,14 +8,14 @@ const development = section(services, "software-development");
 const consulting = section(services, "technical-assessment");
 const maintenance = section(services, "maintenance-and-support");
 const working = section(services, "project-requirements");
-const terms = [working, section(services, "fees-and-scope")];
+const fees = section(services, "fees-and-scope");
 ---
 
 <BaseLayout title={services.title} description={services.description}>
   <PageOpening heading={opening.heading}>
     <Fragment set:html={groupLinkLists(opening.html)} />
   </PageOpening>
-  <div class="wrap pt-10 pb-12 md:grid md:grid-cols-[1.28fr_1fr] md:gap-[6%] md:pt-12 md:pb-16 xl:gap-[8%]">
+  <div class="wrap pt-10 pb-12 md:pt-12 md:pb-16">
     <a
       class="mb-7 inline-flex min-h-11 items-center text-base md:hidden"
       href={`#${working.id}`}
@@ -24,50 +24,181 @@ const terms = [working, section(services, "fees-and-scope")];
     </a>
     <div class="service-main">
       {[development, consulting, maintenance].map((entry) => (
-        <section
-          class="mt-12 border-t border-line pt-10 first:mt-0 first:border-t-0 first:pt-0"
-          id={entry.id}
-        >
+        <section class="service-area" id={entry.id}>
           <h2 class="mb-6 text-3xl xl:text-[34px]">{entry.heading}</h2>
           <div
             id={
               entry.id === development.id ? "continuing-development" : undefined
             }
-            class="prose max-w-[65ch] text-base md:text-body xl:text-lg"
+            class="prose text-base md:text-body xl:text-lg"
             set:html={entry.html}
           />
         </section>
       ))}
     </div>
-    <div class="mt-9 border-t border-line pt-9 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-8 xl:pl-12">
-      {terms.map((entry) => (
-        <section
-          class="mt-9 scroll-mt-7 border-t border-line pt-8 first:mt-0 first:border-t-0 first:pt-0 focus:outline-none"
-          id={entry.id}
-          tabindex="-1"
-        >
-          <h2 class="mb-5 text-[25px]">{entry.heading}</h2>
-          <div class="prose max-w-[62ch] text-base" set:html={entry.html} />
-        </section>
-      ))}
-    </div>
   </div>
+  <section
+    class="on-dark service-process scroll-mt-7 bg-graphite py-10 text-paper focus:outline-none md:py-14"
+    id={working.id}
+    tabindex="-1"
+    data-diagram
+  >
+    <div class="wrap">
+      <h2 class="mb-5 text-[29px] md:text-[34px]">{working.heading}</h2>
+      <div class="prose text-base md:text-body" set:html={working.html} />
+    </div>
+  </section>
+  <section
+    class="wrap scroll-mt-7 py-10 focus:outline-none md:grid md:grid-cols-[1fr_1.9fr] md:gap-[8%] md:py-14"
+    id={fees.id}
+    tabindex="-1"
+  >
+    <h2 class="mb-5 text-[25px]">{fees.heading}</h2>
+    <div class="prose max-w-[68ch] text-base" set:html={fees.html} />
+  </section>
 </BaseLayout>
 <style>
   @layer components {
+    .service-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .service-area {
+      padding: 32px;
+      background: var(--color-silver);
+    }
+    .service-area:first-child {
+      grid-column: 1 / -1;
+      padding: 0 0 16px;
+      background: transparent;
+    }
+    .service-area:not(:first-child) {
+      display: flex;
+      flex-direction: column;
+    }
+    .service-area:not(:first-child) .prose {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+    .service-area:not(:first-child) .prose :global(.prose-action:last-child) {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+    .service-area:last-child {
+      background: color-mix(
+        in srgb,
+        var(--color-silver) 55%,
+        var(--color-paper)
+      );
+    }
+    .service-area:first-child .prose {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 48px;
+      max-width: none;
+    }
     #fees-and-scope .prose :global(p:last-child) {
       color: var(--color-muted);
       font-size: 14px;
     }
     .service-main .prose :global(ul) {
+      margin: 0;
+      padding: 0;
+      list-style: none;
       font-size: 16px;
     }
     .service-main .prose :global(li a) {
-      display: inline-block;
-      padding-block: 6px;
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding-block: 10px;
+      border-bottom: 1px solid var(--color-line);
     }
     .service-main .prose :global(li + li) {
       margin-top: 0;
+    }
+    .service-process .prose :global(ol) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 48px;
+      margin: 40px 0 32px;
+      padding-left: 28px;
+    }
+    .service-process .prose :global(li) {
+      position: relative;
+      margin: 0;
+      padding: 12px 0 0 8px;
+    }
+    .service-process .prose :global(li::marker) {
+      color: var(--color-silver);
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+    }
+    .service-process .prose :global(li::after) {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: -10px;
+      width: calc(100% + 48px);
+      height: 1px;
+      background: #8b949c;
+    }
+    .service-process .prose :global(li:last-child::after) {
+      width: calc(100% - 8px);
+    }
+    .service-process .prose :global(li strong) {
+      display: block;
+      margin-bottom: 5px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .service-process.is-diagram-active .prose :global(li::after) {
+        transform-origin: left;
+        animation: process-connect 750ms var(--ease-out) both;
+      }
+    }
+    @keyframes process-connect {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+    @media (width < 43.75rem) {
+      .service-main,
+      .service-area:first-child .prose,
+      .service-process .prose :global(ol) {
+        display: block;
+      }
+      .service-area {
+        margin-top: 24px;
+        padding: 24px;
+      }
+      .service-area:first-child {
+        margin-top: 0;
+      }
+      .service-main .prose :global(ul) {
+        margin-top: 22px;
+      }
+      .service-process .prose :global(ol) {
+        margin-top: 24px;
+      }
+      .service-process .prose :global(li) {
+        padding-block: 0 28px;
+      }
+      .service-process .prose :global(li::after) {
+        left: -18px;
+        top: 29px;
+        bottom: 7px;
+        width: 1px;
+        height: auto;
+        animation: none;
+      }
+      .service-process .prose :global(li:last-child::after) {
+        display: none;
+      }
     }
   }
 </style>

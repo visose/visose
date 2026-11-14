@@ -4,7 +4,9 @@ import type { Project } from "../../lib/website";
 import { projectGroups } from "../../lib/pages";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageOpening from "../../components/PageOpening.astro";
+import PageNavigation from "../../components/PageNavigation.astro";
 import ActionLink from "../../components/ActionLink.astro";
+import { ArrowLeft } from "@lucide/astro";
 
 export function getStaticPaths() {
   return projectGroups.flatMap((group) =>
@@ -33,6 +35,12 @@ if (Boolean(project.diagram) !== Boolean(Diagram))
   throw new Error(
     `${project.id}: diagram content and component must both exist`,
   );
+const navigationSections = [
+  ...project.details,
+  ...(project.diagram
+    ? [{ id: "architecture", heading: project.diagram.title }]
+    : []),
+];
 ---
 
 <BaseLayout
@@ -42,21 +50,20 @@ if (Boolean(project.diagram) !== Boolean(Diagram))
   <PageOpening heading={project.heading}>
     <p class="mb-5 text-base text-muted">{project.format}</p>
     <div class="prose" set:html={project.html} />
-    <div class="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4 text-base sm:text-lg">
+    <div class="mt-7 flex">
       <ActionLink href={study.action.href}>{study.action.label}</ActionLink>
-      <a
-        class="inline-flex min-h-11 items-center"
-        href={`/projects#${project.id}`}
-      >
-        All projects
-      </a>
     </div>
   </PageOpening>
+  <PageNavigation
+    back={{ href: `/projects#${project.id}`, label: "Back to projects" }}
+    sections={navigationSections}
+  />
   <div class="wrap pt-10 pb-12 sm:pt-12 sm:pb-16">
     {project.details.map((section) => (
       <section
         id={section.id}
-        class="mt-10 scroll-mt-7 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
+        class="mt-10 scroll-mt-7 border-t border-line pt-9 focus:outline-none first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
+        tabindex="-1"
       >
         <h2 class="mb-5 text-[29px] md:mb-0 md:text-[32px]">
           {section.heading}
@@ -68,17 +75,22 @@ if (Boolean(project.diagram) !== Boolean(Diagram))
       </section>
     ))}
     {project.diagram && Diagram && (
-      <div class="mt-10 border-t border-line pt-9">
+      <div
+        id="architecture"
+        class="mt-10 scroll-mt-7 border-t border-line pt-9 focus:outline-none"
+        tabindex="-1"
+      >
         <Diagram diagram={project.diagram} />
       </div>
     )}
     <div class="mt-10 flex flex-wrap items-center justify-between gap-x-7 gap-y-4 border-t border-line pt-8 text-base sm:text-lg">
       <ActionLink href={study.action.href}>{study.action.label}</ActionLink>
       <a
-        class="inline-flex min-h-11 items-center"
+        class="inline-flex min-h-11 items-center gap-2"
         href={`/projects#${project.id}`}
       >
-        All projects
+        <ArrowLeft size={16} stroke-width={1.4} aria-hidden="true" />
+        Back to projects
       </a>
     </div>
   </div>

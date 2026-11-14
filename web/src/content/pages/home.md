@@ -5,12 +5,9 @@ heading: Custom software for design and engineering
 action:
   label: Discuss a project
   href: /contact
-secondaryAction:
-  label: View project examples
-  href: /#cad-and-robotics
 ---
 
-We develop applications, CAD plugins and robotics software for product teams, engineering businesses and manufacturers.
+We develop applications, CAD plugins and robotics software for design, architecture, engineering, construction and manufacturing.
 
 ## Selected work {#cad-and-robotics}
 
@@ -18,43 +15,44 @@ We develop applications, CAD plugins and robotics software for product teams, en
 
 ### Architectural CAD software {#selected-applications}
 
-A standalone application with solid modeling, procedural building tools and an interactive 3D workspace.
+A complete standalone CAD application for architectural design, combining direct 3D modeling with procedural building tools.
 
-[Explore the CAD application](/projects/architectural-cad-editor)
+### Coastal engineering CAD {#selected-coastal-engineering}
+
+A web CAD application for dredging, land reclamation and coastal structures, combining survey data, design tools and quantity calculations.
 
 ### Automated BIM for modular housing {#selected-plugins}
 
 Editable Revit models generated from house configurations, using the manufacturer's component and layout rules.
 
-[Explore the BIM workflow](/projects/bim-generation-for-housing-design)
+### Medical brace design {#selected-medical-brace-design}
+
+A Rhino plugin for fitting and adjusting medical braces from body scans, with geometry exported for manufacturing.
 
 ### Robots {#selected-robotics}
 
 Open-source robot-programming software for Rhino, Grasshopper and .NET, used at more than 70 universities and design schools.
 
-[Explore Robots](/projects/robots)
+### Robotic 3D printing {#selected-robotic-printing}
 
-## Applications {#applications}
+Grasshopper tools and robot programs for multi-axis printing, from slicing and simulation to coordinated robot motion and extrusion control.
 
-Web and desktop tools for CAD, interactive 3D and engineering analysis.
+### Six-axis robotic milling {#selected-robotic-milling}
 
-[CAD and 3D application development](/services/cad-and-3d-application-development)
+A six-axis machining workflow connecting existing CAM software with robot simulation and controller-program generation.
 
-## Plugins and integrations {#plugins-and-integrations}
+## CAD and 3D applications {#applications}
 
-Custom tools and integrations for Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+We build complete web and desktop applications for CAD, interactive 3D, engineering analysis and design automation. Projects can start with a new product or extend software you already use.
 
-[CAD plugin development](/services/cad-plugin-development)
+## CAD plugins and integrations {#plugins-and-integrations}
+
+We extend CAD and design platforms with custom tools, automate workflows and connect them with other software. Platforms include Rhino, Grasshopper, Revit, Navisworks and SketchUp.
 
 ## Robotics software {#robotics-software}
 
-Robot programming, simulation, toolpaths and CAD/CAM integration.
-
-[Robotics software development](/services/robotics-software-development)
+We develop software for industrial robot programming and fabrication, including simulation, toolpath generation and CAD/CAM integration. Work includes robotic 3D printing, milling and custom process control.
 
 ## Working with visose {#working-with-visose}
 
-Work directly with an experienced developer, independently or alongside your product team.
-
-- [Contact visose](/contact)
-- [Services](/services)
+Work directly with an experienced developer to define the technical approach, build your software and support it after delivery. We can work independently or alongside your product team.

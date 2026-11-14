@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageOpening from "../../components/PageOpening.astro";
+import PageNavigation from "../../components/PageNavigation.astro";
 import ActionLink from "../../components/ActionLink.astro";
 import { groupLinkLists, page } from "../../lib/pages";
 import { expectedPages } from "../../lib/website";
@@ -22,16 +23,20 @@ if (!action) throw new Error(`${service.key}: missing project action`);
       <span id="application-development" aria-hidden="true" />
     )}
     <Fragment set:html={service.opening.html} />
-    <div class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4 text-base sm:text-lg">
+    <div class="mt-6 flex">
       <ActionLink href={action.href}>{action.label}</ActionLink>
-      <a href="#selected-work">See relevant work</a>
     </div>
   </PageOpening>
+  <PageNavigation
+    back={{ href: "/services", label: "All services" }}
+    sections={service.sections}
+  />
   <div class="wrap pt-10 pb-12 sm:pt-12 sm:pb-16">
     {service.sections.map((entry) => (
       <section
-        class="mt-10 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
+        class="mt-10 scroll-mt-7 border-t border-line pt-9 focus:outline-none first:mt-0 first:border-t-0 first:pt-0 md:grid md:grid-cols-[1fr_1.8fr] md:gap-[7%]"
         id={entry.id}
+        tabindex="-1"
       >
         <h2 class="mb-5 text-[29px] md:mb-0 md:text-[32px]">{entry.heading}</h2>
         <div>

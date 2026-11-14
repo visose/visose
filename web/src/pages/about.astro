@@ -1,42 +1,95 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageOpening from "../components/PageOpening.astro";
-import { groupLinkLists, page } from "../lib/pages";
+import CapabilityMap from "../components/CapabilityMap.astro";
+import { groupLinkLists, page, section } from "../lib/pages";
 const about = page("about");
 const opening = about.opening;
 const company = page("company").opening;
+const background = section(about, "founder");
+const expertise = section(about, "technical-expertise");
+const openSource = section(about, "open-source-software");
+const expertiseLinks = section(about, "expertise-links");
+const capabilities = [
+  ["expertise-software", "/services"],
+  ["expertise-geometry", "/services/cad-and-3d-application-development"],
+  ["expertise-integrations", "/services/cad-plugin-development"],
+  ["expertise-robotics", "/services/robotics-software-development"],
+  ["expertise-delivery", "/services#maintenance-and-support"],
+] as const;
 ---
 
 <BaseLayout title={about.title} description={about.description}>
   <PageOpening heading={opening.heading}>
     <Fragment set:html={groupLinkLists(opening.html)} />
   </PageOpening>
-  <div class="wrap pt-10 pb-12 md:grid md:grid-cols-[1.4fr_1fr] md:gap-[6%] md:pt-12 md:pb-16 lg:gap-[8%]">
-    <div>
-      {about.sections.map((section) => (
-        <section
-          class="mt-10 border-t border-line pt-9 first:mt-0 first:border-t-0 first:pt-0"
-          id={section.id}
-        >
-          <h2 class="mb-6 text-[29px] md:text-[32px]">{section.heading}</h2>
-          <div
-            class="prose max-w-[66ch] text-base md:text-lg"
-            set:html={groupLinkLists(section.html)}
-          />
-        </section>
-      ))}
+  <section
+    class="on-dark about-background bg-graphite py-10 text-paper md:py-16"
+    id={background.id}
+  >
+    <div class="wrap relative md:grid md:grid-cols-[1fr_1.9fr] md:gap-[8%]">
+      <h2 class="mb-6 text-[29px] md:text-[34px]">{background.heading}</h2>
+      <div
+        class="prose max-w-[68ch] text-base md:text-lg"
+        set:html={background.html}
+      />
     </div>
-    <section
+  </section>
+  <section class="bg-silver py-10 md:py-16" id={expertise.id}>
+    <div class="wrap">
+      <div class="mb-8 md:grid md:grid-cols-[1fr_1.9fr] md:gap-[8%]">
+        <h2 class="mb-5 text-[29px] md:mb-0 md:text-[34px]">
+          {expertise.heading}
+        </h2>
+        <div
+          class="prose max-w-[65ch] text-base md:text-lg"
+          set:html={expertise.html}
+        />
+      </div>
+      <CapabilityMap
+        entries={capabilities.map(([id, href]) => ({
+          ...section(about, id),
+          href,
+        }))}
+      />
+      <div
+        class="prose mt-6 text-base"
+        id={expertiseLinks.id}
+        set:html={groupLinkLists(expertiseLinks.html)}
+      />
+    </div>
+  </section>
+  <section class="wrap py-10 md:grid md:grid-cols-[1.45fr_1fr] md:gap-[8%] md:py-16">
+    <div id={openSource.id}>
+      <h2 class="mb-6 text-[29px] md:text-[34px]">{openSource.heading}</h2>
+      <div
+        class="prose max-w-[65ch] text-base md:text-lg"
+        set:html={openSource.html}
+      />
+    </div>
+    <div
+      class="company-details mt-10 border-t border-line pt-8 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-8"
       id="company-information"
-      class="company-details mt-10 scroll-mt-7 border-t border-line pt-9 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-7 lg:pl-12"
     >
       <h2 class="mb-6 text-[25px]">{company.heading}</h2>
       <div class="prose max-w-[55ch] text-base" set:html={company.html} />
-    </section>
-  </div>
+    </div>
+  </section>
 </BaseLayout>
 <style>
   @layer components {
+    .about-background {
+      position: relative;
+      overflow: hidden;
+    }
+    .about-background::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 32%;
+      background: #3a4148;
+      clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
+    }
     .company-details :global(strong) {
       display: block;
       margin-bottom: 6px;

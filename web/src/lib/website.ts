@@ -32,7 +32,6 @@ export interface Page {
     heading: string;
     html: string;
     action?: { label: string; href: string };
-    secondaryAction?: { label: string; href: string };
   };
   sections: Section[];
 }

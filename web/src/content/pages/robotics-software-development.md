@@ -26,7 +26,7 @@ Our [robotic 3D-printing work](/projects#software-for-robotic-furniture-producti
 
 ## Integration and delivery {#robots-and-integrations}
 
-We extend [Robots' programming and simulation tools](/projects/robots) and integrate its .NET library into custom applications.
+We integrate robot-programming and simulation tools with CAD/CAM software, controllers and equipment, including custom applications built on [Robots](/projects/robots).
 
 We develop the software remotely. Your team operates the equipment and validates programs on the robot cell.
 

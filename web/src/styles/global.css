@@ -11,7 +11,7 @@
   --color-line: #d1d5d8;
   --color-line-strong: #afb7bd;
   --color-graphite: #30373d;
-  --color-focus: #384f72;
+  --color-focus: var(--color-graphite);
   --color-error: #8e302c;
   --color-control: #78828b;
   --font-sans: "DM Sans Variable", sans-serif;
@@ -77,7 +77,7 @@
   }
   ::selection {
     color: #fff;
-    background: #4b5967;
+    background: var(--color-graphite);
   }
   a {
     color: inherit;
@@ -174,7 +174,7 @@
     }
     ::view-transition-old(root),
     ::view-transition-new(root) {
-      animation-duration: 160ms;
+      animation-duration: 240ms;
       animation-timing-function: ease-out;
     }
     ::view-transition-group(site-header),
@@ -281,7 +281,9 @@
     margin-top: 26px;
   }
   .prose .prose-action a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     padding-block: 5px;
   }
   .prose ul.related-links {

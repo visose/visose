@@ -120,7 +120,6 @@ export function compileWebsite(sources: Record<string, string>): Website {
         "heading",
         ...(key === "projects" ? ["groups"] : []),
         ...("action" in meta ? ["action"] : []),
-        ...("secondaryAction" in meta ? ["secondaryAction"] : []),
       ]) ||
       !plainText(meta.title) ||
       !plainText(meta.description) ||
@@ -131,16 +130,15 @@ export function compileWebsite(sources: Record<string, string>): Website {
       heading: meta.heading,
       html: intro,
     };
-    for (const actionKey of ["action", "secondaryAction"] as const) {
-      if (!(actionKey in meta)) continue;
-      const action = meta[actionKey];
+    if ("action" in meta) {
+      const action = meta.action;
       if (
         !exactKeys(action, ["label", "href"]) ||
         !plainText(action.label) ||
         !isContentLink(action.href)
       )
         throw new Error(`pages/${key}.md: invalid action`);
-      opening[actionKey] = {
+      opening.action = {
         label: action.label,
         href: action.href,
       };

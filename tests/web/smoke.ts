@@ -223,6 +223,23 @@ test(
     const details = page.locator(".project-details").first();
     await details.locator("summary").click();
     assert.equal(await details.getAttribute("open"), "");
+    await details.locator("summary").press("Enter");
+    assert.equal(await details.getAttribute("open"), null);
+
+    const project = website.projectGroups[0]!.projects[0]!;
+    await indexToggle.click();
+    await index
+      .getByRole("link", { name: project.heading, exact: true })
+      .click();
+    assert.equal(await details.getAttribute("open"), "");
+    assert(
+      await details
+        .locator("summary")
+        .evaluate((summary) => summary === document.activeElement),
+    );
+    await page.goto(`${origin}/projects#${project.details[0]!.id}`);
+    assert.equal(await details.getAttribute("open"), "");
+    assert(await page.locator(`#${project.details[0]!.id}`).isVisible());
 
     await page.goto(origin + "/contact");
     const button = page.locator("#send-enquiry");

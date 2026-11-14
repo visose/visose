@@ -121,15 +121,22 @@ const links = [
     .nav-link span::after {
       content: "";
       position: absolute;
-      inset: auto 100% -5px 0;
+      inset: auto 0 -5px;
       height: 1px;
-      background: currentColor;
-      transition: right 200ms var(--ease-out);
+      background: var(--color-graphite);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms var(--ease-out);
     }
     .nav-link:hover span::after,
     .nav-link:focus-visible span::after,
     .nav-link[aria-current] span::after {
-      right: 0;
+      transform: scaleX(1);
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link[aria-current] {
+      color: var(--color-graphite);
     }
   }
   @media (width < 37.5rem) {

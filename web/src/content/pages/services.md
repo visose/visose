@@ -8,7 +8,7 @@ Software development, technical consulting and support for design, engineering a
 
 ## Software development {#software-development}
 
-We develop web and desktop applications, CAD plugins and integrations, from new products to further development of existing tools. Work can be arranged as a defined project or reserved development time.
+We build new web and desktop applications, CAD plugins and robotics software. We also extend existing products and improve established codebases. Work can be arranged as a defined project or reserved development time.
 
 - [CAD and 3D application development](/services/cad-and-3d-application-development)
 - [CAD plugin development](/services/cad-plugin-development)
@@ -17,6 +17,8 @@ We develop web and desktop applications, CAD plugins and integrations, from new 
 ## Technical consulting {#technical-assessment}
 
 We review architecture and code, assess feasibility and plan integrations. An assessment sets out the recommended approach, risks and next steps, with a prototype where useful.
+
+When several teams or software suppliers are involved, we help define shared interfaces, agree responsibilities with you and coordinate integration.
 
 [Discuss a technical assessment](/contact?area=Technical%20consulting)
 
@@ -30,11 +32,11 @@ Our [marine design work](/projects/technical-consulting-for-marine-design-softwa
 
 ## Working together {#project-requirements}
 
-You do not need a complete specification to start.
+We start by discussing who will use the software, what it needs to do and any existing systems or constraints. You do not need a complete specification to start.
 
-1. **Scope:** agree requirements, the technical approach and deliverables. Resolve significant uncertainties through an agreed paid investigation.
-2. **Development:** implement and test the software, reviewing working versions with you.
-3. **Delivery:** verify the agreed requirements and hand over the source code, build and deployment instructions, and maintenance notes.
+1. **Scope:** We define the requirements, technical approach and deliverables with you. Where needed, we start with a paid technical assessment.
+2. **Development:** We implement and test the software, then review working versions with you at agreed stages.
+3. **Delivery:** We verify the software against the agreed requirements and hand over the source code, build and deployment instructions, and maintenance notes. Your team or another developer can continue the work.
 
 [Discuss a project](/contact)
 

@@ -38,8 +38,10 @@ The analytics checks intercept every request; they do not contact Google or send
 - `web/src/content/pages/*.md` owns page copy and metadata. Text before
   the first heading is the introduction. Sections use `## Heading {#stable-id}`;
   subsections use `### Heading {#stable-id}`.
-- `content/projects/*.md` owns project descriptions. Filenames are stable IDs;
-  level 2 sections become Details. `pages/projects.md` controls grouping and order.
+- `content/projects/*.md` owns project descriptions. Filenames are stable IDs.
+  Introductions stay visible; supporting sections expand when longer than the
+  introduction or accompanied by a diagram. Shorter sections appear inline.
+  `pages/projects.md` controls grouping and order.
 - Diagram copy stays in project Markdown; each custom layout lives in
   `components/project-diagrams/<project-id>.astro`. Shared diagram components
   contain only reusable presentation. Robots references are in `pages/robots.md`.

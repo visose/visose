@@ -4,6 +4,8 @@ description: Software development for design, architecture, engineering, constru
 heading: About visose
 ---
 
+visose develops custom software for design, architecture, engineering, construction and manufacturing.
+
 You work directly with the developer responsible for your software, from requirements through implementation.
 
 ## Background {#founder}
@@ -16,11 +18,29 @@ He has also led CAD software development as CTO at H3 Space and taught computati
 
 ## Technical expertise {#technical-expertise}
 
-We develop web and desktop applications, backend services and APIs using C#/.NET, TypeScript and React. Our work includes software architecture, automated testing, continuous integration and cloud services on AWS and Azure.
+Our work combines software engineering with computational geometry, computer graphics and robotics.
 
-Our expertise in computational geometry and computer graphics covers solid and mesh modeling, parametric systems and interactive 3D, including web graphics with Three.js. We develop plugins and integrations for platforms such as Rhino, Grasshopper, Autodesk Revit and Navisworks, and SketchUp.
+### Software engineering {#expertise-software}
 
-Robotics development covers kinematics, toolpath generation, simulation and process control.
+Software architecture, web and desktop applications, backend services and APIs. C#/.NET, TypeScript and React.
+
+### Geometry and graphics {#expertise-geometry}
+
+Solid and mesh modeling, parametric systems and interactive 3D, including Three.js.
+
+### CAD integrations {#expertise-integrations}
+
+Custom tools for platforms such as Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+
+### Robotics {#expertise-robotics}
+
+Kinematics, toolpath generation, simulation and process control.
+
+### Cloud and delivery {#expertise-delivery}
+
+AWS and Azure, automated testing and continuous integration.
+
+### Explore our work {#expertise-links}
 
 - [Projects](/projects)
 - [Services](/services)
