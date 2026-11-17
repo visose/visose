@@ -39,8 +39,9 @@ The analytics checks intercept every request; they do not contact Google or send
   the first heading is the introduction. Sections use `## Heading {#stable-id}`;
   subsections use `### Heading {#stable-id}`.
 - `content/projects/*.md` owns project descriptions. Filenames are stable IDs.
-  Introductions stay visible; supporting sections expand when longer than the
-  introduction or accompanied by a diagram. Shorter sections appear inline.
+  Introductions stay visible. Dedicated case studies link to their own pages.
+  Other projects expand when the supporting sections are longer than the
+  introduction or include a diagram. Shorter sections appear inline.
   `pages/projects.md` controls grouping and order.
 - Diagram copy stays in project Markdown; each custom layout lives in
   `components/project-diagrams/<project-id>.astro`. Shared diagram components

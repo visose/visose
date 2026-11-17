@@ -22,7 +22,13 @@ const contactForm = readContactForm(definition);
     id="optional-details"
   >
     <summary class="flex min-h-12 w-fit cursor-pointer list-none items-center gap-2 py-3.5 text-base underline-offset-5 hover:underline">
-      {contactForm.optionalDetails}
+      <span>
+        {contactForm.optionalDetails}
+        <span
+          id="selected-work-type"
+          class="block text-sm text-muted empty:hidden group-open:hidden"
+        ></span>
+      </span>
       <Plus
         class="flex-none group-open:rotate-45"
         size={18}
@@ -45,15 +51,23 @@ const contactForm = readContactForm(definition);
   >
     {contactForm.submit}
   </button>
-  <div
-    class="col-span-full border border-line-strong bg-silver px-5 py-4.5 text-body data-[state=error]:border-error data-[state=error]:text-error"
-    id="form-status"
-    tabindex="-1"
-    role="status"
-    aria-live="polite"
-    hidden
-  />
 </form>
+<div
+  class="mt-6 max-w-220 border border-line-strong bg-silver px-5 py-4.5 text-body data-[state=error]:border-error data-[state=error]:text-error data-[state=success]:mt-0"
+  id="form-status"
+  tabindex="-1"
+  role="status"
+  aria-live="polite"
+  hidden
+/>
+<button
+  type="button"
+  id="new-inquiry"
+  class="mt-3 min-h-11 cursor-pointer text-base underline underline-offset-4"
+  hidden
+>
+  {contactForm.sendAnother}
+</button>
 <noscript>
   <p>
     To use this form, enable JavaScript. You can also email{" "}
@@ -77,6 +91,11 @@ const contactForm = readContactForm(definition);
   const status = document.querySelector<HTMLElement>("#form-status")!;
   const optional =
     document.querySelector<HTMLDetailsElement>("#optional-details")!;
+  const area = form.querySelector<HTMLSelectElement>("#area")!;
+  const selectedWork = document.querySelector<HTMLElement>(
+    "#selected-work-type",
+  )!;
+  const newInquiry = document.querySelector<HTMLButtonElement>("#new-inquiry")!;
   const fields = Array.from(
     form.querySelectorAll<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -94,18 +113,17 @@ const contactForm = readContactForm(definition);
       },
     };
   button.disabled = false;
-  const query = new URLSearchParams(location.search);
-  for (const field of fields) {
-    if (!(field instanceof HTMLSelectElement)) continue;
-    const value = query.get(field.name);
-    if (
-      !value ||
-      !Array.from(field.options).some((option) => option.value === value)
-    )
-      continue;
-    field.value = value;
-    if (optional.contains(field)) optional.open = true;
+  const requestedArea = new URLSearchParams(location.search).get(area.name);
+  const initialArea = Array.from(area.options).find(
+    (option) => option.value === requestedArea,
+  );
+  if (initialArea) initialArea.defaultSelected = true;
+  function showArea() {
+    selectedWork.textContent = area.value;
   }
+  area.addEventListener("change", showArea);
+  window.addEventListener("pageshow", showArea);
+  showArea();
 
   function readResponse(value: unknown) {
     if (
@@ -148,7 +166,7 @@ const contactForm = readContactForm(definition);
   );
 
   async function submit() {
-    if (pending) return;
+    if (pending || form.hidden) return;
     let firstInvalid: HTMLElement | undefined;
     for (const field of fields) {
       const invalid =
@@ -193,7 +211,10 @@ const contactForm = readContactForm(definition);
           window.alert(
             "This is a local simulation. No inquiry was sent or saved. The page will show the intended success message.",
           );
+        form.hidden = true;
         show(messages.success, "success");
+        newInquiry.hidden = false;
+        status.focus();
         document.dispatchEvent(new Event("contact:accepted"));
       } else {
         show(messages.error, "error");
@@ -220,5 +241,14 @@ const contactForm = readContactForm(definition);
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     void submit();
+  });
+  newInquiry.addEventListener("click", () => {
+    form.reset();
+    optional.open = false;
+    showArea();
+    status.hidden = true;
+    newInquiry.hidden = true;
+    form.hidden = false;
+    fields[0]?.focus();
   });
 </script>

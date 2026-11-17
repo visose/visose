@@ -3,10 +3,8 @@ title: CAD integrations for design collaboration
 format: Rhino / Revit / SketchUp plugins
 ---
 
-Extended an existing architectural design-review platform into Rhino, Revit and SketchUp by developing plugins that reuse the platform's interface.
-
-Designers can publish models directly from their CAD software, while other participants review them in the platform's 3D viewer.
+We built Rhino, Revit and SketchUp plugins for a shared design-review platform. Designers publish models directly from the CAD application and colleagues review them in a shared 3D viewer.
 
 ## Host integration {#host-integration}
 
-The Rhino plugin hosts the platform's React interface in a WebView, with a bridge to model operations. Revit and SketchUp use their own host APIs for model access and geometry transfer, while reusing the platform's interface.
+In Rhino, a WebView hosts the platform's React interface and a bridge connects its commands to the CAD document. The Revit and SketchUp plugins reuse that interface and handle model access and geometry transfer through their respective host APIs. Rhino and Revit users can publish a selection from the model for a focused review.

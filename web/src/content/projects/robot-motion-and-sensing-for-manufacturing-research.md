@@ -1,8 +1,6 @@
 ---
-title: Robotic clay printing
-format: Process control · Robot programming
+title: Process control for robotic clay printing
+format: Robot programming · Process sensing
 ---
 
-Developed Grasshopper tools and robot programs for a robotic clay-printing research cell.
-
-The tools process printing paths, control extrusion and coordinate temperature and material-supply checks between layers. Large print jobs are automatically split into smaller robot programs.
+We built the Grasshopper tools and controller programs for a robotic clay-printing research cell. The robot checks material supply and temperature between layers and pauses if the cartridge is empty or the dispenser is outside its target temperature range. The software splits long prints into a series of programs the controller can run in sequence.

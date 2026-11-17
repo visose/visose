@@ -5,7 +5,7 @@ import CapabilityMap from "../components/CapabilityMap.astro";
 import { groupLinkLists, page, section } from "../lib/pages";
 const about = page("about");
 const opening = about.opening;
-const company = page("company").opening;
+const company = section(about, "company-information");
 const background = section(about, "founder");
 const expertise = section(about, "technical-expertise");
 const openSource = section(about, "open-source-software");
@@ -68,8 +68,8 @@ const capabilities = [
       />
     </div>
     <div
-      class="company-details mt-10 border-t border-line pt-8 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-8"
-      id="company-information"
+      class="mt-10 border-t border-line pt-8 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-8"
+      id={company.id}
     >
       <h2 class="mb-6 text-[25px]">{company.heading}</h2>
       <div class="prose max-w-[55ch] text-base" set:html={company.html} />
@@ -89,10 +89,6 @@ const capabilities = [
       width: 32%;
       background: #3a4148;
       clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
-    }
-    .company-details :global(strong) {
-      display: block;
-      margin-bottom: 6px;
     }
   }
 </style>

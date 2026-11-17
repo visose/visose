@@ -3,16 +3,12 @@ title: BIM coordination software
 format: Desktop application · Web portal · Backend services
 ---
 
-Developed the desktop application, web portal and model-processing backend for a collaborative BIM platform.
-
-Construction teams can review models together, inspect element properties and access the related drawings and project issues in one workspace.
+We built the Navisworks conversion service, collaborative desktop viewer and web portal for managing project access. The viewer brings BIM models, drawings and project issues together for review by construction teams.
 
 ## Models and project information {#models-and-project-information}
 
-A C#/.NET service converted Navisworks models into the product's glTF-based format, retaining the element properties needed for BIM review.
-
-The Unity application organizes models by project and discipline. Users can navigate the 3D model, inspect element properties and work with associated drawings and issue records.
+A C#/.NET service converts Navisworks geometry to glTF and prepares the model hierarchy and element properties separately. Reviewers can browse that hierarchy and inspect element properties directly from the 3D model in the Unity viewer.
 
 ## Collaboration and access {#collaboration-and-access}
 
-Shared model sessions support collaborative review. A React web application manages user accounts, company membership and project access, integrated with the desktop application and AWS-hosted services.
+Construction teams can review a model in a shared session. The React portal manages user accounts, company membership and project access across the desktop application and AWS-hosted services.

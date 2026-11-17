@@ -7,17 +7,17 @@ action:
   href: /contact?area=Application%20development
 ---
 
-We build complete web and desktop applications for CAD, interactive 3D, engineering analysis and design automation. Our work includes new products, prototypes and further development of existing software.
+We build modeling and engineering environments around the geometry, data and design rules your users work with. We develop complete web and desktop products, prototype new workflows and extend existing applications.
 
 ## Selected work {#selected-work}
 
-[Architectural CAD software](/projects/architectural-cad-editor) combines direct solid modeling, procedural building tools and site data in a desktop application.
+The [architectural CAD system](/projects/architectural-cad-editor) we developed brings precision solid modeling and procedural building generation into the same document.
 
-[Coastal engineering CAD](/projects#browser-cad-with-survey-data) combines survey and ground data with design tools and calculations for excavation, fill and rock quantities.
+[Coastal engineering CAD](/projects#browser-cad-with-survey-data) links survey-derived terrain and ground models to parametric design and material quantity analysis in the browser.
 
-[BIM coordination software](/projects#collaborative-bim-review-application) brings models, drawings and project issues into a shared desktop and web workspace.
+[BIM coordination software](/projects#collaborative-bim-review-application) connects a model-conversion service, a collaborative desktop reviewer and a web portal for managing project access.
 
-[Port terminal design](/projects#port-terminal-planning-software) maintains relationships between berths, yards and equipment and produces quantity reports for comparing layouts.
+[Port terminal design](/projects#port-terminal-planning-software) preserves relationships between engineering objects as layouts change and derives quantity reports from the editable model.
 
 ## Software engineering {#technologies}
 

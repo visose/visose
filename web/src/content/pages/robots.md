@@ -4,35 +4,40 @@ description: Open-source robot programming developed by visose. Used at more tha
 heading: Robots
 ---
 
-We created and maintain Robots, an open-source library and Grasshopper plugin for programming industrial robots. It supports motion simulation and controller-code generation, and can also be used in custom .NET applications.
+We created and maintain Robots, an open-source system for offline programming of industrial robots. It combines robot kinematics, motion simulation and controller code generation in Grasshopper and in custom .NET applications.
 
 - [Downloads and documentation](#downloads-and-documentation)
 - [Support and development](#support-and-development)
 
 ## Programming and simulation {#programming-and-simulation}
 
-Users define toolpaths, tools, reference frames and process commands in Grasshopper, simulate the robot's motion and generate programs for its controller. Robot cells can include multiple arms, tracks and rotary positioners.
+Users define toolpaths with tools, reference frames, speeds and process commands. Robots solves the kinematics, checks for issues such as unreachable targets and joint limits, and simulates the motion before generating controller code. Cell models can include multiple robot arms, linear tracks and rotary positioners.
+
+In Grasshopper, users can check selected parts of the cell for collisions at sampled positions along a simulated path. The check can include surrounding geometry such as a workpiece or fixture.
 
 Supported manufacturers include ABB, KUKA, Universal Robots, Stäubli, FANUC, Franka, Doosan, igus and JAKA.
 
 ### A reusable software core {#software-architecture}
 
-The C#/.NET library handles robot kinematics, program validation, motion simulation and code generation. The Grasshopper plugin exposes this functionality through visual programming components; the same library can be embedded in applications outside Rhino.
+The C#/.NET core represents programs independently of any particular robot language. Equipment libraries describe the robots, tools and external axes. Manufacturer-specific post-processors generate code for the selected controller, with support for custom post-processors.
 
-Robot and tool libraries describe the equipment. Manufacturer-specific postprocessors translate programs into controller code. This architecture supports new equipment and processes without tying the software to one robot brand or host application.
+Grasshopper exposes the same library through visual programming components. The [C# simulation sample](https://github.com/visose/Robots/tree/master/samples/Robots.Samples.Wpf) shows how to build and animate a program in a standalone application.
 
 ## Downloads and documentation {#downloads-and-documentation}
 
-- [Install the Rhino and Grasshopper plugin](https://www.food4rhino.com/en/app/robots): downloads on Food4Rhino.
-- [Use the .NET library](https://www.nuget.org/packages/Robots/): NuGet package.
-- [Read guides and examples](https://github.com/visose/Robots/wiki): documentation.
-- [Source code and releases](https://github.com/visose/Robots): GitHub repository and installation instructions.
+In Rhino 8, open Package Manager, search for **Robots** and install the plugin. Restart Rhino and open the Robots tab in Grasshopper.
+
+- [Installation and robot libraries](https://github.com/visose/Robots#install)
+- [Food4Rhino listing](https://www.food4rhino.com/en/app/robots)
+- [.NET package on NuGet](https://www.nuget.org/packages/Robots/)
+- [Guides and examples](https://github.com/visose/Robots/wiki)
+- [Source code and releases on GitHub](https://github.com/visose/Robots)
 
 ## Used at more than 70 universities and design schools {#teaching-and-research}
 
 Originally developed at UCL, Robots has been used in teaching and research across 23 countries and territories. Institutions include MIT, ETH Zurich, TU Delft and the Architectural Association.
 
-Published work ranges from timber construction and concrete printing to sheet-metal forming, textile fabrication and robotic measurement. Other developers also build tools and integrations using the library.
+The [University of Melbourne's MSD Robotics Lab](https://ms-kb.msd.unimelb.edu.au/msd-robotics-lab/software/software/rhino-and-grasshopper-1/download-and-install-robots-for-grasshopper) uses Robots for fabrication processes including ceramic 3D printing. Other published work covers timber construction, sheet-metal forming, textile fabrication and robotic measurement.
 
 ### Universities and design schools {#academic-institutions}
 
@@ -189,8 +194,8 @@ Research, teaching material, software and projects that use or reference Robots.
 
 ### Teaching and tutorials {#reference-teaching}
 
-- [Design for Robotics, Global Summer School 2023](https://globalschool.iaac.net/gss23_design-for-robotics-course-2/) _IAAC_
 - [Download & Install Robots for Grasshopper](https://ms-kb.msd.unimelb.edu.au/msd-robotics-lab/software/software/rhino-and-grasshopper-1/download-and-install-robots-for-grasshopper) _University of Melbourne, MSD Robotics Lab_
+- [Programming a ceramic print in Grasshopper](https://ms-kb.msd.unimelb.edu.au/msd-robotics-lab/prepare-for-printing/understanding-the-grasshopper-script) _University of Melbourne, MSD Robotics Lab_
 - [Robotics and Autonomous Systems](https://ras.design.upenn.edu/?page=2) _University of Pennsylvania_
 - [UR5 (CB3) Robot Programming](https://digipedia.tudelft.nl/subject/ur5-tutorials/) _TU Delft · 2025 update_
 - [Computer-Controlled Machining / Week 13 student work](https://fab.cba.mit.edu/classes/863.23/Architecture/people/Simon/week13.html) _MIT, How to Make (Almost) Anything · 2023_

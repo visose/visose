@@ -49,14 +49,12 @@ diagram:
   caption: Image recognition and photograph order are combined to identify seats. Users review uncertain or conflicting records before export.
 ---
 
-Developed a computer-vision system that converts stadium-seat photographs into a structured inventory.
-
-The system uses image recognition, photograph order and row markers to identify seat types and locations. Users review and correct records in a web application before export to inventory and sales systems.
+We built a computer-vision system that turns batches of stadium photographs into a seat inventory. It identifies seat types, reads seat numbers and uses row markers and photo order to establish where seats belong. A web application lets reviewers check uncertain records against the original photographs before export.
 
 ## Classification and recognition {#classification-and-recognition}
 
-An image classifier trained on client-supplied examples identifies seat types, while number recognition reads seat labels. Sector folders, photograph order and row-label images help assign each seat's location when a number is difficult to read. Uncertain or conflicting results are flagged for review.
+An image classifier trained on client-supplied examples identifies seat types. Optical character recognition reads the labels. When a number is missing or unclear, the system uses sector folders, row-label boundaries and the expected seat sequence to help assign its location. Low-confidence or conflicting results go to review.
 
 ## Review and export {#review-and-export}
 
-The web application displays records alongside their source photographs. Users can correct seat type, row and number, including categories added after classifier training, then export the reviewed records as CSV for inventory and sales software developed by other teams.
+The application flags records that share the same sector, row and seat number. Reviewers can correct seat types and locations against the original photographs, including assigning seat categories introduced after classifier training. The application exports the corrected records and photograph references as CSV for inventory and sales software developed by other teams.

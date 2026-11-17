@@ -7,11 +7,11 @@ action:
   href: /contact?area=CAD%20plugin%20or%20integration
 ---
 
-We develop plugins and integrations for CAD and design platforms, including Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+We build custom tools inside the CAD software your team already uses. Design rules can drive geometry, drawings and model checks, and integrations can make the same logic and data available across applications. Platforms we work with include Rhino, Grasshopper, Revit, Navisworks and SketchUp.
 
 ## Plugin development {#design-tools}
 
-Work includes new plugins, development of existing extensions and compatibility updates for new application versions.
+We develop new plugins and adapt existing ones as your workflow or host application changes. Typical tasks include:
 
 - Model generation from parameters, catalogs and design rules.
 - Drawing production, model inspection and custom editing tools.
@@ -20,11 +20,11 @@ Work includes new plugins, development of existing extensions and compatibility 
 
 ## Selected work {#selected-work}
 
-[Automated BIM for modular housing](/projects/bim-generation-for-housing-design) generates editable Revit models from house configurations using the manufacturer's component and layout rules.
+[Automated BIM for modular housing](/projects/bim-generation-for-housing-design) uses one generation engine across an automated service and interactive CAD tools to produce native, editable Revit models.
 
-[CAD integrations for design collaboration](/projects#cad-integrations-for-design-collaboration) connect Rhino, Revit and SketchUp to a design-review platform.
+[CAD integrations for design collaboration](/projects#cad-integrations-for-design-collaboration) bring one publishing workflow into Rhino, Revit and SketchUp through their native model APIs.
 
-[Medical brace design](/projects#medical-brace-design-in-rhino) provides tools for fitting brace templates to body scans, adjusting their shape and exporting geometry for manufacturing.
+[Medical brace design](/projects#medical-brace-design-in-rhino) connects mesh preparation, measurement-driven fitting and local shape editing to manufacturing export in Rhino.
 
 ## Technologies and integration {#platforms}
 

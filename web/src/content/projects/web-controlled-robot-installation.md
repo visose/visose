@@ -3,6 +3,4 @@ title: Web-controlled robot installation
 format: Robot programming · Web integration
 ---
 
-Developed software and robot programs for a storefront installation that wrote messages submitted online onto a shop window.
-
-The system generated writing paths, returned a webcam recording to the sender and cleared the window for the next message.
+We built the software connecting a public web service to an industrial robot that wrote on a storefront window. It turned each visitor's message into a robot path, emailed the sender a recording of the result and cleared the window for the next message.

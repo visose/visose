@@ -4,7 +4,7 @@ description: How visose handles inquiries, personal information and website data
 heading: Privacy notice
 ---
 
-VISOSE LTD is responsible for personal information received through this website. For questions or requests, email [info@visose.com](mailto:info@visose.com). See [company information](/about#company-information) for the registered details.
+VISOSE LTD is responsible for personal information received through this website. For questions or requests, email [info@visose.com](mailto:info@visose.com). See [company information](/company) for the registered details.
 
 ## Inquiries {#inquiries}
 

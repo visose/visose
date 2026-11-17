@@ -3,16 +3,12 @@ title: Port terminal design
 format: Web CAD application
 ---
 
-Developed a web CAD application for designing port terminals, with tools for laying out berths, quay walls, container yards and handling equipment.
-
-The application maintains relationships between terminal components and generates quantity reports so designers can compare layout options.
+This web CAD application models the relationships between berths, quay walls, yards and equipment as designers revise a port terminal layout. Designers can compare alternatives using quantities drawn directly from each model.
 
 ## Layout and engineering objects {#layout-and-engineering-objects}
 
-The TypeScript application combines an interactive CAD editor with a port-specific object model. Berths reference quay walls, vessels are positioned within berths, and container blocks and equipment use catalog definitions.
+A reusable TypeScript CAD core handles geometry and editing. Port-specific rules place berths along quay walls and vessels within berths, and use catalog definitions for container blocks and equipment. Roads form a connected network, with junctions generated where they cross.
 
-A reusable CAD core provides geometry operations. The port layer adds domain-specific objects, relationships and rules, with catalogs for vessels, equipment and display styles.
+## Model-based quantity reporting {#project-data-and-reports}
 
-## Project data and reports {#project-data-and-reports}
-
-The saved project combines the terminal geometry with its engineering objects and catalogs. Reports draw on this model to count berths, container blocks and equipment for each design option.
+Designers can open two terminal layouts side by side and inspect differences in their quantity reports. The reports count berths, container blocks and handling equipment directly from the objects in each layout.

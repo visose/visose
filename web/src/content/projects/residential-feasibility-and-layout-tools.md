@@ -3,6 +3,4 @@ title: Building feasibility software
 format: Rhino plugin
 ---
 
-Developed a Rhino plugin for early design studies of apartment, co-living and hotel developments.
-
-Designers can edit floor layouts, define unit types by area and minimum width, and reuse floor definitions across building levels. Area schedules and 3D massing stay connected to the layouts so designers can compare building options within one model.
+We built a Rhino plugin that generates unit layouts, 3D massing and area schedules from floor footprints and corridor geometry. The 3D preview highlights units that fall below the area or width requirements set for their type. Designers can reuse floor definitions across levels to compare options for apartments, co-living and hotels.

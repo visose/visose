@@ -50,7 +50,7 @@
       "type": "textarea",
       "required": true,
       "maxLength": 5000,
-      "hint": "Briefly describe what you want to build or change and any software it needs to work with. Please omit credentials and confidential material.",
+      "hint": "A short outline of what you want to build or change is enough. Please omit credentials and confidential material.",
       "error": "Enter a message."
     },
     {
@@ -72,6 +72,7 @@
   ],
   "optionalDetails": "Optional project details",
   "submit": "Send inquiry",
+  "sendAnother": "Send another inquiry",
   "success": "Your inquiry has been sent. We will reply by email.",
   "error": "We couldn't confirm your inquiry was sent. Please try again or email info@visose.com.",
   "sending": "Sending…",

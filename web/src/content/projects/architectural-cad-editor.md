@@ -2,7 +2,7 @@
 title: Architectural CAD software
 format: Desktop CAD application
 caseStudy:
-  description: A standalone architectural CAD application with solid modeling, procedural building tools, an interactive 3D workspace and site data.
+  description: A standalone architectural CAD system with direct solid editing, a parametric building engine and an interactive 3D workspace for building and site design.
   inquiryLabel: Discuss an application
   area: Application development
 diagram:
@@ -52,18 +52,14 @@ diagram:
   caption: Direct modeling and procedural building tools edit a shared document, linked to the geometry kernel, display and site data.
 ---
 
-Developed a complete standalone architectural CAD application, including its geometric modeling tools, interactive 3D workspace, user interface and document system.
+We built a standalone architectural CAD system, from its geometric editing tools and procedural building engine to its document model and interactive 3D workspace. The same document supports direct solid modeling and rule-driven building generation in the context of terrain, maps and surrounding buildings.
 
-Architects can generate floors, facades and openings from building parameters, combine them with directly modeled geometry and work with terrain and map data in the same project.
+## Solid modeling and interactive graphics {#editing-environment}
 
-## Editing environment {#editing-environment}
+The editing tools handle direct face moves, boolean operations, fillets and chamfers. Designers can import drawings as modeling references and snap a moving face to geometry on another object. The document model manages reusable component instances, materials, document storage and undo/redo.
 
-Direct modeling tools include solid creation, boolean operations, fillets, chamfers and transformations. A common tool system handles selection, snapping and editing, supported by document storage and undo/redo.
+The C# application uses Parasolid's double-precision boundary representation for the CAD model and tessellates it for Unity's interactive viewport. The bridge manages the lifetime of native geometry, caches display meshes and limits buffer copies.
 
-The C# application integrates the Parasolid solid-modeling kernel with Unity's interactive 3D display. Modeling operations use Parasolid's double-precision geometry, keeping Unity's single-precision display calculations separate from the CAD model.
+## Procedural building generation {#procedural-building-design}
 
-The integration converts Parasolid's boundary representation into display meshes, using caching and minimizing buffer copies to limit processing and memory overhead. It also manages native geometry lifetimes from C# and resolves interoperability issues between Parasolid's managed wrapper and Unity's runtime.
-
-## Procedural building design {#procedural-building-design}
-
-Building geometry is generated from an editable mass and parameters for floors, facade walls, cores and openings. Floor definitions can be reused at multiple levels, with geometry recalculated when the building changes.
+The building engine derives floors, facades, cores and openings from an editable mass and a set of design parameters. Floor definitions can apply across multiple levels, with the generated geometry recalculated as the design changes. Section views and area and volume calculations let designers evaluate the result in the same workspace.

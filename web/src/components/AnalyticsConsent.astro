@@ -115,14 +115,19 @@ const choiceClass =
   }
 
   function pageData() {
+    const path = location.pathname.replace(/\/$/, "");
+    const robots =
+      path === "/projects/robots" ||
+      (path === "/contact" &&
+        new URLSearchParams(location.search).get("area") ===
+          "Robots support or development");
     return {
       page_location: location.origin + location.pathname,
       page_referrer: document.referrer
         ? new URL(document.referrer).origin + "/"
         : "",
       page_title: document.title,
-      content_group:
-        location.pathname === "/projects/robots" ? "Robots" : "Consultancy",
+      content_group: robots ? "Robots" : "Consultancy",
     };
   }
 

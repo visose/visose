@@ -171,6 +171,7 @@ test(
     assert.equal(config.allow_google_signals, false);
     assert.equal(config.allow_ad_personalization_signals, false);
     assert.equal(config.send_page_view, false);
+    assert.equal(config.content_group, "Consultancy");
 
     await page.goto(origin + "/projects/robots");
     await page.waitForFunction(() =>
@@ -182,9 +183,13 @@ test(
       "Robots",
     );
 
-    await page.goto(origin + "/contact?email=private%40example.com#private", {
-      referer: "https://www.google.com/search?q=private%40example.com",
-    });
+    await page.goto(
+      origin +
+        "/contact?area=Robots%20support%20or%20development&email=private%40example.com#private",
+      {
+        referer: "https://www.google.com/search?q=private%40example.com",
+      },
+    );
     await page.waitForFunction(() =>
       (window as GoogleWindow).dataLayer?.some((entry) => entry[0] === "event"),
     );
@@ -216,6 +221,10 @@ test(
       (entry) => entry[1] === "generate_lead",
     );
     assert.equal(leads.length, 1);
+    assert.equal(
+      (leads[0]![2] as Record<string, unknown>).content_group,
+      "Robots",
+    );
     assert.equal(
       (leads[0]![2] as Record<string, unknown>).page_location,
       origin + "/contact",
@@ -255,6 +264,10 @@ test(
       ).length,
       0,
     );
+    await page.getByRole("button", { name: "Send another inquiry" }).click();
+    await page.locator("#name").fill("Private Example");
+    await page.locator("#email").fill("private@example.com");
+    await page.locator("#message").fill("Private project details.");
     await submit.click();
     await page.locator('#form-status[data-state="success"]').waitFor();
     assert.equal(

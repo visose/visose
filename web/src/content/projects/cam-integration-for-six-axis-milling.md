@@ -3,6 +3,6 @@ title: Six-axis robotic milling
 format: CAD/CAM integration · Robot programming
 ---
 
-Developed a six-axis robotic milling workflow linking RhinoCAM and PowerMILL with [Robots](/projects/robots). Custom post-processors carry cutter positions, tool orientations and feed rates from CAM into robot-program generation.
+We built custom post-processors that transfer cutter positions, orientations and feed rates from RhinoCAM and PowerMILL into [Robots](/projects/robots). Designers can simulate the six-axis motion and generate a program for the milling cell from the same CAM toolpath.
 
-Designers can prepare machining paths in their existing CAM software, simulate the resulting robot motion and generate controller programs for the milling cell.
+In the RhinoCAM workflow, a Grasshopper tool converts G-code into robot targets and identifies rapid moves between cutting passes. Designers can adjust cutter orientation along the path using a guide mesh.

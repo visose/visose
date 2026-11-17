@@ -59,9 +59,11 @@ const links = [
             class="nav-link flex min-h-12 items-center py-3 text-lg text-ink no-underline sm:min-h-0 sm:text-caption"
             href={href}
             aria-current={
-              current === href || current.startsWith(`${href}/`)
+              current === href
                 ? "page"
-                : undefined
+                : current.startsWith(`${href}/`)
+                  ? "location"
+                  : undefined
             }
           >
             <span class="relative">{label}</span>

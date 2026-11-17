@@ -53,3 +53,9 @@ We created and maintain [Robots](/projects/robots), an open-source robot-program
 See its [published applications and independent extensions](/projects/robots#references).
 
 Browse our [open-source projects on GitHub](https://github.com/visose).
+
+## Company information {#company-information}
+
+VISOSE LTD is registered in England and Wales.
+
+[Registered office and company details](/company)

@@ -68,6 +68,7 @@ const selectedWork = [
     <div class="wrap capability-spread py-10.5 sm:py-13.5 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-4 xl:gap-x-9">
       {services.map(([id, href]) => {
         const entry = section(home, id);
+        const lastWord = entry.heading.lastIndexOf(" ") + 1;
         return (
           <section
             class="home-capability mt-8 border-t border-line pt-7 first:mt-0 first:border-t-0 first:pt-0 lg:row-span-2 lg:mt-0 lg:grid lg:grid-rows-subgrid lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0 xl:pl-9"
@@ -78,16 +79,19 @@ const selectedWork = [
               id={entry.id}
             >
               <a
-                class="group inline-flex min-h-11 items-start gap-2 no-underline hover:underline"
+                class="group inline-block min-h-11 no-underline hover:underline"
                 href={href}
               >
-                <span>{entry.heading}</span>
-                <ArrowUpRight
-                  class="mt-1.5 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  size={18}
-                  stroke-width={1.4}
-                  aria-hidden="true"
-                />
+                {entry.heading.slice(0, lastWord)}
+                <span class="whitespace-nowrap">
+                  {entry.heading.slice(lastWord)}
+                  <ArrowUpRight
+                    class="ml-1.5 inline-block align-baseline transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    size={18}
+                    stroke-width={1.4}
+                    aria-hidden="true"
+                  />
+                </span>
               </a>
             </h2>
             <div class="prose max-w-[61ch] text-base" set:html={entry.html} />

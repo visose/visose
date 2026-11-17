@@ -201,7 +201,23 @@ test(
       exact: true,
     });
     const index = page.getByRole("navigation", { name: "Project index" });
+    const project = website.projectGroups
+      .flatMap((group) => group.projects)
+      .find((entry) => entry.caseStudy)!;
+    const inlineProject = website.projectGroups
+      .flatMap((group) => group.projects)
+      .find((entry) => !entry.caseStudy && entry.diagram)!;
+    const inline = page.locator(`#${inlineProject.id}`);
+    await page.goto(`${origin}/projects#${inlineProject.id}`);
+    await page.waitForFunction((id) => {
+      const entry = document.getElementById(id)!;
+      const margin = parseFloat(getComputedStyle(entry).scrollMarginTop);
+      return Math.abs(entry.getBoundingClientRect().top - margin) < 2;
+    }, inlineProject.id);
     for (let cycle = 0; cycle < 2; cycle++) {
+      const before = await inline.evaluate(
+        (entry) => entry.getBoundingClientRect().top,
+      );
       await indexToggle.click();
       await page.waitForFunction(
         () =>
@@ -210,36 +226,41 @@ test(
               .top,
           ) < 2,
       );
-      const scroll = await page.evaluate(() => scrollY);
-      await indexToggle.click();
+      if (cycle === 0) await indexToggle.click();
+      else await indexToggle.press("Escape");
       await index.waitFor({ state: "hidden" });
-      assert(
-        Math.abs((await page.evaluate(() => scrollY)) - scroll) < 2,
-        "Closing the project index must preserve the scroll position",
+      await page.waitForFunction(
+        ([id, y]) =>
+          Math.abs(
+            document.getElementById(id)!.getBoundingClientRect().top - y,
+          ) < 2,
+        [inlineProject.id, before] as const,
       );
-      if (cycle === 0)
-        await page.locator(".project-case").last().scrollIntoViewIfNeeded();
     }
-    const details = page.locator(".project-details").first();
-    await details.locator("summary").click();
+    const details = inline.locator("details").first();
     assert.equal(await details.getAttribute("open"), "");
     await details.locator("summary").press("Enter");
     assert.equal(await details.getAttribute("open"), null);
 
-    const project = website.projectGroups[0]!.projects[0]!;
     await indexToggle.click();
     await index
       .getByRole("link", { name: project.heading, exact: true })
       .click();
-    assert.equal(await details.getAttribute("open"), "");
-    assert(
-      await details
-        .locator("summary")
-        .evaluate((summary) => summary === document.activeElement),
-    );
+    const projectRow = page.locator(`article#${project.id}`);
+    assert(await projectRow.evaluate((row) => row === document.activeElement));
+    await projectRow.getByRole("link", { name: /read case study/i }).click();
+    await page.waitForURL(origin + project.caseStudy!.route);
+    await page.getByRole("link", { name: "Back to projects" }).first().click();
+    await page.waitForURL(`${origin}/projects#${project.id}`);
+    assert.equal(await projectRow.locator("details").count(), 0);
     await page.goto(`${origin}/projects#${project.details[0]!.id}`);
-    assert.equal(await details.getAttribute("open"), "");
+    await page.waitForURL(
+      `${origin}${project.caseStudy!.route}#${project.details[0]!.id}`,
+    );
     assert(await page.locator(`#${project.details[0]!.id}`).isVisible());
+    await page.goto(`${origin}/projects#${inlineProject.details[0]!.id}`);
+    await page.locator(`#${inlineProject.details[0]!.id}`).waitFor();
+    assert.equal(await details.getAttribute("open"), "");
 
     await page.goto(origin + "/contact");
     const button = page.locator("#send-enquiry");
@@ -276,9 +297,19 @@ test(
     assert.equal(response.status(), 202);
     assert.equal((await response.json()).simulated, true);
     await page.locator('#form-status[data-state="success"]').waitFor();
+    assert.equal(await button.isVisible(), false);
+    await page.getByRole("button", { name: "Send another inquiry" }).click();
+    assert.equal(await page.locator("#name").inputValue(), "");
+    assert(
+      await page
+        .locator("#name")
+        .evaluate((input) => input === document.activeElement),
+    );
+    await page.locator("#name").fill("Example Buyer");
+    await page.locator("#email").fill("buyer@example.com");
+    await page.locator("#message").fill(message);
 
     // Errors in collapsed optional fields must remain visible and reachable.
-    await optional.locator("summary").click();
     await page.route("**/api/contact", (route) =>
       route.fulfill({
         status: 422,
@@ -315,7 +346,11 @@ test(
     await page.waitForURL(
       origin + "/contact?area=Robots%20support%20or%20development",
     );
-    assert.equal(await optional.getAttribute("open"), "");
+    assert.equal(await optional.getAttribute("open"), null);
+    assert.match(
+      await optional.locator("summary").innerText(),
+      /Robots support or development/,
+    );
     assert.equal(
       await page.locator("#area").inputValue(),
       "Robots support or development",
@@ -329,7 +364,7 @@ test(
       const inquiryUrl = new URL((await inquiry.getAttribute("href"))!, origin);
       await inquiry.click();
       await page.waitForURL(inquiryUrl.href);
-      assert.equal(await optional.getAttribute("open"), "");
+      assert.equal(await optional.getAttribute("open"), null);
       assert.equal(
         await page.locator("#area").inputValue(),
         inquiryUrl.searchParams.get("area"),
@@ -342,7 +377,7 @@ test(
       const inquiryUrl = new URL((await inquiry.getAttribute("href"))!, origin);
       await inquiry.click();
       await page.waitForURL(inquiryUrl.href);
-      assert.equal(await optional.getAttribute("open"), "");
+      assert.equal(await optional.getAttribute("open"), null);
       assert.equal(
         await page.locator("#area").inputValue(),
         inquiryUrl.searchParams.get("area"),

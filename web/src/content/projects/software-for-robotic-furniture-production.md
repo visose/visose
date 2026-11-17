@@ -3,22 +3,22 @@ title: Robotic 3D printing
 format: Grasshopper plugins · Robot programming
 ---
 
-Developed custom Grasshopper plugins and robot programs for 3D printing with ABB, KUKA and Universal Robots across manufacturing and research projects.
-
-Across these projects, the tools cover slicing and toolpath generation, material preview, robot simulation and controller-program export. Implementations include planar and nonplanar printing, custom extrusion control and coordinated printing with multiple robots.
+We developed multi-axis printing software for manufacturing and research projects using ABB, KUKA and Universal Robots. The Grasshopper tools connect slicing, toolpath design and material preview to motion simulation and controller code generation. Across these projects, we developed toolpaths for flat and curved layers, coordinated printing with multiple robots and synchronized extrusion with actual robot speed.
 
 ## Robot programming {#robot-programming}
 
-Controller-specific programs coordinate printing, travel, approach and retract movements with extruder operation. Integrations include synchronized extrusion motors, analog and digital outputs, and network-connected extruders.
+Controller-specific programs coordinate deposition and travel moves with extruder operation, including approaches and retracts. We integrated extruders driven by synchronized motors, analog and digital signals, or network commands, depending on the equipment.
 
 ## Slicing and toolpaths {#slicing-and-toolpaths}
 
-Mesh slicing, contour offsets and polyline simplification prepare conventional layers and continuous spirals. Surface-following paths and user-defined curves support nonplanar printing, with adjustable nozzle orientation and smoothing through changes in slope.
+Mesh slicing, contour offsets and polyline simplification produce conventional layers and continuous spirals. For nonplanar deposition, paths follow surfaces or user-defined curves, with adjustable nozzle orientation and smoothing through changes in slope.
 
 ## Extrusion control {#extrusion-calibration}
 
-Bead width, layer separation and calibrated material output determine flow demand. Extrusion follows the robot's actual speed and can vary with the gap to previously deposited material. Priming and suck-back settings control material at the start and end of each path.
+The software calculates material demand from bead width, layer separation and calibrated extruder output. It adjusts flow as the robot accelerates or slows and can account for changes in the gap to the previous deposit. Priming and suck-back settings control material at the start and end of each path.
+
+In one implementation, the software checks the requested print speed against the extruder's calibrated output limit before generating the robot program.
 
 ## Analysis and preview {#analysis-and-preview}
 
-Material previews show the planned deposit, while color-coded paths reveal changes in layer separation and extrusion demand. Support checks flag unsupported sections, and [Robots](/projects/robots) provides simulation and checks for targets outside the robot's reach or joint limits. Calculated values and robot targets remain editable in Grasshopper.
+Designers can inspect the planned deposit, see changes in layer separation and extrusion demand on color-coded paths and flag unsupported sections. [Robots](/projects/robots) simulates the motion and checks reach and joint limits. The underlying values and targets remain editable in Grasshopper.

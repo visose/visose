@@ -19,6 +19,7 @@ const nodes = diagramNodes(diagram, [
   "generation",
   "core",
 ]);
+const revitTools = ["automation", "revit", "grasshopper"];
 ---
 
 <ProjectDiagram title={diagram.title} caption={diagram.caption}>
@@ -26,7 +27,7 @@ const nodes = diagramNodes(diagram, [
     <ArchitectureNode node={nodes.input!} class="input" external />
     <ArchitectureNode node={nodes.catalog!} class="catalog" />
     <div class="host-group">
-      {["automation", "revit", "grasshopper"].map((name) => (
+      {revitTools.map((name) => (
         <ArchitectureNode node={nodes[name]!} />
       ))}
     </div>
@@ -36,8 +37,37 @@ const nodes = diagramNodes(diagram, [
     <ArchitectureNode node={nodes.generation!} class="generation" />
     <ArchitectureNode node={nodes.core!} class="core" emphasis />
   </div>
+  <div slot="compact" class="compact-bim">
+    <div class="grid gap-2">
+      <ArchitectureNode node={nodes.input!} external />
+      <ArchitectureNode node={nodes.catalog!} />
+    </div>
+    <ArchitectureNode node={nodes.core!} emphasis />
+    <ArchitectureNode node={nodes.generation!} />
+    <details class="mt-2 border-t border-line-strong">
+      <summary class="min-h-11 cursor-pointer py-3 text-sm font-medium">
+        Service and CAD tools
+      </summary>
+      <div class="grid gap-2">
+        {[...revitTools, "rhino"].map((name) => (
+          <ArchitectureNode node={nodes[name]!} />
+        ))}
+      </div>
+    </details>
+  </div>
 </ProjectDiagram>
 <style>
+  .compact-bim > :global(.architecture-node) {
+    margin-top: var(--connection-gap);
+  }
+  .compact-bim > :global(.architecture-node)::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    height: var(--connection-gap);
+    border-left: 1px solid var(--connector);
+  }
   .host-group > :global(.architecture-node)::after,
   .shared-architecture > :global(.input)::after,
   .shared-architecture > :global(.catalog)::before,

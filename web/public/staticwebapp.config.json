@@ -1,6 +1,12 @@
 {
   "routes": [
     {
+      "route": "/_astro/*",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
       "route": "/default.aspx",
       "redirect": "/",
       "statusCode": 301

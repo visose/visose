@@ -30,4 +30,4 @@ groups:
       - web-controlled-robot-installation
 ---
 
-Examples of software developed for design, engineering and manufacturing: complete applications, plugins that extend CAD tools, and systems for robotic fabrication.
+Software we built for design, engineering and fabrication. The work ranges from standalone CAD systems and automated BIM generation to computer vision and industrial robot programming.

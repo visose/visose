@@ -18,6 +18,7 @@ export interface ContactFormDefinition {
   form: ContactField[];
   optionalDetails: string;
   submit: string;
+  sendAnother: string;
   success: string;
   error: string;
   sending: string;
@@ -31,6 +32,7 @@ export function readContactForm(value: unknown): ContactFormDefinition {
   const messages = [
     "optionalDetails",
     "submit",
+    "sendAnother",
     "success",
     "error",
     "sending",

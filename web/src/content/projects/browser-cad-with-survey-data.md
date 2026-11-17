@@ -3,9 +3,7 @@ title: Coastal engineering CAD
 format: Web CAD application
 ---
 
-Developed a web-based CAD application for dredging, land reclamation and coastal structures, combining seabed surveys and ground models with parametric design tools.
-
-Engineers can edit designs in plan, 3D and section views, inspect ground conditions and compare excavation, fill and rock quantities as designs change.
+Engineers design dredging, reclamation and coastal works in the same model as the survey data. The web CAD application lets them edit designs in plan, section and 3D and compare the resulting excavation, fill and rock quantities.
 
 ## Drawing and editing {#drawing-and-editing}
 
@@ -13,8 +11,10 @@ The TypeScript application uses React and Three.js. Its editing environment incl
 
 ## Surveys and ground models {#survey-visualization}
 
-Bathymetric and topographic surveys form the terrain model, with geographic placement, elevation colors and contours. Borehole data describes the soil layers beneath it, supporting ground-model visualization, sections and excavation quantities by soil type.
+Bathymetric and topographic surveys form a geographically placed terrain model with elevation colors and contours. Borehole data describes the subsurface layers, so engineers can inspect the ground in section and calculate excavation quantities by soil type.
 
 ## Marine works and quantities {#marine-works-and-quantities}
 
-Dredging basins, channels and reclamation areas are defined by alignments, levels and slopes. Parametric cross-sections define coastal structures and their material layers. The resulting 3D geometry supports quantity calculations for excavation, fill and individual rock layers.
+The application generates dredging and reclamation geometry from alignments, levels and slopes. Parametric cross-sections describe coastal structures and their material layers. Engineers can revise those definitions and compare the resulting 3D designs by volumes of excavation, fill and individual rock layers.
+
+Each cut or fill starts from the terrain left by the preceding operation. If a later excavation removes previously placed fill, the application tracks that volume separately from excavation of the original ground.

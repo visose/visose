@@ -110,8 +110,10 @@ Astro.csp?.insertScriptHash(
                 (total, section) => total + wordCount(section.html),
                 0,
               );
+              const study = entry.caseStudy;
               const expandDetails =
-                !!entry.diagram || detailWords > wordCount(entry.html);
+                !study &&
+                (!!entry.diagram || detailWords > wordCount(entry.html));
               return (
                 <article
                   id={entry.id}
@@ -129,7 +131,8 @@ Astro.csp?.insertScriptHash(
                   <div class="min-w-0">
                     <div class="prose max-w-[65ch] text-base sm:text-body">
                       <Fragment set:html={entry.html} />
-                      {!expandDetails &&
+                      {!study &&
+                        !expandDetails &&
                         entry.details.map((section) => (
                           <div
                             id={section.id}
@@ -139,16 +142,26 @@ Astro.csp?.insertScriptHash(
                           />
                         ))}
                     </div>
-                    {entry.caseStudy && (
+                    {study && (
                       <p class="mt-3">
                         <a
                           class="inline-flex min-h-11 items-center gap-2 text-base"
-                          href={entry.caseStudy.route}
+                          href={study.route}
                         >
                           Read case study
                           <span class="sr-only">: {entry.heading}</span>
                           <ArrowUpRight size={16} aria-hidden="true" />
                         </a>
+                        {entry.details.map((section) => (
+                          <a
+                            id={section.id}
+                            data-case-section
+                            class="hidden scroll-mt-(--project-offset) text-base target:block"
+                            href={`${study.route}#${section.id}`}
+                          >
+                            {section.heading}
+                          </a>
+                        ))}
                       </p>
                     )}
                   </div>
@@ -273,13 +286,65 @@ Astro.csp?.insertScriptHash(
   toggle.classList.remove("invisible");
   setIndexOpen(location.hash === "#project-index", false);
   index.classList.add("disclosure-panel");
+  let returnTo: { top: number; focus: HTMLElement } | undefined;
+  function openIndex(trigger: HTMLElement) {
+    const readingLine =
+      Math.max(
+        toggle.getBoundingClientRect().bottom,
+        parseFloat(
+          getComputedStyle(projects).getPropertyValue("--project-offset"),
+        ),
+      ) + 1;
+    const article = Array.from(
+      projects.querySelectorAll<HTMLElement>("article"),
+    ).find((entry) => {
+      const bounds = entry.getBoundingClientRect();
+      return bounds.top <= readingLine && bounds.bottom > readingLine;
+    });
+    returnTo = {
+      top: scrollY,
+      focus: trigger === toggle ? (article ?? toggle) : trigger,
+    };
+    setIndexOpen(true);
+    projects.scrollIntoView({ block: "start" });
+  }
+  function dismissIndex() {
+    setIndexOpen(false, false);
+    if (returnTo) {
+      window.scrollTo({ top: returnTo.top, behavior: "instant" });
+      returnTo.focus.focus({ preventScroll: true });
+      returnTo = undefined;
+    } else {
+      if (location.hash === "#project-index")
+        history.replaceState(
+          history.state,
+          "",
+          location.pathname + location.search,
+        );
+      toggle.focus({ preventScroll: true });
+    }
+  }
   toggle.addEventListener("click", () => {
-    setIndexOpen(index.hidden === true);
-    if (!index.hidden) projects.scrollIntoView({ block: "start" });
+    if (index.hidden) openIndex(toggle);
+    else dismissIndex();
+  });
+  projects.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !index.hidden) {
+      event.preventDefault();
+      dismissIndex();
+    }
   });
   function jumpToProject(behavior: ScrollBehavior = "auto") {
+    returnTo = undefined;
     const target = document.getElementById(location.hash.slice(1));
     if (!target || !projects.contains(target)) return;
+    if (
+      target instanceof HTMLAnchorElement &&
+      target.hasAttribute("data-case-section")
+    ) {
+      location.replace(target.href);
+      return;
+    }
     const details =
       target.closest("details") ??
       (target.classList.contains("project-case")
@@ -315,6 +380,11 @@ Astro.csp?.insertScriptHash(
     const target = document.getElementById(link.hash.slice(1));
     if (!target || !projects.contains(target)) return;
     event.preventDefault();
+    if (target === projects) {
+      openIndex(link);
+      toggle.focus({ preventScroll: true });
+      return;
+    }
     if (location.hash !== link.hash) history.pushState(null, "", link.hash);
     jumpToProject();
   });

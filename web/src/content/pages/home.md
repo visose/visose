@@ -15,44 +15,44 @@ We develop applications, CAD plugins and robotics software for design, architect
 
 ### Architectural CAD software {#selected-applications}
 
-A complete standalone CAD application for architectural design, combining direct 3D modeling with procedural building tools.
+A standalone CAD system combining direct solid modeling, parametric building generation and an interactive workspace for building and site design.
 
 ### Coastal engineering CAD {#selected-coastal-engineering}
 
-A web CAD application for dredging, land reclamation and coastal structures, combining survey data, design tools and quantity calculations.
+Browser-based CAD that connects survey-derived terrain and ground models to parametric design and material quantity analysis for coastal works.
 
 ### Automated BIM for modular housing {#selected-plugins}
 
-Editable Revit models generated from house configurations, using the manufacturer's component and layout rules.
+A shared generation engine turns house configurations and component catalogs into native, editable Revit models and 3D geometry for web viewing.
 
 ### Medical brace design {#selected-medical-brace-design}
 
-A Rhino plugin for fitting and adjusting medical braces from body scans, with geometry exported for manufacturing.
+A Rhino plugin for fitting brace templates to body scans, refining the fitted shape and exporting it for manufacturing.
 
 ### Robots {#selected-robotics}
 
-Open-source robot-programming software for Rhino, Grasshopper and .NET, used at more than 70 universities and design schools.
+Open-source robot programming software for kinematics, simulation and controller code generation, used at more than 70 universities and design schools.
 
 ### Robotic 3D printing {#selected-robotic-printing}
 
-Grasshopper tools and robot programs for multi-axis printing, from slicing and simulation to coordinated robot motion and extrusion control.
+Multi-axis printing software for flat and curved toolpaths, robot simulation and extrusion synchronized with actual robot speed.
 
 ### Six-axis robotic milling {#selected-robotic-milling}
 
-A six-axis machining workflow connecting existing CAM software with robot simulation and controller-program generation.
+Custom CAM post-processors carry cutter positions, orientations and feed rates into six-axis robot simulation and controller programs.
 
 ## CAD and 3D applications {#applications}
 
-We build complete web and desktop applications for CAD, interactive 3D, engineering analysis and design automation. Projects can start with a new product or extend software you already use.
+We build complete web and desktop applications for geometric modeling, interactive 3D and engineering analysis. Editing tools and engineering calculations use the same model, so teams can evaluate each design as it changes.
 
 ## CAD plugins and integrations {#plugins-and-integrations}
 
-We extend CAD and design platforms with custom tools, automate workflows and connect them with other software. Platforms include Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+We extend CAD platforms with tools that encode design rules, generate models and carry geometry and project data between systems. Shared libraries let teams use the same engineering logic across the applications they depend on.
 
 ## Robotics software {#robotics-software}
 
-We develop software for industrial robot programming and fabrication, including simulation, toolpath generation and CAD/CAM integration. Work includes robotic 3D printing, milling and custom process control.
+We develop software for industrial robot programming, simulation and process control. We connect CAD and CAM workflows to robot motion and coordinate it with the tooling and equipment a fabrication process depends on.
 
 ## Working with visose {#working-with-visose}
 
-Work directly with an experienced developer to define the technical approach, build your software and support it after delivery. We can work independently or alongside your product team.
+You work directly with the developer responsible for your software. We can work alongside your product team. At handover, you receive the source code and instructions to build and maintain it.

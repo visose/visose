@@ -4,40 +4,32 @@ interface Props {
   caption: string;
 }
 const { title, caption } = Astro.props;
+const compact = Astro.slots.has("compact");
 ---
 
 <figure class="project-diagram m-0" data-diagram>
   <figcaption>{caption}</figcaption>
-  <p class="scroll-hint mb-2 text-sm text-muted">
-    Scroll horizontally to explore the diagram.
-  </p>
-  <div
-    class="diagram-scroll overflow-x-auto overscroll-x-contain focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus"
-    role="region"
-    aria-label={title}
-    tabindex="0"
-  >
-    <div class="architecture">
-      <p class="architecture-title">{title}</p>
+  <div class="architecture">
+    <p class="architecture-title">{title}</p>
+    <div class:list={[{ "wide-layout": compact }]}>
       <slot />
     </div>
+    {compact && (
+      <div class="narrow-layout">
+        <slot name="compact" />
+      </div>
+    )}
   </div>
 </figure>
 <style>
   .project-diagram {
     container-type: inline-size;
   }
-  .scroll-hint {
+  .narrow-layout {
     display: none;
   }
-  @container (width < 760px) {
-    .scroll-hint {
-      display: block;
-    }
-  }
   .architecture {
-    min-width: 760px;
-    --connector: var(--color-line-strong);
+    --connector: #68747c;
     --connection-gap: 16px;
     --node-gap: 20px;
     padding: 16px;
@@ -79,6 +71,41 @@ const { title, caption } = Astro.props;
   }
   .architecture :global(.emphasis li) {
     margin: 0;
+  }
+  @container (width < 760px) {
+    .wide-layout {
+      display: none;
+    }
+    .narrow-layout {
+      display: block;
+    }
+    .architecture {
+      padding: 12px;
+      --node-gap: 12px;
+    }
+    .architecture :global(.node-row) {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      border-inline-start: 1px solid var(--connector);
+      padding-inline-start: 12px;
+    }
+    .architecture :global(.node-row > .architecture-node)::after {
+      display: none;
+    }
+    .architecture :global(.node-row > .architecture-node)::before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 1px;
+      background: var(--connector);
+      left: -13px;
+      top: 50%;
+      bottom: auto;
+    }
+    .architecture :global(.emphasis ul) {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+      gap: 2px 12px;
+    }
   }
   @media (prefers-reduced-motion: no-preference) {
     .is-diagram-active

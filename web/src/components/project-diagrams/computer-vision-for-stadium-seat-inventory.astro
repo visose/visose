@@ -72,4 +72,20 @@ const nodes = diagramNodes(diagram, [
     top: 50%;
     background: var(--connector);
   }
+  @container (width < 760px) {
+    .review-row {
+      grid-template-columns: 1fr;
+      gap: var(--connection-gap);
+    }
+    .review-row > :global(.review ul) {
+      grid-template-columns: 1fr;
+    }
+    .review-row > :global(.export)::before {
+      left: 50%;
+      top: auto;
+      bottom: 100%;
+      width: 1px;
+      height: var(--connection-gap);
+    }
+  }
 </style>
