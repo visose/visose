@@ -36,10 +36,10 @@ if (Boolean(project.diagram) !== Boolean(Diagram))
     `${project.id}: diagram content and component must both exist`,
   );
 const navigationSections = [
-  ...project.details,
   ...(project.diagram
     ? [{ id: "architecture", heading: project.diagram.title }]
     : []),
+  ...project.details,
 ];
 ---
 
@@ -58,6 +58,17 @@ const navigationSections = [
     back={{ href: `/projects#${project.id}`, label: "Back to projects" }}
     sections={navigationSections}
   />
+  {project.diagram && Diagram && (
+    <div
+      id="architecture"
+      class="border-b border-line bg-silver/50 py-8 focus:outline-none sm:py-11"
+      tabindex="-1"
+    >
+      <div class="wrap">
+        <Diagram diagram={project.diagram} />
+      </div>
+    </div>
+  )}
   <div class="wrap pt-10 pb-12 sm:pt-12 sm:pb-16">
     {project.details.map((section) => (
       <section
@@ -74,15 +85,6 @@ const navigationSections = [
         />
       </section>
     ))}
-    {project.diagram && Diagram && (
-      <div
-        id="architecture"
-        class="mt-10 scroll-mt-7 border-t border-line pt-9 focus:outline-none"
-        tabindex="-1"
-      >
-        <Diagram diagram={project.diagram} />
-      </div>
-    )}
     <div class="mt-10 flex flex-wrap items-center justify-between gap-x-7 gap-y-4 border-t border-line pt-8 text-base sm:text-lg">
       <ActionLink href={study.action.href}>{study.action.label}</ActionLink>
       <a

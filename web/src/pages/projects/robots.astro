@@ -44,16 +44,13 @@ const videos = section(robots, "reference-videos");
   </PageOpening>
 
   <section
-    class="on-dark scroll-mt-7 bg-graphite pt-10 pb-4.5 text-paper md:pt-16 md:pb-7"
+    class="on-dark scroll-mt-7 pt-10 pb-4.5 md:pt-16 md:pb-7"
     id={teaching.id}
     aria-labelledby="adoption-title"
   >
     <div class="wrap">
       <div class="md:grid md:grid-cols-2 md:gap-[5%] min-[59.375rem]:gap-[8%]">
-        <h2
-          class="mb-7 max-w-[22ch] text-[34px] md:mb-6 md:max-w-[18ch] md:text-[clamp(32px,3.5vw,46px)]"
-          id="adoption-title"
-        >
+        <h2 class="mb-6 max-w-[22ch]" id="adoption-title">
           {teaching.heading}
         </h2>
         <div>
@@ -79,10 +76,10 @@ const videos = section(robots, "reference-videos");
         </div>
       </div>
       <details
-        class="institutions group mt-9 scroll-mt-7 border-t border-[#697078]"
+        class="institutions group mt-9 scroll-mt-7 border-t border-line-strong"
         id={institutions.id}
       >
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-body focus-visible:outline-paper">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-body">
           <span>{institutions.heading}</span>
           <ChevronDown
             class="shrink-0 group-open:rotate-180"
@@ -104,7 +101,7 @@ const videos = section(robots, "reference-videos");
     aria-labelledby="programming-title"
   >
     <div>
-      <h2 class="mb-6 text-[29px] md:text-[34px]" id="programming-title">
+      <h2 class="mb-6" id="programming-title">
         {product.heading}
       </h2>
       <div
@@ -126,7 +123,7 @@ const videos = section(robots, "reference-videos");
     id={resources.id}
     aria-labelledby="resources-title"
   >
-    <h2 class="mb-6 text-[29px] md:text-[34px]" id="resources-title">
+    <h2 class="mb-6" id="resources-title">
       {resources.heading}
     </h2>
     <div
@@ -141,10 +138,7 @@ const videos = section(robots, "reference-videos");
     aria-labelledby="support-title"
   >
     <div>
-      <h2
-        class="mb-6 max-w-[20ch] text-[29px] md:text-[34px]"
-        id="support-title"
-      >
+      <h2 class="mb-6 max-w-[20ch]" id="support-title">
         {support.heading}
       </h2>
       <div
@@ -169,7 +163,7 @@ const videos = section(robots, "reference-videos");
   >
     <div class="wrap">
       <div class="mb-8 md:grid md:grid-cols-[1fr_1.4fr] md:gap-[8%]">
-        <h2 class="mb-6 text-[29px] md:text-[34px]" id="references-title">
+        <h2 class="mb-6" id="references-title">
           {references.heading}
         </h2>
         <div class="prose max-w-[68ch] text-base" set:html={references.html} />
@@ -339,7 +333,7 @@ const videos = section(robots, "reference-videos");
       display: block;
       font-style: normal;
       font-size: 13px;
-      color: #ced3d7;
+      color: var(--color-muted);
       margin-top: 3px;
     }
     #community-support :global(p:last-child) {

@@ -1,22 +1,23 @@
 ---
 title: CAD plugin development - Rhino, Grasshopper and Revit - visose
-description: Custom CAD plugins and integrations for platforms such as Rhino, Grasshopper and Revit, including model generation, geometry processing and data exchange.
+description: Custom CAD plugins and integrations for design automation, geometry processing and data exchange on platforms such as Rhino, Grasshopper and Revit.
 heading: CAD plugin development
 action:
   label: Discuss a CAD integration
   href: /contact?area=CAD%20plugin%20or%20integration
 ---
 
-We build custom tools inside the CAD software your team already uses. Design rules can drive geometry, drawings and model checks, and integrations can make the same logic and data available across applications. Platforms we work with include Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+We build plugins that extend the CAD software your team uses and integrations that connect it with other applications. We work with platforms such as Rhino, Grasshopper, Revit, Navisworks and SketchUp.
 
 ## Plugin development {#design-tools}
 
-We develop new plugins and adapt existing ones as your workflow or host application changes. Typical tasks include:
+We develop new plugins and adapt existing ones as your workflow or host application changes. We automate model and drawing production, build specialist editing tools and check models against your design rules.
 
-- Model generation from parameters, catalogs and design rules.
-- Drawing production, model inspection and custom editing tools.
-- Exchange of geometry and properties between applications.
-- Connections to web services, licensing systems and shared data.
+We build integrations that exchange geometry and project information between applications and connect CAD tools to shared data sources, web services and licensing systems.
+
+## Technologies and integration {#platforms}
+
+Our expertise covers geometry processing, native CAD APIs and web interfaces. We work with C#/.NET, TypeScript and React.
 
 ## Selected work {#selected-work}
 
@@ -25,10 +26,6 @@ We develop new plugins and adapt existing ones as your workflow or host applicat
 [CAD integrations for design collaboration](/projects#cad-integrations-for-design-collaboration) bring one publishing workflow into Rhino, Revit and SketchUp through their native model APIs.
 
 [Medical brace design](/projects#medical-brace-design-in-rhino) connects mesh preparation, measurement-driven fitting and local shape editing to manufacturing export in Rhino.
-
-## Technologies and integration {#platforms}
-
-We use C#/.NET for geometry and host integrations, with TypeScript and React for web interfaces. Shared libraries support tools that span multiple applications.
 
 ## Discuss your project {#discuss-a-plugin}
 

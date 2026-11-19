@@ -5,12 +5,14 @@
 @theme static {
   --color-paper: #fafbf9;
   --color-silver: #e9ebec;
+  --color-panel: #dbe1e6;
   --color-ink: #222831;
   --color-muted: #4b535d;
   --color-placeholder: #737373;
   --color-line: #d1d5d8;
   --color-line-strong: #afb7bd;
   --color-graphite: #30373d;
+  --color-slate: #414b55;
   --color-focus: var(--color-graphite);
   --color-error: #8e302c;
   --color-control: #78828b;
@@ -38,6 +40,7 @@
 
 @layer base {
   :root {
+    --site-header-height: 4.5rem;
     font-family: var(--font-sans);
     color: var(--color-ink);
     background: var(--color-paper);
@@ -46,11 +49,16 @@
     -webkit-font-smoothing: antialiased;
     letter-spacing: 0;
   }
+  @media (width >= 37.5rem) {
+    :root {
+      --site-header-height: 5.25rem;
+    }
+  }
   * {
     box-sizing: border-box;
   }
   html {
-    scrollbar-color: #8b949c var(--color-paper);
+    scrollbar-color: var(--color-control) var(--color-paper);
     scrollbar-gutter: stable;
   }
   body {
@@ -127,16 +135,18 @@
     text-wrap: balance;
   }
   h1 {
-    font-size: 52px;
+    font-size: 3.25rem;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
   }
   h2 {
-    font-size: 34px;
+    font-size: 2.125rem;
   }
   h3 {
-    font-size: 25px;
+    font-size: 1.5625rem;
   }
   h4 {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   strong {
     font-weight: 550;
@@ -153,13 +163,13 @@
   }
   @media (width < 37.5rem) {
     h1 {
-      font-size: 38px;
+      font-size: 2.375rem;
     }
     h2 {
-      font-size: 29px;
+      font-size: 1.8125rem;
     }
     h3 {
-      font-size: 24px;
+      font-size: 1.5rem;
     }
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -241,6 +251,33 @@
 }
 
 @layer components {
+  .with-page-opening {
+    background-color: var(--color-silver);
+  }
+
+  .with-page-opening > main {
+    background-color: var(--color-paper);
+  }
+
+  .page-opening {
+    position: relative;
+    isolation: isolate;
+    background: var(--color-silver);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .on-dark {
+    --color-focus: var(--color-paper);
+    --color-muted: var(--color-panel);
+    --color-line-strong: color-mix(
+      in srgb,
+      var(--color-paper) 48%,
+      transparent
+    );
+    color: var(--color-paper);
+    background-color: var(--color-slate);
+  }
+
   .skip-link {
     position: fixed;
     top: 12px;
@@ -311,8 +348,5 @@
       display: grid;
       gap: 0;
     }
-  }
-  .on-dark a:focus-visible {
-    outline-color: #e8eff8;
   }
 }

@@ -23,12 +23,9 @@ const capabilities = [
   <PageOpening heading={opening.heading}>
     <Fragment set:html={groupLinkLists(opening.html)} />
   </PageOpening>
-  <section
-    class="on-dark about-background bg-graphite py-10 text-paper md:py-16"
-    id={background.id}
-  >
+  <section class="on-dark py-12 md:py-17" id={background.id}>
     <div class="wrap relative md:grid md:grid-cols-[1fr_1.9fr] md:gap-[8%]">
-      <h2 class="mb-6 text-[29px] md:text-[34px]">{background.heading}</h2>
+      <h2 class="mb-6 md:mb-0">{background.heading}</h2>
       <div
         class="prose max-w-[68ch] text-base md:text-lg"
         set:html={background.html}
@@ -38,9 +35,7 @@ const capabilities = [
   <section class="bg-silver py-10 md:py-16" id={expertise.id}>
     <div class="wrap">
       <div class="mb-8 md:grid md:grid-cols-[1fr_1.9fr] md:gap-[8%]">
-        <h2 class="mb-5 text-[29px] md:mb-0 md:text-[34px]">
-          {expertise.heading}
-        </h2>
+        <h2 class="mb-5 md:mb-0">{expertise.heading}</h2>
         <div
           class="prose max-w-[65ch] text-base md:text-lg"
           set:html={expertise.html}
@@ -61,7 +56,7 @@ const capabilities = [
   </section>
   <section class="wrap py-10 md:grid md:grid-cols-[1.45fr_1fr] md:gap-[8%] md:py-16">
     <div id={openSource.id}>
-      <h2 class="mb-6 text-[29px] md:text-[34px]">{openSource.heading}</h2>
+      <h2 class="mb-6">{openSource.heading}</h2>
       <div
         class="prose max-w-[65ch] text-base md:text-lg"
         set:html={openSource.html}
@@ -76,19 +71,3 @@ const capabilities = [
     </div>
   </section>
 </BaseLayout>
-<style>
-  @layer components {
-    .about-background {
-      position: relative;
-      overflow: hidden;
-    }
-    .about-background::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 32%;
-      background: #3a4148;
-      clip-path: polygon(0 0, 70% 0, 100% 100%, 0 100%);
-    }
-  }
-</style>

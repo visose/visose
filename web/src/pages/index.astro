@@ -1,20 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PlanarField from "../components/PlanarField.astro";
 import ActionLink from "../components/ActionLink.astro";
-import { ArrowRight, ArrowUpRight } from "@lucide/astro";
+import PlanarField from "../components/PlanarField.astro";
+import { ArrowRight, ArrowUpRight, Minus, Plus } from "@lucide/astro";
 import { page, projectGroups, section } from "../lib/pages";
+
 const home = page("home");
 const opening = home.opening;
+const action = opening.action;
+if (!action) throw new Error("Home needs a primary action.");
+
 const services = [
   ["applications", "/services/cad-and-3d-application-development"],
   ["plugins-and-integrations", "/services/cad-plugin-development"],
   ["robotics-software", "/services/robotics-software-development"],
 ] as const;
 const more = section(home, "cad-and-robotics");
+const featured = section(home, "selected-robotics");
 const starting = section(home, "working-with-visose");
-const action = opening.action;
-if (!action) throw new Error("Home needs a primary action.");
 const selectedWork = [
   [
     "cad-and-3d-applications",
@@ -39,7 +42,6 @@ const selectedWork = [
   [
     "robotics-and-fabrication",
     [
-      ["selected-robotics", "/projects/robots"],
       [
         "selected-robotic-printing",
         "/projects#software-for-robotic-furniture-production",
@@ -54,137 +56,190 @@ const selectedWork = [
 ---
 
 <BaseLayout title={home.title} description={home.description} home>
-  <section class="relative" aria-labelledby="home-title">
+  <section class="page-opening" aria-labelledby="home-title">
     <PlanarField />
-    <div class="wrap hero-content relative">
-      <h1 id="home-title">{opening.heading}</h1>
-      <div class="hero-description prose" set:html={opening.html} />
-      <div class="flex pt-8">
-        <ActionLink href={action.href}>{action.label}</ActionLink>
+    <div class="wrap grid gap-5 py-9 sm:gap-9 sm:py-14 lg:grid-cols-[minmax(0,1.85fr)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-16 xl:gap-16 xl:py-18">
+      <h1
+        id="home-title"
+        class="min-w-0 max-w-[17ch] text-pretty max-[22rem]:text-[2.125rem] lg:text-[clamp(3rem,4.7vw,4.25rem)] lg:text-balance"
+      >
+        {opening.heading}
+      </h1>
+      <div class="min-w-0 border-t border-line-strong pt-4 lg:border-t-0 lg:pt-0">
+        <div
+          class="prose max-w-[42ch] text-lg text-pretty text-muted lg:[&_p]:text-balance xl:text-xl"
+          set:html={opening.html}
+        />
+        <div class="mt-5 flex sm:mt-6">
+          <ActionLink href={action.href}>{action.label}</ActionLink>
+        </div>
       </div>
     </div>
   </section>
-  <div class="bg-paper">
-    <div class="wrap capability-spread py-10.5 sm:py-13.5 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-4 xl:gap-x-9">
+
+  <section class="wrap py-9 sm:py-13 lg:py-15" aria-labelledby="home-services">
+    <h2 class="mb-4 sm:mb-6" id="home-services">
+      {page("services").opening.heading}
+    </h2>
+    <div class="border-t border-line-strong">
       {services.map(([id, href]) => {
         const entry = section(home, id);
-        const lastWord = entry.heading.lastIndexOf(" ") + 1;
         return (
-          <section
-            class="home-capability mt-8 border-t border-line pt-7 first:mt-0 first:border-t-0 first:pt-0 lg:row-span-2 lg:mt-0 lg:grid lg:grid-rows-subgrid lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0 xl:pl-9"
-            aria-labelledby={entry.id}
-          >
-            <h2
-              class="mb-3 text-2xl font-medium lg:mb-0 xl:text-[26px]"
-              id={entry.id}
+          <section aria-labelledby={id} class="border-b border-line-strong">
+            <a
+              class="service-link group grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-5 gap-y-1.5 py-4 no-underline sm:py-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.85fr)_auto] lg:gap-x-10"
+              href={href}
+              aria-labelledby={id}
             >
-              <a
-                class="group inline-block min-h-11 no-underline hover:underline"
-                href={href}
+              <h3
+                class="col-start-1 row-start-1 text-[22px] leading-[1.2] text-pretty sm:text-[25px]"
+                id={id}
               >
-                {entry.heading.slice(0, lastWord)}
-                <span class="whitespace-nowrap">
-                  {entry.heading.slice(lastWord)}
-                  <ArrowUpRight
-                    class="ml-1.5 inline-block align-baseline transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    size={18}
-                    stroke-width={1.4}
-                    aria-hidden="true"
-                  />
-                </span>
-              </a>
-            </h2>
-            <div class="prose max-w-[61ch] text-base" set:html={entry.html} />
+                {entry.heading}
+              </h3>
+              <div
+                class="prose col-span-full row-start-2 max-w-[65ch] text-base text-muted lg:col-[2/3] lg:row-start-1"
+                set:html={entry.html}
+              />
+              <ArrowRight
+                class="col-start-2 row-start-1 mt-1 text-muted transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 lg:col-start-3"
+                size={21}
+                stroke-width={1.5}
+                aria-hidden="true"
+              />
+            </a>
           </section>
         );
       })}
     </div>
-  </div>
-  <section class="bg-silver py-10.5 sm:py-13.5" aria-labelledby={more.id}>
-    <div class="wrap">
-      <div class="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h2 class="text-[29px] sm:text-[34px]" id={more.id}>
-          {more.heading}
-        </h2>
-        <div class="prose text-base [&_p]:m-0" set:html={more.html} />
+  </section>
+
+  <section
+    class="border-y border-line bg-silver py-9 sm:py-13 lg:py-16"
+    aria-labelledby={more.id}
+  >
+    <div class="wrap grid gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] lg:gap-12 xl:gap-16">
+      <div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+          <h2 id={more.id}>{more.heading}</h2>
+          <div
+            class="prose text-base [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center"
+            set:html={more.html}
+          />
+        </div>
+        <a
+          class="group mt-3 block border-t border-line-strong pt-4 no-underline sm:mt-5"
+          href="/projects/robots"
+          aria-labelledby={featured.id}
+        >
+          <h3 class="mb-2 flex items-center gap-2.5 text-2xl" id={featured.id}>
+            <img
+              src="/brand/robots.svg"
+              width="28"
+              height="28"
+              alt=""
+              class="size-7 shrink-0"
+            />
+            <span class="decoration-1 underline-offset-5 group-hover:underline group-focus-visible:underline">
+              {featured.heading}
+            </span>
+            <ArrowUpRight
+              class="shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              size={18}
+              stroke-width={1.5}
+              aria-hidden="true"
+            />
+          </h3>
+          <div
+            class="prose max-w-[46ch] text-base text-muted"
+            set:html={featured.html}
+          />
+        </a>
       </div>
-      <div class="grid gap-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-5">
-        {selectedWork.map(([groupId, projects]) => {
+      <div class="border-b border-line-strong lg:self-start">
+        {selectedWork.map(([groupId, projects], index) => {
           const group = projectGroups.find((entry) => entry.id === groupId);
           if (!group)
-            throw new Error(`Missing selected-work group: ${groupId}`);
-          const headingId = `selected-group-${groupId}`;
+            throw new Error("Missing selected-work group: " + groupId);
           return (
-            <section
-              class="border-t border-line-strong pt-6 first:border-t-0 first:pt-0 lg:row-span-2 lg:grid lg:grid-rows-subgrid lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8 lg:first:border-l-0 lg:first:pl-0"
-              aria-labelledby={headingId}
+            <details
+              class="group border-t border-line-strong"
+              name="homepage-work"
+              open={index === 0}
             >
-              <h3
-                class="mb-5 text-[22px] leading-[1.25] font-medium lg:mb-0"
-                id={headingId}
+              <summary
+                class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2.5 text-lg font-medium underline-offset-5 hover:underline"
+                id={"selected-group-" + groupId}
               >
-                {group.heading}
-              </h3>
-              <div class="grid content-start gap-6">
+                <span>{group.heading}</span>
+                <Plus
+                  class="shrink-0 text-muted group-open:hidden"
+                  size={18}
+                  stroke-width={1.4}
+                  aria-hidden="true"
+                />
+                <Minus
+                  class="hidden shrink-0 text-muted group-open:block"
+                  size={18}
+                  stroke-width={1.4}
+                  aria-hidden="true"
+                />
+              </summary>
+              <ul class="m-0 list-none pb-4 pl-4 sm:pl-5">
                 {projects.map(([id, href]) => {
                   const entry = section(home, id);
                   return (
-                    <a
-                      class="group block min-h-11 no-underline"
-                      href={href}
-                      aria-labelledby={entry.id}
-                    >
-                      <h4
-                        class="mb-1.5 flex items-start gap-2 text-lg leading-[1.3] font-medium xl:text-[19px]"
-                        id={entry.id}
+                    <li>
+                      <a
+                        class="project-link block py-2.5 no-underline"
+                        href={href}
+                        aria-labelledby={id}
                       >
-                        {entry.id === "selected-robotics" && (
-                          <img
-                            src="/brand/robots.svg"
-                            width="24"
-                            height="24"
-                            alt=""
-                            class="block size-6 shrink-0"
+                        <h3
+                          class="mb-1.5 flex items-start justify-between gap-3 text-lg leading-tight"
+                          id={id}
+                        >
+                          <span class="project-title">{entry.heading}</span>
+                          <ArrowUpRight
+                            class="shrink-0 text-muted"
+                            size={17}
+                            stroke-width={1.4}
+                            aria-hidden="true"
                           />
-                        )}
-                        <span class="min-w-0 decoration-1 underline-offset-5 group-hover:underline group-focus-visible:underline">
-                          {entry.heading}
-                        </span>
-                        <ArrowUpRight
-                          class="mt-1 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                          size={16}
-                          stroke-width={1.4}
-                          aria-hidden="true"
+                        </h3>
+                        <div
+                          class="prose max-w-[61ch] text-base text-muted"
+                          set:html={entry.html}
                         />
-                      </h4>
-                      <div class="prose text-base" set:html={entry.html} />
-                    </a>
+                      </a>
+                    </li>
                   );
                 })}
-              </div>
-            </section>
+              </ul>
+            </details>
           );
         })}
       </div>
     </div>
   </section>
-  <section
-    class="on-dark relative py-8 text-paper sm:py-12"
-    aria-labelledby={starting.id}
-  >
-    <div class="wrap relative sm:grid sm:grid-cols-[1.08fr_1fr] sm:gap-10 xl:gap-16">
-      <h2 class="mb-5.5 text-[29px] sm:mb-0 sm:text-[34px]" id={starting.id}>
+
+  <section slot="closing" aria-labelledby={starting.id}>
+    <div class="wrap py-9 sm:py-13 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] lg:gap-12 xl:gap-16">
+      <h2 class="mb-4 lg:mb-0" id={starting.id}>
         {starting.heading}
       </h2>
       <div>
-        <div class="prose max-w-[58ch] text-body" set:html={starting.html} />
+        <div
+          class="prose max-w-[61ch] text-body sm:text-lg"
+          set:html={starting.html}
+        />
         <a
-          class="group mt-4 inline-flex min-h-11 items-center gap-3 text-body underline decoration-1 underline-offset-5"
+          class="group mt-3 inline-flex min-h-11 items-center gap-3 text-base underline-offset-5"
           href={action.href}
         >
           {action.label}
           <ArrowRight
-            class="transition-transform duration-200 group-hover:translate-x-1 group-focus-visible:translate-x-1"
+            class="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1"
             size={18}
             stroke-width={1.4}
             aria-hidden="true"
@@ -194,66 +249,11 @@ const selectedWork = [
     </div>
   </section>
 </BaseLayout>
+
 <style>
-  .hero-content {
-    padding-block: 80px 88px;
-  }
-  .hero-content h1 {
-    max-width: 1080px;
-    font-size: 68px;
-    line-height: 1.08;
-    margin-bottom: 28px;
-  }
-  .hero-description {
-    max-width: 850px;
-    font-size: 21px;
-    line-height: 1.5;
-    color: var(--color-muted);
-  }
-  @media (width >= 56.25rem) and (max-height: 820px) {
-    .capability-spread {
-      padding-block: 54px;
-    }
-    .hero-content {
-      padding-block: 66px 76px;
-    }
-    .hero-content h1 {
-      font-size: 60px;
-      max-width: 960px;
-    }
-  }
-  @media (width < 62.5rem) {
-    .hero-content h1 {
-      font-size: 56px;
-      max-width: 880px;
-    }
-    .hero-content {
-      padding-block: 64px 84px;
-    }
-    .hero-description {
-      font-size: 19px;
-      max-width: 740px;
-    }
-  }
-  @media (width < 37.5rem) {
-    .hero-content {
-      padding-block: 64px 68px;
-    }
-    .hero-content h1 {
-      font-size: 38px;
-      max-width: 490px;
-      line-height: 1.12;
-      margin-bottom: 26px;
-      text-wrap: pretty;
-    }
-    .hero-description {
-      font-size: 17px;
-      max-width: 450px;
-    }
-  }
-  @media (max-width: 350px) {
-    .hero-content h1 {
-      font-size: 34px;
-    }
+  .service-link:is(:hover, :focus-visible) h3,
+  .project-link:is(:hover, :focus-visible) .project-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
   }
 </style>

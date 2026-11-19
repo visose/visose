@@ -7,6 +7,7 @@ export const initializeMenu =
 
 export const initializeMenuHash =
   `sha256-${createHash("sha256").update(initializeMenu).digest("base64")}` as const;
+
 const current = Astro.url.pathname.replace(/\/$/, "") || "/";
 const links = [
   ["/projects", "Projects"],
@@ -17,7 +18,7 @@ const links = [
 ---
 
 <header class="site-header relative z-5 shrink-0">
-  <div class="wrap grid grid-cols-[1fr_auto] grid-rows-[80px_auto] items-center sm:flex sm:min-h-26 sm:justify-between sm:gap-8">
+  <div class="wrap grid grid-cols-[1fr_auto] grid-rows-[var(--site-header-height)_auto] items-center sm:flex sm:min-h-(--site-header-height) sm:justify-between sm:gap-8">
     <a class="inline-flex shrink-0 py-2.5" href="/" aria-label="visose home">
       <img
         class="block h-auto w-27 sm:w-30"
@@ -56,7 +57,7 @@ const links = [
       <div class="grid grid-cols-1 items-center border-t border-line pt-1 pb-3 sm:flex sm:gap-6 sm:border-t-0 sm:py-0 xl:gap-9">
         {links.map(([href, label]) => (
           <a
-            class="nav-link flex min-h-12 items-center py-3 text-lg text-ink no-underline sm:min-h-0 sm:text-caption"
+            class="nav-link flex min-h-12 items-center py-3 text-lg no-underline sm:min-h-0 sm:text-caption"
             href={href}
             aria-current={
               current === href
@@ -125,7 +126,7 @@ const links = [
       position: absolute;
       inset: auto 0 -5px;
       height: 1px;
-      background: var(--color-graphite);
+      background: currentColor;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 200ms var(--ease-out);
@@ -134,20 +135,6 @@ const links = [
     .nav-link:focus-visible span::after,
     .nav-link[aria-current] span::after {
       transform: scaleX(1);
-    }
-    .nav-link:hover,
-    .nav-link:focus-visible,
-    .nav-link[aria-current] {
-      color: var(--color-graphite);
-    }
-  }
-  @media (width < 37.5rem) {
-    .site-header:has(.disclosure-panel) {
-      transition: background-color 0s 240ms;
-    }
-    .site-header:has(nav:not([hidden])) {
-      background: var(--color-paper);
-      transition-delay: 0s;
     }
   }
 </style>

@@ -43,15 +43,15 @@ Custom CAM post-processors carry cutter positions, orientations and feed rates i
 
 ## CAD and 3D applications {#applications}
 
-We build complete web and desktop applications for geometric modeling, interactive 3D and engineering analysis. Editing tools and engineering calculations use the same model, so teams can evaluate each design as it changes.
+We build complete web and desktop applications for geometric modeling, interactive 3D and engineering analysis. We take new products from prototype to production and extend existing applications.
 
 ## CAD plugins and integrations {#plugins-and-integrations}
 
-We extend CAD platforms with tools that encode design rules, generate models and carry geometry and project data between systems. Shared libraries let teams use the same engineering logic across the applications they depend on.
+We build custom CAD plugins for design automation and geometry processing. We also connect CAD software to the other applications and services your team uses.
 
 ## Robotics software {#robotics-software}
 
-We develop software for industrial robot programming, simulation and process control. We connect CAD and CAM workflows to robot motion and coordinate it with the tooling and equipment a fabrication process depends on.
+We develop software for industrial robot programming, simulation and process control. We build standalone tools and integrate robotics with existing engineering and production systems.
 
 ## Working with visose {#working-with-visose}
 

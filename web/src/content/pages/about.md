@@ -22,23 +22,23 @@ Our work combines software engineering with computational geometry, computer gra
 
 ### Software engineering {#expertise-software}
 
-Software architecture, web and desktop applications, backend services and APIs. C#/.NET, TypeScript and React.
+We design and build web and desktop applications, backend services and APIs. We work with C#/.NET, TypeScript and React.
 
 ### Geometry and graphics {#expertise-geometry}
 
-Solid and mesh modeling, parametric systems and interactive 3D, including Three.js.
+We build software for solid and mesh modeling, parametric design and interactive 3D. We work with libraries such as Three.js for browser graphics.
 
 ### CAD integrations {#expertise-integrations}
 
-Custom tools for platforms such as Rhino, Grasshopper, Revit, Navisworks and SketchUp.
+We build custom tools and integrations for platforms such as Rhino, Grasshopper, Revit, Navisworks and SketchUp.
 
 ### Robotics {#expertise-robotics}
 
-Kinematics, toolpath generation, simulation and process control.
+We develop software for robot kinematics, toolpath generation, simulation and process control.
 
 ### Cloud and delivery {#expertise-delivery}
 
-AWS and Azure, automated testing and continuous integration.
+We build and deploy software on cloud platforms such as AWS and Azure. We use automated testing and continuous integration to support releases.
 
 ### Explore our work {#expertise-links}
 

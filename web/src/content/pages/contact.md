@@ -4,7 +4,7 @@ description: Discuss a software project, technical consulting or support with vi
 heading: Contact
 ---
 
-Email [info@visose.com](mailto:info@visose.com) or use the form below.
+Email [info@visose.com](mailto:info@visose.com) or use the form.
 
 ## Privacy notice {#privacy-note}
 

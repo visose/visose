@@ -33,11 +33,13 @@ const compact = Astro.slots.has("compact");
     --connection-gap: 16px;
     --node-gap: 20px;
     padding: 16px;
+    border: 1px solid var(--color-line-strong);
     background: var(--color-silver);
   }
   .architecture-title {
     margin: 0 0 16px;
     font-size: 16px;
+    font-weight: 600;
     line-height: 1.35;
   }
   .architecture :global(.diagram-stack) {
@@ -136,8 +138,8 @@ const compact = Astro.slots.has("compact");
   figcaption {
     margin-bottom: 14px;
     color: var(--color-muted);
-    font-size: 13px;
+    font-size: 0.875rem;
     line-height: 1.5;
-    max-width: 100ch;
+    max-width: 70ch;
   }
 </style>

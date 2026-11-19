@@ -86,18 +86,15 @@ test(
           const initialTop = await target.evaluate(
             (element) => element.getBoundingClientRect().top + scrollY,
           );
+          const header = page.locator(".site-header");
+          const initialHeaderBackground = await header.evaluate(
+            (element) => getComputedStyle(element).backgroundColor,
+          );
           if (width === 390) {
             assert.equal(
               await page.locator("#primary-navigation").isVisible(),
               false,
               "Mobile navigation must be closed at first paint",
-            );
-            assert.equal(
-              await page
-                .locator(".site-header")
-                .evaluate((header) => getComputedStyle(header).backgroundColor),
-              "rgba(0, 0, 0, 0)",
-              "The closed header must reveal the background from first paint",
             );
           }
           if (route === "/projects")
@@ -109,6 +106,13 @@ test(
           await page.unroute(origin + route);
           response = await page.reload();
           await page.evaluate(() => document.fonts.ready);
+          assert.equal(
+            await header.evaluate(
+              (element) => getComputedStyle(element).backgroundColor,
+            ),
+            initialHeaderBackground,
+            `${route}: header background must match first paint`,
+          );
           const finalTop = await target.evaluate(
             (element) => element.getBoundingClientRect().top + scrollY,
           );

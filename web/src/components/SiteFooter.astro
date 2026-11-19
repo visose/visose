@@ -1,20 +1,19 @@
 ---
 import analyticsCopy from "../content/analytics.json";
+import PlanarField from "./PlanarField.astro";
+
 interface Props {
-  home?: boolean;
+  home: boolean;
 }
-const { home = false } = Astro.props;
+const { home } = Astro.props;
 const linkClass =
   "inline-flex min-h-11 items-center py-2 no-underline hover:underline";
 ---
 
-<footer
-  class:list={[
-    "on-dark shrink-0 py-6 text-[#e8eaeb] sm:py-7",
-    home ? "bg-transparent" : "bg-graphite",
-  ]}
->
-  <div class="wrap flex flex-col gap-3 text-sm xl:flex-row xl:items-center xl:gap-x-6">
+<footer class="on-dark relative isolate shrink-0 overflow-hidden bg-graphite text-[#e8eaeb]">
+  {home && <PlanarField variant="footer" />}
+  <slot />
+  <div class="wrap flex flex-col gap-3 py-6 text-sm sm:py-7 xl:flex-row xl:items-center xl:gap-x-6">
     <div class="flex items-center justify-between gap-5 xl:contents">
       <a
         class="mr-auto inline-flex min-h-11 items-center"

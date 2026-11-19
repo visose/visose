@@ -18,7 +18,9 @@ We build new web and desktop applications, CAD plugins and robotics software. We
 
 We review architecture and code, assess feasibility and plan integrations. An assessment sets out the recommended approach, risks and next steps, with a prototype where useful.
 
-When several teams or suppliers contribute to a product, we help them agree on responsibilities, interfaces and how to release their work together. For a [marine engineering software suite](/projects/technical-consulting-for-marine-design-software), we developed shared drawing libraries and a release pipeline that brought independently maintained tools into one licensed distribution.
+When several teams or suppliers contribute to a product, we help them agree on responsibilities, interfaces and how to release their work together.
+
+[Read the marine engineering software case study](/projects/technical-consulting-for-marine-design-software)
 
 [Discuss a technical assessment](/contact?area=Technical%20consulting)
 

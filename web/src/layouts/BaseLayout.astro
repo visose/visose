@@ -5,7 +5,6 @@ import fontStyles from "../styles/fonts.css?inline";
 import { createHash } from "node:crypto";
 import SiteHeader, { initializeMenuHash } from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import PlanarField from "../components/PlanarField.astro";
 import AnalyticsConsent from "../components/AnalyticsConsent.astro";
 import { isRelease } from "../lib/build";
 import readingFont from "@fontsource-variable/dm-sans/files/dm-sans-latin-standard-normal.woff2?url";
@@ -18,8 +17,9 @@ interface Props {
   title: string;
   description: string;
   home?: boolean;
+  openingSurface?: boolean;
 }
-const { title, description, home = false } = Astro.props;
+const { title, description, home = false, openingSurface = true } = Astro.props;
 const notFound =
   Astro.url.pathname === "/404" || Astro.url.pathname === "/404.html";
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -61,7 +61,7 @@ const structuredData = {
       <meta name="robots" content="noindex, nofollow" />
     )}
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#e9ebec" />
+    <meta name="theme-color" content={openingSurface ? "#e9ebec" : "#fafbf9"} />
     {!isRelease && <meta name="visose-build" content="local-review" />}
     {isRelease && !notFound && <link rel="canonical" href={canonical} />}
     <meta property="og:type" content="website" />
@@ -104,10 +104,9 @@ const structuredData = {
   <body
     class:list={[
       "flex min-h-svh flex-col text-base sm:text-lg",
-      { "relative isolate bg-graphite": home },
+      { "with-page-opening": openingSurface },
     ]}
   >
-    {home && <PlanarField variant="fragment" />}
     <a class="skip-link" href="#main">
       Skip to content
     </a>
@@ -119,7 +118,9 @@ const structuredData = {
     >
       <slot />
     </main>
-    <SiteFooter home={home} />
+    <SiteFooter home={home}>
+      <slot name="closing" />
+    </SiteFooter>
     <AnalyticsConsent />
     <script>
       if (
